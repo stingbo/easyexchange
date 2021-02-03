@@ -2,6 +2,8 @@
 
 namespace EasyExchange\Kernel;
 
+use EasyExchange\Kernel\Traits\HasHttpRequests;
+
 class BaseClient
 {
     use HasHttpRequests {

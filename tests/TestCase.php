@@ -19,7 +19,7 @@ class TestCase
         ];
 
         $app = Factory::binance($config);
-        $response = $app->order->doOrder();
+        $response = $app->order->doOrder('btc2usdt');
 
         return 0;
     }

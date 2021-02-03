@@ -16,6 +16,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.2",
+        "guzzlehttp/guzzle": "^6.2 || ^7.0",
         "pimple/pimple": "^3.0"
     },
     "autoload": {
