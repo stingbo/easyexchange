@@ -1,0 +1,34 @@
+{
+    "name": "stingbo/easyexchange",
+    "description": "easy use digital currency exchange api",
+    "keywords": [
+        "easyexchange",
+        "digital currency exchange",
+        "sdk"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "stingbo",
+            "email": "lianbo.wan@gamil.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.2",
+        "pimple/pimple": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EasyExchange\\": "src/"
+        },
+        "files": [
+            "src/Kernel/Support/Helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EasyExchange\\Tests\\": "tests/"
+        }
+    }
+}
