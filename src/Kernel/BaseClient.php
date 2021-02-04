@@ -68,4 +68,17 @@ class BaseClient
     {
         return $this->request($url, 'POST', ['form_params' => $data]);
     }
+
+    /**
+     * JSON request.
+     *
+     * @return \Psr\Http\Message\ResponseInterface|\EasyExchange\Kernel\Support\Collection|array|object|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function httpPostJson(string $url, array $data = [], array $query = [])
+    {
+        return $this->request($url, 'POST', ['query' => $query, 'json' => $data]);
+    }
 }

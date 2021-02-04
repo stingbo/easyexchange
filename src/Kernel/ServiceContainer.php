@@ -3,6 +3,7 @@
 namespace EasyExchange\Kernel;
 
 use EasyExchange\Kernel\Providers\ConfigServiceProvider;
+use EasyExchange\Kernel\Providers\HttpClientServiceProvider;
 use Pimple\Container;
 
 /**
@@ -76,6 +77,7 @@ class ServiceContainer extends Container
         $base = [
             'http' => [
                 'timeout' => 30.0,
+                'base_uri' => $this->userConfig['base_uri'],
             ],
         ];
 
@@ -89,6 +91,7 @@ class ServiceContainer extends Container
     {
         return array_merge([
             ConfigServiceProvider::class,
+            HttpClientServiceProvider::class,
         ], $this->providers);
     }
 
