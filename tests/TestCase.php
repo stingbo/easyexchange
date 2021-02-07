@@ -19,23 +19,26 @@ class TestCase
             ],
             'huobi' => [
                 'response_type' => 'array',
-                'base_uri' => 'https://api.binance.com',
+                'base_uri' => 'https://api.huobi.pro',
                 'app_key' => 'vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A',
                 'secret' => 'NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j',
             ],
             'okex' => [
                 'response_type' => 'array',
-                'base_uri' => 'https://api.binance.com',
+                'base_uri' => 'https://www.okex.com',
                 'app_key' => 'vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A',
                 'secret' => 'NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j',
             ],
         ];
 
         $app = Factory::binance($config['binance']);
-//        $response = $app->order->doOrder('ETHBTC');
-        $response = $app->market->depth('ETHBTC');
+        $app = Factory::huobi($config['huobi']);
+        //$response = $app->order->doOrder('ETHBTC');
+        $response = $app->market->depth('btcusdt', 'step0', 5);
+        //$response = $app->market->trades('ETHBTC', 10);
+        //$response = $app->market->historicalTrades('ETHBTC', 10);
+        //$response = $app->market->aggTrades('ETHBTC');
         print_r($response);
-//        print_r($response);
 
         return 0;
     }
