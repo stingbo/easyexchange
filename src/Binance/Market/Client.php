@@ -6,6 +6,11 @@ use EasyExchange\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
+    public function exchangeInfo()
+    {
+        return $this->httpGet('/api/v3/exchangeInfo');
+    }
+
     public function depth($symbol, int $limit = 100)
     {
         return $this->httpGet('/api/v3/depth', compact('symbol', 'limit'));
