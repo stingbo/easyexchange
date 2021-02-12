@@ -14,8 +14,6 @@ $ composer require "stingbo/easyexchange" -vvv
 
 ## Usage
 
-基本使用（以服务端为例）:
-
 ```php
 <?php
 
