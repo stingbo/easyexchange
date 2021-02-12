@@ -10,4 +10,9 @@ class Client extends BaseClient
     {
         return $this->httpGet('/market/depth', compact('symbol', 'type', 'depth'));
     }
+
+    public function trades($symbol)
+    {
+        return $this->httpGet('/market/trade', compact('symbol'));
+    }
 }
