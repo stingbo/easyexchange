@@ -19,6 +19,12 @@
         "guzzlehttp/guzzle": "^6.2 || ^7.0",
         "pimple/pimple": "^3.0"
     },
+    "require-dev": {
+        "mockery/mockery": "^1.2.3",
+        "phpunit/phpunit": "^9.3",
+        "phpstan/phpstan": "0.12.x-dev",
+        "dms/phpunit-arraysubset-asserts": "^0.2.0"
+    },
     "autoload": {
         "psr-4": {
             "EasyExchange\\": "src/"
@@ -31,5 +37,24 @@
         "psr-4": {
             "EasyExchange\\Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "hooks": {
+            "pre-commit": [
+                "composer test",
+                "composer fix-style"
+            ],
+            "pre-push": [
+                "composer test",
+                "composer fix-style"
+            ]
+        }
+    },
+    "scripts": {
+        "post-merge": "composer install",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "check-style": "php-cs-fixer fix --using-cache=no --diff --config=.php_cs --dry-run --ansi",
+        "fix-style": "php-cs-fixer fix --using-cache=no --config=.php_cs --ansi",
+        "test": "vendor/bin/phpunit --colors=always --testdox"
     }
 }

@@ -2,47 +2,61 @@
 
 namespace EasyExchange\Tests;
 
-include __DIR__.'/../vendor/autoload.php';
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use EasyExchange\Kernel\ServiceContainer;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-use EasyExchange\Factory;
-
-class TestCase
+/**
+ * class TestCase.
+ */
+class TestCase extends BaseTestCase
 {
-    public function order()
+    use ArraySubsetAsserts;
+
+    /**
+     * Create API Client mock object.
+     *
+     * @param string       $name
+     * @param array|string $methods
+     *
+     * @return \Mockery\Mock
+     */
+    public function mockApiClient($name, $methods = [], ServiceContainer $app = null)
     {
-        $config = [
-            'binance' => [
-                'response_type' => 'array',
-                'base_uri' => 'https://api.binance.com',
-                'app_key' => 'vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A',
-                'secret' => 'NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j',
-            ],
-            'huobi' => [
-                'response_type' => 'array',
-                'base_uri' => 'https://api.huobi.pro',
-                'app_key' => 'vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A',
-                'secret' => 'NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j',
-            ],
-            'okex' => [
-                'response_type' => 'array',
-                'base_uri' => 'https://www.okex.com',
-                'app_key' => 'vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A',
-                'secret' => 'NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j',
-            ],
-        ];
+        $methods = implode(',', array_merge([
+            'httpGet', 'httpPost', 'httpPostJson',
+            'request', 'requestRaw', 'requestArray',
+        ], (array) $methods));
 
-        $app = Factory::binance($config['binance']);
-        $app = Factory::huobi($config['huobi']);
-        //$response = $app->order->doOrder('ETHBTC');
-        $response = $app->market->depth('btcusdt', 'step0', 5);
-        //$response = $app->market->trades('ETHBTC', 10);
-        //$response = $app->market->historicalTrades('ETHBTC', 10);
-        //$response = $app->market->aggTrades('ETHBTC');
-        print_r($response);
+        $client = \Mockery::mock(
+            $name."[{$methods}]",
+            [
+                $app ?? \Mockery::mock(ServiceContainer::class),
+            ]
+        )->shouldAllowMockingProtectedMethods();
+        $client->allows()->andReturnNull();
 
-        return 0;
+        return $client;
+    }
+
+    /**
+     * Tear down the test case.
+     */
+    public function tearDown(): void
+    {
+        $this->finish();
+        parent::tearDown();
+        if ($container = \Mockery::getContainer()) {
+            $this->addToAssertionCount($container->Mockery_getExpectationCount());
+        }
+        \Mockery::close();
+    }
+
+    /**
+     * Run extra tear down code.
+     */
+    protected function finish()
+    {
+        // call more tear down methods
     }
 }
-
-$tc = new TestCase();
-$tc->order();

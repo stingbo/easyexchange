@@ -12,12 +12,13 @@
 namespace EasyExchange;
 
 use EasyExchange\Kernel\ServiceContainer;
-use EasyExchange\Mengine\Application;
 
 /**
  * Class Factory.
  *
- * @method static Application easyexchange(array $config)
+ * @method static \EasyWeChat\Binance\Application     binance(array $config)
+ * @method static \EasyWeChat\Huobi\Application       huobi(array $config)
+ * @method static \EasyWeChat\Okex\Application        okex(array $config)
  */
 class Factory
 {
