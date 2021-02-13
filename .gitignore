@@ -3,3 +3,4 @@ vendor
 .php_cs.cache
 tags
 .idea
+.phpunit.result.cache
