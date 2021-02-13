@@ -33,6 +33,6 @@ class Client extends BaseClient
      */
     public function order($params)
     {
-        return $this->httpPost('/api/v3/order', $params);
+        return $this->httpPost('/api/v3/order', $params, 'TRADE');
     }
 }
