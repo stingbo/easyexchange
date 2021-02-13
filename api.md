@@ -13,6 +13,8 @@
 | endpoint | 功能 |
 | --- | --- |
 | :heavy_check_mark: [depth](depth) | 获取交易深度 |
+| :heavy_check_mark: [tarde](tarde) | 获取近期成交 |
+| :heavy_check_mark: [historicalTrades](historicalTrades) | 查询历史成交 |
 
 #### 单据 - order
 | endpoint | 功能 |
