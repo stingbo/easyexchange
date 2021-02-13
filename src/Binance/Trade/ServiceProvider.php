@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Huobi\Order;
+namespace EasyExchange\Binance\Trade;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['order'] = function ($app) {
+        $app['trade'] = function ($app) {
             return new Client($app);
         };
     }
