@@ -16,7 +16,9 @@
 | :heavy_check_mark: [tarde](tarde) | 获取近期成交 |
 | :heavy_check_mark: [historicalTrades](historicalTrades) | 查询历史成交 |
 
-#### 单据 - order
+#### 交易接口 - trade
 | endpoint | 功能 |
 | --- | --- |
-| :heavy_multiplication_x: [doOrder](doOrder)  :key:  | 下单 |
+| :heavy_check_mark: [account](account) :key: | 账户信息 |
+| :heavy_check_mark: [order](order) :key: | 下单 |
+| :heavy_multiplication_x: [deleteOrder](deleteOrder) :key: | 撤销订单 |
