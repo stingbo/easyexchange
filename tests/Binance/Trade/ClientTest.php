@@ -16,4 +16,13 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->order($params));
     }
+
+    public function testAccount()
+    {
+        $client = $this->mockApiClient(Client::class);
+
+        $client->expects()->httpGet('/api/v3/account', ['timestamp' => 122, 'recvWindow' => 123], 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->account(122, 123));
+    }
 }
