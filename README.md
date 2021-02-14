@@ -1,5 +1,6 @@
 ## PHP Easy Exchange Api
 - easy use digital currency exchange api,include binance, okex, huobi pro etc
+- [API list](api.md)
 
 ## Requirement
 
