@@ -25,4 +25,14 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->account(122, 123));
     }
+
+    public function testOpenOrders()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $params = [];
+
+        $client->expects()->httpGet('/api/v3/openOrders', $params, 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->openOrders($params));
+    }
 }
