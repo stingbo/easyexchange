@@ -2,7 +2,7 @@
 
 namespace EasyExchange\Binance\Market;
 
-use EasyExchange\Kernel\BaseClient;
+use EasyExchange\Binance\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
