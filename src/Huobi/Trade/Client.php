@@ -2,7 +2,7 @@
 
 namespace EasyExchange\Huobi\Trade;
 
-use EasyExchange\Kernel\BaseClient;
+use EasyExchange\Huobi\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
