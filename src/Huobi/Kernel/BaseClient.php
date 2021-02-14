@@ -51,7 +51,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
                 parse_str($request->getBody()->getContents(), $params);
                 parse_str($request->getUri()->getQuery(), $query);
 
-                date_default_timezone_set("UTC");
+                date_default_timezone_set('UTC');
                 $sign_params = [
                     'AccessKeyId' => $this->app->config->get('app_key'),
                     'SignatureMethod' => 'HmacSHA256',
