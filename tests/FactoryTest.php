@@ -34,13 +34,13 @@ class FactoryTest extends TestCase
         );
 
         $this->assertInstanceOf(
-            \EasyExchange\Binance\Application::class,
-            Factory::binance($config['huobi'])
+            \EasyExchange\Huobi\Application::class,
+            Factory::huobi($config['huobi'])
         );
 
         $this->assertInstanceOf(
-            \EasyExchange\Binance\Application::class,
-            Factory::binance($config['okex'])
+            \EasyExchange\Okex\Application::class,
+            Factory::okex($config['okex'])
         );
     }
 }

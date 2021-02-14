@@ -18,7 +18,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
         $data = http_build_query($params);
         $secret = $this->app->config->get('secret');
 
-        return hash_hmac('SHA256', $data, $secret);
+        return hash_hmac('sha256', $data, $secret);
     }
 
     /**
