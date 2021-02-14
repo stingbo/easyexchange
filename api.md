@@ -21,4 +21,5 @@
 | --- | --- |
 | :heavy_check_mark: [account](account) :key: | 账户信息 |
 | :heavy_check_mark: [order](order) :key: | 下单 |
+| :heavy_check_mark: [openOrders](openOrders) :key: | 查询当前未成交订单 |
 | :heavy_multiplication_x: [deleteOrder](deleteOrder) :key: | 撤销订单 |
