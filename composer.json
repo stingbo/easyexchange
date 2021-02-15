@@ -1,10 +1,11 @@
 {
     "name": "stingbo/easyexchange",
-    "description": "easy use digital currency exchange api",
+    "description": "easy use digital currency exchange sdk",
     "keywords": [
         "easyexchange",
         "digital currency exchange",
-        "sdk"
+        "sdk",
+        "交易所SDK"
     ],
     "license": "MIT",
     "authors": [
