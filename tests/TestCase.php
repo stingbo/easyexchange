@@ -24,8 +24,8 @@ class TestCase extends BaseTestCase
     public function mockApiClient($name, $methods = [], ServiceContainer $app = null)
     {
         $methods = implode(',', array_merge([
-            'httpGet', 'httpPost', 'httpPostJson',
-            'request', 'requestRaw', 'requestArray',
+            'httpGet', 'httpPost', 'httpPostJson', 'httpDelete',
+            'request', 'requestRaw', 'requestArray', 'registerMiddlewares',
         ], (array) $methods));
 
         $client = \Mockery::mock(
