@@ -93,8 +93,10 @@ class BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function httpPostJson(string $url, array $data = [], array $query = [])
+    public function httpPostJson(string $url, array $data = [], array $query = [], $sign_type = 'NONE')
     {
+        $this->sign_type = $sign_type;
+
         return $this->request($url, 'POST', ['query' => $query, 'json' => $data]);
     }
 
