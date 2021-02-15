@@ -58,11 +58,14 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
                     'SignatureVersion' => 2,
                     'Timestamp' => date('Y-m-d\TH:i:s'),
                 ];
+
+                // For GET request, all the parameters must be signed.
+                $query = array_merge($query, $sign_params);
                 if ($params) {
-                    $params = array_merge($params, $sign_params);
+                    // For POST request, the parameters needn't be signed and they should be put in request body.
+                    $params = array_merge([], $sign_params);
                     $signature = $this->getSignature($params, $method, $uri_host, $uri_path);
                 } else {
-                    $query = array_merge($query, $sign_params);
                     $signature = $this->getSignature($query, $method, $uri_host, $uri_path);
                 }
 
