@@ -9,7 +9,12 @@ class ClientTest extends TestCase
 {
     public function testOrder()
     {
-        $this->assertSame('mock-result', 'mock-result');
+        $client = $this->mockApiClient(Client::class);
+        $params = [];
+
+        $client->expects()->httpPostJson('/v1/order/orders/place', $params, [], 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->order($params));
     }
 
     public function testAccount()
@@ -25,5 +30,16 @@ class ClientTest extends TestCase
         $client->expects()->httpGet('/v1/order/openOrders', $params, 'TRADE')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->openOrders($params));
+    }
+
+    public function testCancelOrder()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $order_id = 'test';
+        $params = [];
+
+        $client->expects()->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), $params, 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->cancelOrder($order_id));
     }
 }

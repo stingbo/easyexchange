@@ -63,7 +63,7 @@ class BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function httpGet(string $url, array $query = [], $sign_type = 'NONE')
+    public function httpGet(string $url, array $query = [], string $sign_type = 'NONE')
     {
         $this->sign_type = $sign_type;
 
@@ -78,7 +78,7 @@ class BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function httpPost(string $url, array $data = [], $sign_type = 'NONE')
+    public function httpPost(string $url, array $data = [], string $sign_type = 'NONE')
     {
         $this->sign_type = $sign_type;
 
@@ -93,9 +93,26 @@ class BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function httpPostJson(string $url, array $data = [], array $query = [])
+    public function httpPostJson(string $url, array $data = [], array $query = [], string $sign_type = 'NONE')
     {
+        $this->sign_type = $sign_type;
+
         return $this->request($url, 'POST', ['query' => $query, 'json' => $data]);
+    }
+
+    /**
+     * DELETE request.
+     *
+     * @return array|Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function httpDelete(string $url, array $query = [], string $sign_type = 'NONE')
+    {
+        $this->sign_type = $sign_type;
+
+        return $this->request($url, 'DELETE', ['query' => $query]);
     }
 
     /**

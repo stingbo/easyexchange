@@ -35,4 +35,14 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->openOrders($params));
     }
+
+    public function testCancelOrder()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $params = [];
+
+        $client->expects()->httpDelete('/api/v3/order', $params, 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->cancelOrder($params));
+    }
 }
