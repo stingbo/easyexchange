@@ -31,4 +31,15 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->openOrders($params));
     }
+
+    public function testCancelOrder()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $order_id = 'test';
+        $params = [];
+
+        $client->expects()->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), $params, 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->cancelOrder($order_id));
+    }
 }
