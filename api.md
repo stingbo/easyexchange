@@ -12,14 +12,14 @@
 
 | endpoint | 功能 |
 | --- | --- |
-| :heavy_check_mark: [depth](depth) | 获取交易深度 |
-| :heavy_check_mark: [tarde](tarde) | 获取近期成交 |
-| :heavy_check_mark: [historicalTrades](historicalTrades) | 查询历史成交 |
+| :heavy_check_mark: [depth](docs/depth.md) | 获取交易深度 |
+| :heavy_check_mark: [tarde](docs/tarde.md) | 获取近期成交 |
+| :heavy_check_mark: [historicalTrades](docs/historicalTrades.md) | 查询历史成交 |
 
 #### 交易接口 - trade
 | endpoint | 功能 |
 | --- | --- |
-| :heavy_check_mark: [account](account) :key: | 账户信息 |
-| :heavy_check_mark: [order](order) :key: | 下单 |
-| :heavy_check_mark: [openOrders](openOrders) :key: | 查询当前未成交订单 |
-| :heavy_multiplication_x: [deleteOrder](deleteOrder) :key: | 撤销订单 |
+| :heavy_check_mark: [account](docs/account.md) :key: | 账户信息 |
+| :heavy_check_mark: [order](docs/order.md) :key: | 下单 |
+| :heavy_check_mark: [openOrders](docs/openOrders.md) :key: | 查询当前未成交订单 |
+| :heavy_multiplication_x: [deleteOrder](docs/deleteOrder.md) :key: | 撤销订单 |
