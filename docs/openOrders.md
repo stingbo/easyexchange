@@ -4,7 +4,7 @@
 
 Current Open Orders
 
-#### Http Method:GET
+#### Http Method: GET
 
 #### Params: [...]
 
