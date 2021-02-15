@@ -9,7 +9,12 @@ class ClientTest extends TestCase
 {
     public function testOrder()
     {
-        $this->assertSame('mock-result', 'mock-result');
+        $client = $this->mockApiClient(Client::class);
+        $params = [];
+
+        $client->expects()->httpPostJson('/v1/order/orders/place', $params, [], 'TRADE')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->order($params));
     }
 
     public function testAccount()
