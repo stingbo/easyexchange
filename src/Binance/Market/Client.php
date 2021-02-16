@@ -66,4 +66,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v3/aggTrades', $params);
     }
+
+    /**
+     * 24hr 价格变动情况.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function hr24($symbol)
+    {
+        return $this->httpGet('/api/v3/ticker/24hr', compact('symbol'));
+    }
 }
