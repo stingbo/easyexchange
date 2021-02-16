@@ -26,6 +26,7 @@
 | :heavy_check_mark: [tarde](docs/tarde.md) | 获取近期成交 |
 | :heavy_check_mark: [historicalTrades](docs/historicalTrades.md) | 查询历史成交 |
 | :heavy_check_mark: [aggTrades](docs/aggTrades.md) | 聚合行情（Ticker） |
+| :heavy_check_mark: [24hr](docs/24hr.md) | 24hr 价格变动情况 |
 
 #### 交易接口 - trade
 | endpoint | 功能 |
