@@ -6,16 +6,47 @@ use EasyExchange\Huobi\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
+    /**
+     * 深度信息.
+     *
+     * @param $symbol
+     * @param string $type
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function depth($symbol, $type = 'step0', int $depth = 20)
     {
         return $this->httpGet('/market/depth', compact('symbol', 'type', 'depth'));
     }
 
+    /**
+     * 近期成交列表.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function trades($symbol)
     {
         return $this->httpGet('/market/trade', compact('symbol'));
     }
 
+    /**
+     * 查询历史成交.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function historicalTrades($symbol, int $size = 10)
     {
         return $this->httpGet('/market/history/trade', compact('symbol', 'size'));
