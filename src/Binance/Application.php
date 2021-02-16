@@ -13,6 +13,7 @@ class Application extends ServiceContainer
      * @var array
      */
     protected $providers = [
+        Basic\ServiceProvider::class,
         Trade\ServiceProvider::class,
         Wallet\ServiceProvider::class,
         Market\ServiceProvider::class,

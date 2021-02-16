@@ -6,7 +6,7 @@ New Order
 
 #### Http Method: POST
 
-#### Params: [...]
+#### Params: Array
 
 Please check the official document for details
 

@@ -9,13 +9,23 @@
 | :heavy_multiplication_x: | API 接口未完成 |
 | :heavy_check_mark: | API 接口已完成 |
 
+#### 基本信息 - basic
+
+| endpoint | 功能 |
+| :---: | :---: |
+| :heavy_check_mark: [systemTime](docs/systemTime.md) | 获取当前交易所时间戳 |
+| :heavy_check_mark: [systemStatus](docs/systemStatus.md) | 获取当前系统状态 |
+| :heavy_check_mark: [exchangeInfo](docs/exchangeInfo.md) | 获取所有交易对信息 |
+
 #### 行情 - market
 
 | endpoint | 功能 |
 | :---: | :---: |
+| :heavy_check_mark: [marketStatus](docs/marketStatus.md) | 获取当前市场状态 |
 | :heavy_check_mark: [depth](docs/depth.md) | 获取交易深度 |
 | :heavy_check_mark: [tarde](docs/tarde.md) | 获取近期成交 |
 | :heavy_check_mark: [historicalTrades](docs/historicalTrades.md) | 查询历史成交 |
+| :heavy_check_mark: [aggTrades](docs/aggTrades.md) | 聚合行情（Ticker） |
 
 #### 交易接口 - trade
 | endpoint | 功能 |

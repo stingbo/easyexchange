@@ -6,42 +6,79 @@ use EasyExchange\Binance\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
-    public function exchangeInfo()
-    {
-        return $this->httpGet('/api/v3/exchangeInfo');
-    }
-
+    /**
+     * 深度信息.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function depth($symbol, int $limit = 100)
     {
         return $this->httpGet('/api/v3/depth', compact('symbol', 'limit'));
     }
 
+    /**
+     * 近期成交列表.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function trades($symbol, int $limit = 500)
     {
         return $this->httpGet('/api/v3/trades', compact('symbol', 'limit'));
     }
 
+    /**
+     * 查询历史成交.
+     *
+     * @param $symbol
+     * @param string $fromId
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function historicalTrades($symbol, $fromId = '', int $limit = 500)
     {
         return $this->httpGet('/api/v3/historicalTrades', compact('symbol', 'fromId', 'limit'));
     }
 
-    public function aggTrades($symbol, $fromId = '', $startTime = '', $endTime = '', int $limit = 50)
+    /**
+     * 近期成交(归集).
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function aggTrades($params)
     {
-        $request = ['symbol' => $symbol];
-        if ($fromId) {
-            $request['fromId'] = $fromId;
-        }
-        if ($startTime) {
-            $request['startTime'] = $startTime;
-        }
-        if ($endTime) {
-            $request['endTime'] = $endTime;
-        }
-        if ($limit) {
-            $request['limit'] = $limit;
-        }
+        return $this->httpGet('/api/v3/aggTrades', $params);
+    }
 
-        return $this->httpGet('/api/v3/aggTrades', $request);
+    /**
+     * 24hr 价格变动情况.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function hr24($symbol)
+    {
+        return $this->httpGet('/api/v3/ticker/24hr', compact('symbol'));
     }
 }

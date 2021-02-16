@@ -12,7 +12,7 @@
 | huobi   | POST | [details](https://huobiapi.github.io/docs/spot/v1/cn/#4e53c0fccd) |
 | okex    |  |  |
 
-#### Params: [...]
+#### Params: Array
 
 Please check the official document for details
 
