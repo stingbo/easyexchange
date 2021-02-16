@@ -20,6 +20,8 @@ class Client extends BaseClient
     }
 
     /**
+     * 获取所有交易对.
+     *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
@@ -27,7 +29,7 @@ class Client extends BaseClient
      */
     public function exchangeInfo()
     {
-        return $this->httpGet('/v1/common/currencys');
+        return $this->httpGet('/v1/common/symbols');
     }
 
     /**
@@ -41,5 +43,18 @@ class Client extends BaseClient
     public function systemStatus()
     {
         return $this->httpGet('https://status.huobigroup.com/api/v2/summary.json');
+    }
+
+    /**
+     * 获取所有币种.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function currency()
+    {
+        return $this->httpGet('/v1/common/currencys');
     }
 }
