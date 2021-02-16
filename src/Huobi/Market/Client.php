@@ -64,4 +64,20 @@ class Client extends BaseClient
     {
         return $this->httpGet('/market/history/trade', compact('symbol', 'size'));
     }
+
+    /**
+     * 聚合行情（Ticker）.
+     * 此接口获取ticker信息同时提供最近24小时的交易聚合信息.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function aggTrades($symbol)
+    {
+        return $this->httpGet('/market/detail/merged', compact('symbol'));
+    }
 }
