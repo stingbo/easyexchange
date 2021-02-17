@@ -53,8 +53,21 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function currency()
+    public function currencys()
     {
         return $this->httpGet('/v1/common/currencys');
+    }
+
+    /**
+     * 此接口返回所有火币全球站支持的交易对.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function symbols()
+    {
+        return $this->httpGet('/v1/common/symbols');
     }
 }
