@@ -2,7 +2,7 @@
 
 namespace EasyExchange\Okex\Market;
 
-use EasyExchange\Kernel\BaseClient;
+use EasyExchange\Okex\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
