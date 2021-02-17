@@ -64,4 +64,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/account/disableFastWithdrawSwitch', compact('recvWindow'), 'TRADE');
     }
+
+    /**
+     * 开启站内划转.
+     *
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function enableFastWithdrawSwitch($recvWindow = 60000)
+    {
+        return $this->httpPost('/sapi/v1/account/enableFastWithdrawSwitch', compact('recvWindow'), 'TRADE');
+    }
 }
