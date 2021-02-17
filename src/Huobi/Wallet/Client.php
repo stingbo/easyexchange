@@ -65,4 +65,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/v1/account/transfer', $params, 'TRADE');
     }
+
+    /**
+     * 账户流水.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function history($params)
+    {
+        return $this->httpGet('/v1/account/history', $params, 'TRADE');
+    }
 }
