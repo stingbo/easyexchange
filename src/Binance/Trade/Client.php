@@ -105,4 +105,19 @@ class Client extends BaseClient
     {
         return $this->httpDelete('api/v3/openOrders', compact('symbol', 'recvWindow'), 'TRADE');
     }
+
+    /**
+     * 查询订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get($params)
+    {
+        return $this->httpGet('/api/v3/order', $params, 'TRADE');
+    }
 }
