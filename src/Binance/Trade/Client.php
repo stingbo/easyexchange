@@ -37,21 +37,6 @@ class Client extends BaseClient
     }
 
     /**
-     * 账户信息.
-     *
-     * @param int $recvWindow
-     *
-     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     *
-     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function account($recvWindow = 60000)
-    {
-        return $this->httpGet('/api/v3/account', compact('recvWindow'), 'TRADE');
-    }
-
-    /**
      * 获取交易对的所有当前挂单.
      *
      * @param string $symbol
