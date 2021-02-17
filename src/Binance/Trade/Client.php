@@ -52,7 +52,7 @@ class Client extends BaseClient
     }
 
     /**
-     * 当前挂单.
+     * 获取交易对的所有当前挂单.
      *
      * @param string $symbol
      * @param int    $recvWindow
@@ -119,5 +119,20 @@ class Client extends BaseClient
     public function get($params)
     {
         return $this->httpGet('/api/v3/order', $params, 'TRADE');
+    }
+
+    /**
+     * 获取所有帐户订单； 有效，已取消或已完成.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function allOrders($params)
+    {
+        return $this->httpGet('/api/v3/allOrders', $params, 'TRADE');
     }
 }
