@@ -1,6 +1,6 @@
 ## PHP Easy Exchange Api
 - easy use digital currency exchange sdk, include binance, okex, huobi pro etc
-- [API list](api.md)
+- [API List | 接口列表](api.md)
 
 ## Requirement
 
