@@ -9,13 +9,16 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     /**
      * 获取签名.
      *
-     * @param $params
+     * @param array $query
+     * @param array $params
      *
      * @return string
      */
-    public function getSignature($params)
+    public function getSignature($query = [], $params = [])
     {
-        $data = http_build_query($params);
+        $query = http_build_query($query);
+        $params = http_build_query($params);
+        $data = $query.$params;
         $secret = $this->app->config->get('secret');
 
         return hash_hmac('sha256', $data, $secret);
@@ -45,8 +48,13 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
             return function (RequestInterface $request, array $options) use ($handler) {
                 parse_str($request->getBody()->getContents(), $params);
                 parse_str($request->getUri()->getQuery(), $query);
+
+                $sign_params = [
+                    'timestamp' => $this->getMs(),
+                ];
+                $query = array_merge($query, $sign_params);
                 if ($params) {
-                    $signature = $this->getSignature($params);
+                    $signature = $this->getSignature($query, $params);
                 } else {
                     $signature = $this->getSignature($query);
                 }
@@ -57,5 +65,17 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
                 return $handler($request, $options);
             };
         };
+    }
+
+    /**
+     * 获取当前毫秒.
+     *
+     * @return float
+     */
+    public function getMs()
+    {
+        list($ms, $sec) = explode(' ', microtime());
+
+        return (float) sprintf('%.0f', (floatval($ms) + floatval($sec)) * 1000);
     }
 }
