@@ -126,4 +126,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v3/ticker/price', $symbol ? compact('symbol') : []);
     }
+
+    /**
+     * 返回当前最优的挂单(最高买单，最低卖单).
+     *
+     * @param string $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function bookTicker($symbol = '')
+    {
+        return $this->httpGet('/api/v3/ticker/bookTicker', $symbol ? compact('symbol') : []);
+    }
 }
