@@ -37,34 +37,27 @@ class Client extends BaseClient
     }
 
     /**
-     * 账户信息.
+     * 获取交易对的所有当前挂单.
      *
-     * @param $timestamp
-     * @param int $recvWindow
+     * @param string $symbol
+     * @param int    $recvWindow
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function account($timestamp, $recvWindow = 60000)
+    public function openOrders($symbol = '', $recvWindow = 60000)
     {
-        return $this->httpGet('/api/v3/account', compact('timestamp', 'recvWindow'), 'TRADE');
-    }
+        $request = [];
+        if ($symbol) {
+            $request['symbol'] = $symbol;
+        }
+        if ($recvWindow) {
+            $request['recvWindow'] = $recvWindow;
+        }
 
-    /**
-     * 当前挂单.
-     *
-     * @param $params
-     *
-     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     *
-     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function openOrders($params)
-    {
-        return $this->httpGet('/api/v3/openOrders', $params, 'TRADE');
+        return $this->httpGet('/api/v3/openOrders', $request, 'TRADE');
     }
 
     /**
@@ -80,5 +73,51 @@ class Client extends BaseClient
     public function cancelOrder($params)
     {
         return $this->httpDelete('/api/v3/order', $params, 'TRADE');
+    }
+
+    /**
+     * 撤销单一交易对的所有挂单.
+     *
+     * @param $symbol
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOrders($symbol, $recvWindow = 60000)
+    {
+        return $this->httpDelete('api/v3/openOrders', compact('symbol', 'recvWindow'), 'TRADE');
+    }
+
+    /**
+     * 查询订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get($params)
+    {
+        return $this->httpGet('/api/v3/order', $params, 'TRADE');
+    }
+
+    /**
+     * 获取所有帐户订单； 有效，已取消或已完成.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function allOrders($params)
+    {
+        return $this->httpGet('/api/v3/allOrders', $params, 'TRADE');
     }
 }
