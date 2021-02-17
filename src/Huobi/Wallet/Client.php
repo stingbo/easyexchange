@@ -50,4 +50,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/account/asset-valuation', compact('accountType', 'valuationCurrency', 'subUid'), 'TRADE');
     }
+
+    /**
+     * 资产划转.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function transfer($params)
+    {
+        return $this->httpPost('/v1/account/transfer', $params, 'TRADE');
+    }
 }
