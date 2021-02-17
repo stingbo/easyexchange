@@ -80,4 +80,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/account/history', $params, 'TRADE');
     }
+
+    /**
+     * 充币地址查询.
+     *
+     * @param $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depositAddress($currency)
+    {
+        return $this->httpGet('/v2/account/deposit/address', compact('currency'), 'TRADE');
+    }
 }
