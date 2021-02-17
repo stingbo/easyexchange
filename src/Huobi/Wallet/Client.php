@@ -95,4 +95,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/account/deposit/address', compact('currency'), 'TRADE');
     }
+
+    /**
+     * 提币地址查询.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawAddress($params)
+    {
+        return $this->httpGet('/v2/account/withdraw/address', $params, 'TRADE');
+    }
 }
