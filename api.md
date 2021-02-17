@@ -23,9 +23,11 @@
 | :---: | :---: |
 | :heavy_check_mark: [marketStatus](docs/marketStatus.md) | 获取当前市场状态 |
 | :heavy_check_mark: [depth](docs/depth.md) | 获取交易深度 |
-| :heavy_check_mark: [tarde](docs/tarde.md) | 获取近期成交 |
+| :heavy_check_mark: [trades](docs/trades.md) | 获取近期成交 |
 | :heavy_check_mark: [historicalTrades](docs/historicalTrades.md) | 查询历史成交 |
 | :heavy_check_mark: [aggTrades](docs/aggTrades.md) | 聚合行情（Ticker） |
+| :heavy_check_mark: [24hr](docs/24hr.md) | 24hr 价格变动情况 |
+| :heavy_check_mark: [kline](docs/kline.md) | K 线数据 |
 
 #### 交易接口 - trade
 | endpoint | 功能 |

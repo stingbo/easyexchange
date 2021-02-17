@@ -95,4 +95,21 @@ class Client extends BaseClient
     {
         return $this->httpGet('/market/detail', compact('symbol'));
     }
+
+    /**
+     * K 线数据（蜡烛图）.
+     *
+     * @param $symbol
+     * @param $period
+     * @param int $size
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function kline($symbol, $period, $size = 150)
+    {
+        return $this->httpGet('/market/history/kline', compact('symbol', 'period', 'size'));
+    }
 }

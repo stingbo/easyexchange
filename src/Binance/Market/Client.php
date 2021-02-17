@@ -70,6 +70,36 @@ class Client extends BaseClient
     /**
      * 24hr 价格变动情况.
      *
+     * @param string $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function hr24($symbol = '')
+    {
+        return $this->httpGet('/api/v3/ticker/24hr', $symbol ? compact('symbol') : []);
+    }
+
+    /**
+     * K线数据.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function kline($params)
+    {
+        return $this->httpGet('/api/v3/klines', $params);
+    }
+
+    /**
+     * 当前平均价格.
+     *
      * @param $symbol
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
@@ -77,8 +107,38 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function hr24($symbol)
+    public function avgPrice($symbol)
     {
-        return $this->httpGet('/api/v3/ticker/24hr', compact('symbol'));
+        return $this->httpGet('/api/v3/avgPrice', compact('symbol'));
+    }
+
+    /**
+     * 获取交易对最新价格.
+     *
+     * @param string $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function price($symbol = '')
+    {
+        return $this->httpGet('/api/v3/ticker/price', $symbol ? compact('symbol') : []);
+    }
+
+    /**
+     * 返回当前最优的挂单(最高买单，最低卖单).
+     *
+     * @param string $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function bookTicker($symbol = '')
+    {
+        return $this->httpGet('/api/v3/ticker/bookTicker', $symbol ? compact('symbol') : []);
     }
 }
