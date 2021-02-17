@@ -70,16 +70,16 @@ class Client extends BaseClient
     /**
      * 24hr 价格变动情况.
      *
-     * @param $symbol
+     * @param string $symbol
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function hr24($symbol)
+    public function hr24($symbol = '')
     {
-        return $this->httpGet('/api/v3/ticker/24hr', compact('symbol'));
+        return $this->httpGet('/api/v3/ticker/24hr', $symbol ? compact('symbol') : []);
     }
 
     /**
@@ -110,5 +110,20 @@ class Client extends BaseClient
     public function avgPrice($symbol)
     {
         return $this->httpGet('/api/v3/avgPrice', compact('symbol'));
+    }
+
+    /**
+     * 获取交易对最新价格.
+     *
+     * @param string $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function price($symbol = '')
+    {
+        return $this->httpGet('/api/v3/ticker/price', $symbol ? compact('symbol') : []);
     }
 }
