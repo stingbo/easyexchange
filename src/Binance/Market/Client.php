@@ -96,4 +96,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v3/klines', $params);
     }
+
+    /**
+     * 当前平均价格.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function avgPrice($symbol)
+    {
+        return $this->httpGet('/api/v3/avgPrice', compact('symbol'));
+    }
 }
