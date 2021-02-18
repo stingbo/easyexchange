@@ -17,23 +17,17 @@ class ClientTest extends TestCase
         $this->assertSame('mock-result', $client->order($params));
     }
 
-    public function testAccount()
-    {
-        $client = $this->mockApiClient(Client::class);
-
-        $client->expects()->httpGet('/api/v3/account', ['timestamp' => 122, 'recvWindow' => 123], 'TRADE')->andReturn('mock-result');
-
-        $this->assertSame('mock-result', $client->account(122, 123));
-    }
-
     public function testOpenOrders()
     {
         $client = $this->mockApiClient(Client::class);
-        $params = [];
+        $params = [
+            'symbol' => 'btcusdt',
+            'recvWindow' => 10000,
+        ];
 
         $client->expects()->httpGet('/api/v3/openOrders', $params, 'TRADE')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->openOrders($params));
+        $this->assertSame('mock-result', $client->openOrders('btcusdt', 10000));
     }
 
     public function testCancelOrder()
