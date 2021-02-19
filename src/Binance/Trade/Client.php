@@ -120,4 +120,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v3/allOrders', $params, 'TRADE');
     }
+
+    /**
+     * 获取账户指定交易对的成交历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function myTrades($params)
+    {
+        return $this->httpGet('/api/v3/myTrades', $params, 'TRADE');
+    }
 }
