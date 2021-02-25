@@ -135,4 +135,64 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v3/myTrades', $params, 'TRADE');
     }
+
+    /**
+     * OCO下单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function oco($params)
+    {
+        return $this->httpPost('/api/v3/order/oco', $params, 'TRADE');
+    }
+
+    /**
+     * 取消 OCO 订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOcoOrder($params)
+    {
+        return $this->httpDelete('/api/v3/orderList', $params, 'TRADE');
+    }
+
+    /**
+     * 查询 OCO.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getOcoOrder($params)
+    {
+        return $this->httpGet('/api/v3/orderList', $params, 'TRADE');
+    }
+
+    /**
+     * 查询所有 OCO.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function allOrderList($params)
+    {
+        return $this->httpGet('/api/v3/allOrderList', $params, 'TRADE');
+    }
 }
