@@ -195,4 +195,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v3/allOrderList', $params, 'TRADE');
     }
+
+    /**
+     * 查询 OCO 挂单.
+     *
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function openOrderList($recvWindow = 10000)
+    {
+        return $this->httpGet('/api/v3/openOrderList', compact('recvWindow'), 'TRADE');
+    }
 }
