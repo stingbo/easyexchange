@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Binance\Trade;
+namespace EasyExchange\Binance\Spot;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['trade'] = function ($app) {
+        $app['spot'] = function ($app) {
             return new Client($app);
         };
     }
