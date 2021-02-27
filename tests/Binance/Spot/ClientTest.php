@@ -1,8 +1,8 @@
 <?php
 
-namespace EasyExchange\Tests\Binance\Trade;
+namespace EasyExchange\Tests\Binance\Spot;
 
-use EasyExchange\Binance\Trade\Client;
+use EasyExchange\Binance\Spot\Client;
 use EasyExchange\Tests\TestCase;
 
 class ClientTest extends TestCase

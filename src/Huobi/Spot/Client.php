@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Huobi\Trade;
+namespace EasyExchange\Huobi\Spot;
 
 use EasyExchange\Huobi\Kernel\BaseClient;
 

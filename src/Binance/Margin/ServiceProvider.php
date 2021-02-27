@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Huobi\Trade;
+namespace EasyExchange\Binance\Margin;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['trade'] = function ($app) {
+        $app['margin'] = function ($app) {
             return new Client($app);
         };
     }

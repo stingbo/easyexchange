@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Binance\Trade;
+namespace EasyExchange\Binance\Spot;
 
 use EasyExchange\Binance\Kernel\BaseClient;
 

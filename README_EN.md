@@ -1,6 +1,7 @@
 ## PHP Easy Exchange Api
 - easy use digital currency exchange sdk, include binance, okex, huobi pro etc
 - [API List | 接口列表](api.md)
+- [中文说明](README_EN.md)
 
 ## Requirement
 
@@ -52,27 +53,27 @@ $params = [
     'price' => 180,
     'recvWindow' => 10000,
 ];
-$response = $app->trade->order($params);
+$response = $app->spot->order($params);
 $params = [
     'symbol' => 'LTCUSDT',
     'orderId' => 3948,
     'recvWindow' => 10000,
 ];
-//$response = $app->trade->get($params);
+//$response = $app->spot->get($params);
 $params = [
     'symbol' => 'LTCUSDT',
     'recvWindow' => 10000,
 ];
-//$response = $app->trade->openOrders();
-//$response = $app->trade->allOrders($params);
+//$response = $app->spot->openOrders();
+//$response = $app->spot->allOrders($params);
 
 $params = [
     'symbol' => 'LTCUSDT',
     'orderId' => 3946,
     'recvWindow' => 10000,
 ];
-//$response = $app->trade->cancelOrder($params);
-//$response = $app->trade->cancelOrders('LTCUSDT');
+//$response = $app->spot->cancelOrder($params);
+//$response = $app->spot->cancelOrders('LTCUSDT');
 
 //$response = $app->basic->ping();
 //$response = $app->basic->systemTime();
@@ -106,14 +107,14 @@ $params = [
     'amount' => 0.001,
     'price' => 10000,
 ];
-//$response = $app->trade->order($params);
-//$response = $app->trade->cancelOrder('204533841408061');
+//$response = $app->spot->order($params);
+//$response = $app->spot->cancelOrder('204533841408061');
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
 //    'side' => 'both',
 ];
-//$response = $app->trade->openOrders($params);
+//$response = $app->spot->openOrders($params);
 
 //$response = $app->market->trades('btcusdt');
 //$response = $app->market->depth('btcusdt', 'step0', 5);
