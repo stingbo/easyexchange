@@ -1,26 +1,25 @@
-## EasyExchange
-- 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
-- [接口列表](api.md)
+## PHP Easy Exchange Api
+- easy use digital currency exchange sdk, include binance, okex, huobi pro etc
+- [API List | 接口列表](api.md)
 
-## 依赖
+## Requirement
 
 1. PHP >= 7.2
 2. **[Composer](https://getcomposer.org/)**
 
-## 安装
+## Installation
 
 ```shell
 $ composer require "stingbo/easyexchange" -vvv
 ```
 
-## 使用
+## Usage
 
 ```php
 <?php
 
 use EasyExchange\Factory;
 
-// 配置
 $config = [
     'binance' => [
         'response_type' => 'array',
@@ -53,24 +52,18 @@ $params = [
     'price' => 180,
     'recvWindow' => 10000,
 ];
-// 下单
 $response = $app->trade->order($params);
-
-// 获取单据信息
 $params = [
     'symbol' => 'LTCUSDT',
     'orderId' => 3948,
     'recvWindow' => 10000,
 ];
-$response = $app->trade->get($params);
-
-// 当前挂单
-$response = $app->trade->openOrders();
-
+//$response = $app->trade->get($params);
 $params = [
     'symbol' => 'LTCUSDT',
     'recvWindow' => 10000,
 ];
+//$response = $app->trade->openOrders();
 //$response = $app->trade->allOrders($params);
 
 $params = [
