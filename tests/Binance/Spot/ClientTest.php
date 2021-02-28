@@ -12,7 +12,7 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $params = [];
 
-        $client->expects()->httpPost('/api/v3/order', $params, 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpPost('/api/v3/order', $params, 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->order($params));
     }
@@ -25,7 +25,7 @@ class ClientTest extends TestCase
             'recvWindow' => 10000,
         ];
 
-        $client->expects()->httpGet('/api/v3/openOrders', $params, 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpGet('/api/v3/openOrders', $params, 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->openOrders('btcusdt', 10000));
     }
@@ -35,7 +35,7 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $params = [];
 
-        $client->expects()->httpDelete('/api/v3/order', $params, 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpDelete('/api/v3/order', $params, 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->cancelOrder($params));
     }
