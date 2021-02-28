@@ -35,4 +35,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/margin/loan', $params, 'TRADE');
     }
+
+    /**
+     * 杠杆账户归还借贷.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repay($params)
+    {
+        return $this->httpPost('/sapi/v1/margin/repay', $params, 'TRADE');
+    }
 }
