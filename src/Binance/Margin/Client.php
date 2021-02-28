@@ -331,4 +331,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/maxBorrowable', $params, 'SIGN');
     }
+
+    /**
+     * 查询最大可转出额.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function maxTransferable($params)
+    {
+        return $this->httpGet('/sapi/v1/margin/maxTransferable', $params, 'SIGN');
+    }
 }
