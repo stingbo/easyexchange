@@ -29,11 +29,17 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     protected function registerHttpMiddlewares()
     {
-        if ('TRADE' == $this->sign_type) {
-            // signature
-            $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-            // add app key header
-            $this->pushMiddleware($this->addHeaderMiddleware('X-MBX-APIKEY', $this->app->config->get('app_key')), 'add_header');
+        switch ($this->sign_type) {
+            case 'SIGN':
+                // signature
+                $this->pushMiddleware($this->signatureMiddleware(), 'signature');
+                // add app key header
+                $this->pushMiddleware($this->addHeaderMiddleware('X-MBX-APIKEY', $this->app->config->get('app_key')), 'add_header');
+                break;
+            case 'APIKEY':
+                // add app key header
+                $this->pushMiddleware($this->addHeaderMiddleware('X-MBX-APIKEY', $this->app->config->get('app_key')), 'add_header');
+                break;
         }
     }
 

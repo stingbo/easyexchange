@@ -11,7 +11,7 @@ class ClientTest extends TestCase
     {
         $client = $this->mockApiClient(Client::class);
 
-        $client->expects()->httpGet('/api/v3/account', ['recvWindow' => 123], 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpGet('/api/v3/account', ['recvWindow' => 123], 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->account(123));
     }

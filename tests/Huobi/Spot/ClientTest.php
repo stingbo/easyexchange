@@ -12,7 +12,7 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $params = [];
 
-        $client->expects()->httpPostJson('/v1/order/orders/place', $params, [], 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpPostJson('/v1/order/orders/place', $params, [], 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->order($params));
     }
@@ -27,7 +27,7 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $params = [];
 
-        $client->expects()->httpGet('/v1/order/openOrders', $params, 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpGet('/v1/order/openOrders', $params, 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->openOrders($params));
     }
@@ -38,7 +38,7 @@ class ClientTest extends TestCase
         $order_id = 'test';
         $params = [];
 
-        $client->expects()->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), $params, 'TRADE')->andReturn('mock-result');
+        $client->expects()->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), $params, 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->cancelOrder($order_id));
     }

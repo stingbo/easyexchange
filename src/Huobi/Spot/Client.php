@@ -18,7 +18,7 @@ class Client extends BaseClient
      */
     public function order($params)
     {
-        return $this->httpPostJson('/v1/order/orders/place', $params, [], 'TRADE');
+        return $this->httpPostJson('/v1/order/orders/place', $params, [], 'SIGN');
     }
 
     /**
@@ -33,7 +33,7 @@ class Client extends BaseClient
      */
     public function openOrders($params)
     {
-        return $this->httpGet('/v1/order/openOrders', $params, 'TRADE');
+        return $this->httpGet('/v1/order/openOrders', $params, 'SIGN');
     }
 
     /**
@@ -48,6 +48,6 @@ class Client extends BaseClient
      */
     public function cancelOrder($order_id)
     {
-        return $this->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), [], 'TRADE');
+        return $this->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), [], 'SIGN');
     }
 }

@@ -30,7 +30,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     protected function registerHttpMiddlewares()
     {
-        if ('TRADE' == $this->sign_type) {
+        if ('SIGN' == $this->sign_type) {
             // signature
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
         }
