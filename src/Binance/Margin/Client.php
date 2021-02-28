@@ -63,6 +63,21 @@ class Client extends BaseClient
      */
     public function asset($asset)
     {
-        return $this->httpPost('/sapi/v1/margin/asset', compact('asset'), 'TRADE');
+        return $this->httpGet('/sapi/v1/margin/asset', compact('asset'), 'TRADE');
+    }
+
+    /**
+     * 查询全仓杠杆交易对.
+     *
+     * @param $symbol
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function pair($symbol)
+    {
+        return $this->httpGet('/sapi/v1/margin/pair', compact('symbol'), 'TRADE');
     }
 }
