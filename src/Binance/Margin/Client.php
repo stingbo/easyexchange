@@ -415,4 +415,20 @@ class Client extends BaseClient
 
         return $this->httpGet('/sapi/v1/margin/isolated/account', $request, 'SIGN');
     }
+
+    /**
+     * 查询逐仓杠杆交易对.
+     *
+     * @param string $symbol
+     * @param int    $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function isolatedPair($symbol, $recvWindow = 60000)
+    {
+        return $this->httpGet('/sapi/v1/margin/isolated/pair', compact('symbol', 'recvWindow'), 'SIGN');
+    }
 }
