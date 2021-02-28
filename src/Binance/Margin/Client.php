@@ -346,4 +346,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/maxTransferable', $params, 'SIGN');
     }
+
+    /**
+     * 创建杠杆逐仓账户.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function create($params)
+    {
+        return $this->httpPost('/sapi/v1/margin/isolated/create', $params, 'SIGN');
+    }
 }
