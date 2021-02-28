@@ -119,4 +119,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/priceIndex', [], 'APIKEY');
     }
+
+    /**
+     * 杠杆账户下单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function order($params)
+    {
+        return $this->httpPost('/sapi/v1/margin/order', $params, 'SIGN');
+    }
 }
