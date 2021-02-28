@@ -33,7 +33,7 @@ class Client extends BaseClient
      */
     public function order($params)
     {
-        return $this->httpPost('/api/v3/order', $params, 'TRADE');
+        return $this->httpPost('/api/v3/order', $params, 'SIGN');
     }
 
     /**
@@ -57,7 +57,7 @@ class Client extends BaseClient
             $request['recvWindow'] = $recvWindow;
         }
 
-        return $this->httpGet('/api/v3/openOrders', $request, 'TRADE');
+        return $this->httpGet('/api/v3/openOrders', $request, 'SIGN');
     }
 
     /**
@@ -72,7 +72,7 @@ class Client extends BaseClient
      */
     public function cancelOrder($params)
     {
-        return $this->httpDelete('/api/v3/order', $params, 'TRADE');
+        return $this->httpDelete('/api/v3/order', $params, 'SIGN');
     }
 
     /**
@@ -88,7 +88,7 @@ class Client extends BaseClient
      */
     public function cancelOrders($symbol, $recvWindow = 60000)
     {
-        return $this->httpDelete('api/v3/openOrders', compact('symbol', 'recvWindow'), 'TRADE');
+        return $this->httpDelete('api/v3/openOrders', compact('symbol', 'recvWindow'), 'SIGN');
     }
 
     /**
@@ -103,7 +103,7 @@ class Client extends BaseClient
      */
     public function get($params)
     {
-        return $this->httpGet('/api/v3/order', $params, 'TRADE');
+        return $this->httpGet('/api/v3/order', $params, 'SIGN');
     }
 
     /**
@@ -118,7 +118,7 @@ class Client extends BaseClient
      */
     public function allOrders($params)
     {
-        return $this->httpGet('/api/v3/allOrders', $params, 'TRADE');
+        return $this->httpGet('/api/v3/allOrders', $params, 'SIGN');
     }
 
     /**
@@ -133,7 +133,7 @@ class Client extends BaseClient
      */
     public function myTrades($params)
     {
-        return $this->httpGet('/api/v3/myTrades', $params, 'TRADE');
+        return $this->httpGet('/api/v3/myTrades', $params, 'SIGN');
     }
 
     /**
@@ -148,7 +148,7 @@ class Client extends BaseClient
      */
     public function oco($params)
     {
-        return $this->httpPost('/api/v3/order/oco', $params, 'TRADE');
+        return $this->httpPost('/api/v3/order/oco', $params, 'SIGN');
     }
 
     /**
@@ -163,7 +163,7 @@ class Client extends BaseClient
      */
     public function cancelOcoOrder($params)
     {
-        return $this->httpDelete('/api/v3/orderList', $params, 'TRADE');
+        return $this->httpDelete('/api/v3/orderList', $params, 'SIGN');
     }
 
     /**
@@ -178,7 +178,7 @@ class Client extends BaseClient
      */
     public function getOcoOrder($params)
     {
-        return $this->httpGet('/api/v3/orderList', $params, 'TRADE');
+        return $this->httpGet('/api/v3/orderList', $params, 'SIGN');
     }
 
     /**
@@ -193,7 +193,7 @@ class Client extends BaseClient
      */
     public function allOrderList($params)
     {
-        return $this->httpGet('/api/v3/allOrderList', $params, 'TRADE');
+        return $this->httpGet('/api/v3/allOrderList', $params, 'SIGN');
     }
 
     /**
@@ -208,6 +208,6 @@ class Client extends BaseClient
      */
     public function openOrderList($recvWindow = 10000)
     {
-        return $this->httpGet('/api/v3/openOrderList', compact('recvWindow'), 'TRADE');
+        return $this->httpGet('/api/v3/openOrderList', compact('recvWindow'), 'SIGN');
     }
 }

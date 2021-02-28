@@ -18,7 +18,7 @@ class Client extends BaseClient
      */
     public function account($recvWindow = 60000)
     {
-        return $this->httpGet('/api/v3/account', compact('recvWindow'), 'TRADE');
+        return $this->httpGet('/api/v3/account', compact('recvWindow'), 'SIGN');
     }
 
     /**
@@ -32,7 +32,7 @@ class Client extends BaseClient
      */
     public function getAll()
     {
-        return $this->httpGet('/sapi/v1/capital/config/getall', [], 'TRADE');
+        return $this->httpGet('/sapi/v1/capital/config/getall', [], 'SIGN');
     }
 
     /**
@@ -47,7 +47,7 @@ class Client extends BaseClient
      */
     public function accountSnapshot($params)
     {
-        return $this->httpGet('/sapi/v1/accountSnapshot', $params, 'TRADE');
+        return $this->httpGet('/sapi/v1/accountSnapshot', $params, 'SIGN');
     }
 
     /**
@@ -62,7 +62,7 @@ class Client extends BaseClient
      */
     public function disableFastWithdrawSwitch($recvWindow = 60000)
     {
-        return $this->httpPost('/sapi/v1/account/disableFastWithdrawSwitch', compact('recvWindow'), 'TRADE');
+        return $this->httpPost('/sapi/v1/account/disableFastWithdrawSwitch', compact('recvWindow'), 'SIGN');
     }
 
     /**
@@ -77,6 +77,6 @@ class Client extends BaseClient
      */
     public function enableFastWithdrawSwitch($recvWindow = 60000)
     {
-        return $this->httpPost('/sapi/v1/account/enableFastWithdrawSwitch', compact('recvWindow'), 'TRADE');
+        return $this->httpPost('/sapi/v1/account/enableFastWithdrawSwitch', compact('recvWindow'), 'SIGN');
     }
 }
