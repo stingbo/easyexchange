@@ -110,14 +110,16 @@ class Client extends BaseClient
     /**
      * 查询杠杆价格指数.
      *
+     * @param $symbol
+     *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function priceIndex()
+    public function priceIndex($symbol)
     {
-        return $this->httpGet('/sapi/v1/margin/priceIndex', [], 'APIKEY');
+        return $this->httpGet('/sapi/v1/margin/priceIndex', compact('symbol'), 'APIKEY');
     }
 
     /**
