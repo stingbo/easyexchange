@@ -18,7 +18,7 @@ class Client extends BaseClient
      */
     public function transfer($params)
     {
-        return $this->httpPost('/sapi/v1/margin/transfer', $params, 'TRADE');
+        return $this->httpPost('/sapi/v1/margin/transfer', $params, 'SIGN');
     }
 
     /**
@@ -33,7 +33,7 @@ class Client extends BaseClient
      */
     public function loan($params)
     {
-        return $this->httpPost('/sapi/v1/margin/loan', $params, 'TRADE');
+        return $this->httpPost('/sapi/v1/margin/loan', $params, 'SIGN');
     }
 
     /**
@@ -48,7 +48,7 @@ class Client extends BaseClient
      */
     public function repay($params)
     {
-        return $this->httpPost('/sapi/v1/margin/repay', $params, 'TRADE');
+        return $this->httpPost('/sapi/v1/margin/repay', $params, 'SIGN');
     }
 
     /**
@@ -63,7 +63,20 @@ class Client extends BaseClient
      */
     public function asset($asset)
     {
-        return $this->httpGet('/sapi/v1/margin/asset', compact('asset'), 'TRADE');
+        return $this->httpGet('/sapi/v1/margin/asset', compact('asset'), 'APIKEY');
+    }
+
+    /**
+     * 获取所有杠杆资产信息.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function allAssets()
+    {
+        return $this->httpGet('/sapi/v1/margin/allAssets', [], 'APIKEY');
     }
 
     /**
@@ -78,6 +91,6 @@ class Client extends BaseClient
      */
     public function pair($symbol)
     {
-        return $this->httpGet('/sapi/v1/margin/pair', compact('symbol'), 'TRADE');
+        return $this->httpGet('/sapi/v1/margin/pair', compact('symbol'), 'APIKEY');
     }
 }
