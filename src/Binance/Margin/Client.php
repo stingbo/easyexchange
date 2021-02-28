@@ -151,4 +151,19 @@ class Client extends BaseClient
     {
         return $this->httpDelete('/sapi/v1/margin/order', $params, 'SIGN');
     }
+
+    /**
+     * 杠杆账户撤销单一交易对的所有挂单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOrders($params)
+    {
+        return $this->httpDelete('/sapi/v1/margin/openOrders', $params, 'SIGN');
+    }
 }
