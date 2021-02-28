@@ -391,4 +391,28 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/isolated/transfer', $params, 'SIGN');
     }
+
+    /**
+     * 查询杠杆逐仓账户信息.
+     *
+     * @param string $symbol
+     * @param int    $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function isolatedAccount($symbol = '', $recvWindow = 60000)
+    {
+        $request = [];
+        if ($symbol) {
+            $request['symbol'] = $symbol;
+        }
+        if ($recvWindow) {
+            $request['recvWindow'] = $recvWindow;
+        }
+
+        return $this->httpGet('/sapi/v1/margin/isolated/account', $request, 'SIGN');
+    }
 }
