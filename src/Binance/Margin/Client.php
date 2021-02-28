@@ -316,4 +316,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/myTrades', $params, 'SIGN');
     }
+
+    /**
+     * 查询账户最大可借贷额度.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function maxBorrowable($params)
+    {
+        return $this->httpGet('/sapi/v1/margin/maxBorrowable', $params, 'SIGN');
+    }
 }
