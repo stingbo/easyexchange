@@ -376,4 +376,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/margin/isolated/transfer', $params, 'SIGN');
     }
+
+    /**
+     * 获取杠杆逐仓划转历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function isolatedTransferHistory($params)
+    {
+        return $this->httpGet('/sapi/v1/margin/isolated/transfer', $params, 'SIGN');
+    }
 }
