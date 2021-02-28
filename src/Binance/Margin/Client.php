@@ -361,4 +361,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/margin/isolated/create', $params, 'SIGN');
     }
+
+    /**
+     * 杠杆逐仓账户划转.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function isolatedTransfer($params)
+    {
+        return $this->httpPost('/sapi/v1/margin/isolated/transfer', $params, 'SIGN');
+    }
 }
