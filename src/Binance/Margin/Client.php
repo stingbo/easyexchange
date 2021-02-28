@@ -93,4 +93,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/pair', compact('symbol'), 'APIKEY');
     }
+
+    /**
+     * 获取所有全仓杠杆交易对.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function allPairs()
+    {
+        return $this->httpGet('/sapi/v1/margin/allPairs', [], 'APIKEY');
+    }
 }
