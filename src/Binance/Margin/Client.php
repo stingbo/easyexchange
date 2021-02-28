@@ -241,4 +241,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/forceLiquidationRec', $params, 'SIGN');
     }
+
+    /**
+     * 查询全仓杠杆账户详情.
+     *
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function account($recvWindow = 60000)
+    {
+        return $this->httpGet('/sapi/v1/margin/account', compact('recvWindow'), 'SIGN');
+    }
 }
