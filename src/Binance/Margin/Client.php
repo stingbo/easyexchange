@@ -301,4 +301,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/margin/allOrders', $params, 'SIGN');
     }
+
+    /**
+     * 查询杠杆账户交易历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function myTrades($params)
+    {
+        return $this->httpGet('/sapi/v1/margin/myTrades', $params, 'SIGN');
+    }
 }
