@@ -14,6 +14,12 @@
 $ composer require "stingbo/easyexchange" -vvv
 ```
 
+## 约束
+
+1. 对应平台接口，在大于或等于三个参数以上的，使用数组传入，否则使用同名参数传入
+2. 币安的 timestamp 参数已内置，不需要额外传入
+3. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
+
 ## 使用
 
 ```php
