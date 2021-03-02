@@ -1,7 +1,7 @@
 ## EasyExchange
 - 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
 - [接口列表](api.md)
-- [English](README_EN.md)
+- [English Doc](README_EN.md)
 
 ## 依赖
 
@@ -12,6 +12,71 @@
 
 ```shell
 $ composer require "stingbo/easyexchange" -vvv
+```
+
+## 约束
+
+1. 对应平台接口，在大于或等于三个参数以上的，使用数组传入，否则使用同名参数传入
+2. 币安的 timestamp 参数已内置，不需要额外传入
+3. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
+
+## 说明
+
+#### 币安
+```php
+<?php
+
+use EasyExchange\Factory;
+
+// 配置
+$config = [
+    'binance' => [
+        'response_type' => 'array',
+        //'base_uri' => 'https://api.binance.com', // 正式网
+        'base_uri' => 'https://testnet.binance.vision', // 测试网
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+    ],
+    'huobi' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://api.huobi.pro',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+    ],
+    'okex' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://www.okexcn.com',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+    ],
+];
+
+$app = Factory::binance($config['binance']);
+```
+
+1. 市场行情相关
+```php
+$app->market;
+```
+
+2. 钱包相关
+```php
+$app->wallet;
+```
+
+3. 现货交易相关
+```php
+$app->spot;
+```
+
+4. 杠杆交易相关
+```php
+$app->margin;
+```
+
+5. 合约交易相关
+```php
+$app->future;
 ```
 
 ## 使用
