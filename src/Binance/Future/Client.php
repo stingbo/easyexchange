@@ -65,4 +65,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/futures/loan/borrow/history', $params, 'SIGN');
     }
+
+    /**
+     * 混合保证金还款.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repay($params)
+    {
+        return $this->httpPost('/sapi/v1/futures/loan/repay', $params, 'SIGN');
+    }
 }
