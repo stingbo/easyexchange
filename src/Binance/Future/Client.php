@@ -93,6 +93,21 @@ class Client extends BaseClient
      */
     public function repayHistory($params)
     {
-        return $this->httpPost('/sapi/v1/futures/loan/repay/history', $params, 'SIGN');
+        return $this->httpGet('/sapi/v1/futures/loan/repay/history', $params, 'SIGN');
+    }
+
+    /**
+     * 混合保证金钱包.
+     *
+     * @param $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function wallet($recvWindow = 60000)
+    {
+        return $this->httpGet('/sapi/v1/futures/loan/wallet', compact('recvWindow'), 'SIGN');
     }
 }
