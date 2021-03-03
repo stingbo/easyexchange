@@ -159,4 +159,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/sapi/%s/futures/loan/calcMaxAdjustAmount', $version), $params, 'SIGN');
     }
+
+    /**
+     * 调整混合保证金质押率 v1 & v2.
+     *
+     * @param $params
+     * @param string $version
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function adjustCollateral($params, $version = 'v1')
+    {
+        return $this->httpPost(sprintf('/sapi/%s/futures/loan/adjustCollateral', $version), $params, 'SIGN');
+    }
 }
