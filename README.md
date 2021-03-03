@@ -37,18 +37,6 @@ $config = [
         'app_key' => 'your app key',
         'secret' => 'your secret',
     ],
-    'huobi' => [
-        'response_type' => 'array',
-        'base_uri' => 'https://api.huobi.pro',
-        'app_key' => 'your app key',
-        'secret' => 'your secret',
-    ],
-    'okex' => [
-        'response_type' => 'array',
-        'base_uri' => 'https://www.okexcn.com',
-        'app_key' => 'your app key',
-        'secret' => 'your secret',
-    ],
 ];
 
 $app = Factory::binance($config['binance']);
@@ -56,7 +44,32 @@ $app = Factory::binance($config['binance']);
 
 1. 市场行情相关
 ```php
-$app->market;
+$app = Factory::binance($config['binance']);
+// 深度信息
+$app->market->depth('LTCBTC');
+// 近期成交列表
+$app->market->trades('ETHBTC', 10);
+// 查询历史成交
+$app->market->historicalTrades('ETHBTC', 10);
+// 近期成交
+$app->market->aggTrades('ETHBTC');
+// 24hr 价格变动情况
+$app->market->hr24('ETHBTC');
+// K线数据
+$params = [
+    'symbol' => 'ETHBTC',
+    'interval' => 'DAY',
+    'startTime' => '时间戳',
+    'endTime' => '时间戳',
+    'limit' => 10,
+]; // 详见币安文档
+$app->market->kline($params);
+// 当前平均价格
+$app->market->avgPrice('ETHBTC');
+// 获取交易对最新价格
+$app->market->price('ETHBTC');
+// 返回当前最优的挂单(最高买单，最低卖单)
+$app->market->bookTicker('ETHBTC');
 ```
 
 2. 钱包相关
