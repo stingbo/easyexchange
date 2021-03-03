@@ -97,7 +97,7 @@ class Client extends BaseClient
     }
 
     /**
-     * 混合保证金钱包 V1 & V2.
+     * 混合保证金钱包 v1 & v2.
      *
      * @param string $version
      * @param int $recvWindow
@@ -113,7 +113,23 @@ class Client extends BaseClient
     }
 
     /**
-     * 计算调整后的混合保证金质押率 V1 & V2.
+     * 混合保证金信息 v1 & v2.
+     *
+     * @param $params
+     * @param string $version
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function configs($params, $version = 'v1')
+    {
+        return $this->httpGet(sprintf('/sapi/%s/futures/loan/configs', $version), $params, 'SIGN');
+    }
+
+    /**
+     * 计算调整后的混合保证金质押率 v1 & v2.
      *
      * @param $params
      * @param string $version
