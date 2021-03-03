@@ -219,4 +219,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/futures/loan/collateralRepayLimit', $params, 'SIGN');
     }
+
+    /**
+     * 获取混合保证金抵押物还款兑换比率.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getCollateralRepay($params)
+    {
+        return $this->httpGet('/sapi/v1/futures/loan/collateralRepay', $params, 'SIGN');
+    }
 }
