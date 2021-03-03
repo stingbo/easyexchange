@@ -98,16 +98,18 @@ class Client extends BaseClient
 
     /**
      * 混合保证金钱包.
+     * 混合保证金信息V2.
      *
-     * @param $recvWindow
+     * @param int $version
+     * @param int $recvWindow
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function wallet($recvWindow = 60000)
+    public function wallet($version = 1, $recvWindow = 60000)
     {
-        return $this->httpGet('/sapi/v1/futures/loan/wallet', compact('recvWindow'), 'SIGN');
+        return $this->httpGet(sprintf('/sapi/%s/futures/loan/wallet', $version), compact('recvWindow'), 'SIGN');
     }
 }
