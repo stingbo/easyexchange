@@ -266,4 +266,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/futures/loan/collateralRepayResult', compact('quoteId', 'recvWindow'), 'SIGN');
     }
+
+    /**
+     * 混合保证金利息收取历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function interestHistory($params)
+    {
+        return $this->httpGet('/sapi/v1/futures/loan/interestHistory', $params, 'SIGN');
+    }
 }
