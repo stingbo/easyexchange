@@ -234,4 +234,20 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/futures/loan/collateralRepay', $params, 'SIGN');
     }
+
+    /**
+     * 混合保证金抵押物还款.
+     *
+     * @param $quoteId
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function collateralRepay($quoteId, $recvWindow = 60000)
+    {
+        return $this->httpPost('/sapi/v1/futures/loan/collateralRepay', compact('quoteId', 'recvWindow'), 'SIGN');
+    }
 }
