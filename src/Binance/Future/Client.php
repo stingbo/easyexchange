@@ -97,10 +97,9 @@ class Client extends BaseClient
     }
 
     /**
-     * 混合保证金钱包.
-     * 混合保证金信息V2.
+     * 混合保证金钱包 V1 & V2.
      *
-     * @param int $version
+     * @param string $version
      * @param int $recvWindow
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
@@ -108,8 +107,24 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function wallet($version = 1, $recvWindow = 60000)
+    public function wallet($version = 'v1', $recvWindow = 60000)
     {
         return $this->httpGet(sprintf('/sapi/%s/futures/loan/wallet', $version), compact('recvWindow'), 'SIGN');
+    }
+
+    /**
+     * 计算调整后的混合保证金质押率 V1 & V2.
+     *
+     * @param $params
+     * @param string $version
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function calcAdjustLevel($params, $version = 'v1')
+    {
+        return $this->httpGet(sprintf(' /sapi/%v/futures/loan/calcAdjustLevel', $version), $params, 'SIGN');
     }
 }
