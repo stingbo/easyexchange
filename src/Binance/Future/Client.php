@@ -125,6 +125,6 @@ class Client extends BaseClient
      */
     public function calcAdjustLevel($params, $version = 'v1')
     {
-        return $this->httpGet(sprintf(' /sapi/%v/futures/loan/calcAdjustLevel', $version), $params, 'SIGN');
+        return $this->httpGet(sprintf('/sapi/%v/futures/loan/calcAdjustLevel', $version), $params, 'SIGN');
     }
 }
