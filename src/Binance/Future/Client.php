@@ -189,4 +189,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/futures/loan/adjustCollateral/history', $params, 'SIGN');
     }
+
+    /**
+     * 混合保证金强平历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function liquidationHistory($params)
+    {
+        return $this->httpGet('/sapi/v1/futures/loan/liquidationHistory', $params, 'SIGN');
+    }
 }
