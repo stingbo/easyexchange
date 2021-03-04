@@ -74,7 +74,15 @@ $app->market->bookTicker('ETHBTC');
 
 2. 钱包相关
 ```php
-$app->wallet;
+// 获取所有币信息
+$app->market->getAll();
+// 查询每日资产快照
+$params = []; // 具体值详见对应api文档
+$app->market->accountSnapshot($params);
+// 关闭站内划转
+$app->market->disableFastWithdrawSwitch($params);
+// 开启站内划转
+$app->market->enableFastWithdrawSwitch($params);
 ```
 
 3. 现货交易相关
