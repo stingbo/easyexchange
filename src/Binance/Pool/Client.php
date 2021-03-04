@@ -155,4 +155,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/mining/hash-transfer/config', $params, 'SIGN');
     }
+
+    /**
+     * 取消算力转让设置.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function hashTransferConfigCancel($params)
+    {
+        return $this->httpPost('/sapi/v1/mining/hash-transfer/config/cancel', $params, 'SIGN');
+    }
 }
