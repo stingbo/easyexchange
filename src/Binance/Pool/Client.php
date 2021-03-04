@@ -35,4 +35,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/mining/pub/coinList', compact('recvWindow'), 'SIGN');
     }
+
+    /**
+     * 请求矿工列表明细.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function workerDetail($params)
+    {
+        return $this->httpGet('/sapi/v1/mining/worker/detail', $params, 'SIGN');
+    }
 }
