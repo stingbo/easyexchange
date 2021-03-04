@@ -20,4 +20,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/mining/pub/algoList', compact('recvWindow'), 'SIGN');
     }
+
+    /**
+     * 获取币种.
+     *
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function coinList($recvWindow = 60000)
+    {
+        return $this->httpGet('/sapi/v1/mining/pub/coinList', compact('recvWindow'), 'SIGN');
+    }
 }
