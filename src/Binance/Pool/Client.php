@@ -185,4 +185,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/mining/statistics/user/status', $params, 'SIGN');
     }
+
+    /**
+     * 账号列表.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function userList($params)
+    {
+        return $this->httpGet('/sapi/v1/mining/statistics/user/list', $params, 'SIGN');
+    }
 }
