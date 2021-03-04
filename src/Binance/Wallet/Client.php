@@ -79,4 +79,20 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/account/enableFastWithdrawSwitch', compact('recvWindow'), 'SIGN');
     }
+
+    /**
+     * 提币.
+     * Submit a withdraw request.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawApply($params)
+    {
+        return $this->httpPost('/sapi/v1/capital/withdraw/apply', $params, 'SIGN');
+    }
 }
