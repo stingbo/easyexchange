@@ -169,4 +169,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/wapi/v3/withdrawHistory.html', $params, 'SIGN');
     }
+
+    /**
+     * 获取充值地址 (支持多网络).
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function capitalDepositAddress($params)
+    {
+        return $this->httpGet('/sapi/v1/capital/deposit/address', $params, 'SIGN');
+    }
 }
