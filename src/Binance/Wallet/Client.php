@@ -184,4 +184,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/capital/deposit/address', $params, 'SIGN');
     }
+
+    /**
+     * 获取充值地址.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depositAddress($params)
+    {
+        return $this->httpGet('/wapi/v3/depositAddress.html', $params, 'SIGN');
+    }
 }
