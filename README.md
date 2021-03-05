@@ -77,7 +77,7 @@ $app->market->bookTicker('ETHBTC');
 // 获取所有币信息
 $app->market->getAll();
 // 查询每日资产快照
-$params = []; // 具体值详见对应api文档
+$params = []; // 具体值详见对应api文档，下同
 $app->market->accountSnapshot($params);
 // 关闭站内划转
 $app->market->disableFastWithdrawSwitch($params);
@@ -87,7 +87,61 @@ $app->market->enableFastWithdrawSwitch($params);
 
 3. 现货交易相关
 ```php
-$app->spot;
+// 测试下单
+$params = [
+    'symbol' => 'LTCUSDT',
+    'side' => 'SELL', //BUY or SELL
+    'type' => 'LIMIT',
+    'timeInForce' => 'GTC',
+    'quantity' => 0.1,
+    'price' => 180,
+    'recvWindow' => 10000,
+];
+$app->spot->orderTest($params);
+// 下单
+$params = [
+    'symbol' => 'LTCUSDT',
+    'side' => 'SELL', //BUY or SELL
+    'type' => 'LIMIT',
+    'timeInForce' => 'GTC',
+    'quantity' => 0.1,
+    'price' => 180,
+    'recvWindow' => 10000,
+];
+$app->spot->order($params);
+// 获取交易对的所有当前挂单
+$app->spot->openOrders('ETHBTC');
+// 撤销订单
+$params = [
+    'symbol' => 'LTCUSDT',
+    'orderId' => 3946,
+    'recvWindow' => 10000,
+];
+$app->spot->cancelOrder($params);
+// 撤销单一交易对的所有挂单
+$app->spot->cancelOrders('ETHBTC');
+// 查询订单
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->get($params);
+// 获取所有帐户订单； 有效，已取消或已完成
+$app->spot->allOrders($params);
+// 获取账户指定交易对的成交历史
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->myTrades($params);
+// OCO下单
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->oco($params);
+// 取消 OCO 订单
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->cancelOcoOrder($params);
+// 查询 OCO
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->getOcoOrder($params);
+// 查询所有 OCO
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->allOrderList($params);
+// 查询 OCO 挂单
+$app->spot->openOrderList($params);
 ```
 
 4. 杠杆交易相关
