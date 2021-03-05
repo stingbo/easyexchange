@@ -120,7 +120,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function depositHistory($params)
+    public function capitalDepositHistory($params)
     {
         return $this->httpGet('/sapi/v1/capital/deposit/hisrec', $params, 'SIGN');
     }
