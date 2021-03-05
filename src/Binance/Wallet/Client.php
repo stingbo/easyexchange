@@ -154,4 +154,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/capital/withdraw/history', $params, 'SIGN');
     }
+
+    /**
+     * 获取提币历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawHistory($params)
+    {
+        return $this->httpGet('/wapi/v3/withdrawHistory.html', $params, 'SIGN');
+    }
 }
