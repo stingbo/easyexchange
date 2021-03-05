@@ -124,4 +124,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/capital/deposit/hisrec', $params, 'SIGN');
     }
+
+    /**
+     * 获取充值历史.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depositHistory($params)
+    {
+        return $this->httpGet('/wapi/v3/depositHistory.html', $params, 'SIGN');
+    }
 }
