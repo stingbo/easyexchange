@@ -260,4 +260,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/sapi/v1/asset/dust', compact('asset', 'recvWindow'), 'SIGN');
     }
+
+    /**
+     * 资产利息记录.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetDividend($params)
+    {
+        return $this->httpGet('/sapi/v1/asset/assetDividend', $params, 'SIGN');
+    }
 }
