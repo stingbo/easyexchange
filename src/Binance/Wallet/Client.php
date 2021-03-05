@@ -314,4 +314,19 @@ class Client extends BaseClient
 
         return $this->httpGet('/wapi/v3/tradeFee.html', $request, 'SIGN');
     }
+
+    /**
+     * 用户万向划转.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function transfer($params)
+    {
+        return $this->httpPost('/sapi/v1/asset/transfer', $params, 'SIGN');
+    }
 }
