@@ -275,4 +275,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/sapi/v1/asset/assetDividend', $params, 'SIGN');
     }
+
+    /**
+     * 上架资产详情.
+     *
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetDetail($recvWindow = 60000)
+    {
+        return $this->httpGet('/wapi/v3/assetDetail.html', compact('recvWindow'), 'SIGN');
+    }
 }
