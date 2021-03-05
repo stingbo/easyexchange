@@ -109,4 +109,19 @@ class Client extends BaseClient
     {
         return $this->httpPost('/wapi/v3/withdraw.html', $params, 'SIGN');
     }
+
+    /**
+     * 获取充值历史(支持多网络).
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depositHistory($params)
+    {
+        return $this->httpGet('/sapi/v1/capital/deposit/hisrec', $params, 'SIGN');
+    }
 }
