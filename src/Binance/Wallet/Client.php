@@ -81,8 +81,7 @@ class Client extends BaseClient
     }
 
     /**
-     * 提币.
-     * Submit a withdraw request.
+     * 提币-Submit a withdraw request.
      *
      * @param $params
      *
@@ -94,5 +93,20 @@ class Client extends BaseClient
     public function withdrawApply($params)
     {
         return $this->httpPost('/sapi/v1/capital/withdraw/apply', $params, 'SIGN');
+    }
+
+    /**
+     * 提币-提交提现请求.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdraw($params)
+    {
+        return $this->httpPost('/wapi/v3/withdraw.html', $params, 'SIGN');
     }
 }
