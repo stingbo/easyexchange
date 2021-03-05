@@ -244,4 +244,20 @@ class Client extends BaseClient
     {
         return $this->httpGet('/wapi/v3/userAssetDribbletLog.html', compact('recvWindow'), 'SIGN');
     }
+
+    /**
+     * 小额资产转换.
+     *
+     * @param $asset
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetDust($asset, $recvWindow = 60000)
+    {
+        return $this->httpPost('/sapi/v1/asset/dust', compact('asset', 'recvWindow'), 'SIGN');
+    }
 }
