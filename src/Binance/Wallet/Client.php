@@ -229,4 +229,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/wapi/v3/apiTradingStatus.html', compact('recvWindow'), 'SIGN');
     }
+
+    /**
+     * 小额资产转换BNB历史.
+     *
+     * @param int $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function userAssetDribbletLog($recvWindow = 60000)
+    {
+        return $this->httpGet('/wapi/v3/userAssetDribbletLog.html', compact('recvWindow'), 'SIGN');
+    }
 }
