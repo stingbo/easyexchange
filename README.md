@@ -20,7 +20,7 @@ $ composer require "stingbo/easyexchange" -vvv
 2. 币安的 timestamp 参数已内置，不需要额外传入
 3. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
 
-## 说明
+## 使用说明
 
 #### 币安
 ```php
@@ -154,8 +154,7 @@ $app->margin;
 $app->future;
 ```
 
-## 使用
-
+#### 火币
 ```php
 <?php
 
@@ -163,89 +162,24 @@ use EasyExchange\Factory;
 
 // 配置
 $config = [
-    'binance' => [
-        'response_type' => 'array',
-        //'base_uri' => 'https://api.binance.com', // 正式网
-        'base_uri' => 'https://testnet.binance.vision', // 测试网
-        'app_key' => 'your app key',
-        'secret' => 'your secret',
-    ],
     'huobi' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
     ],
-    'okex' => [
-        'response_type' => 'array',
-        'base_uri' => 'https://www.okexcn.com',
-        'app_key' => 'your app key',
-        'secret' => 'your secret',
-    ],
 ];
 
-$app = Factory::binance($config['binance']);
-$params = [
-    'symbol' => 'LTCUSDT',
-    'side' => 'SELL', //BUY or SELL
-    'type' => 'LIMIT',
-    'timeInForce' => 'GTC',
-    'quantity' => 0.1,
-    'price' => 180,
-    'recvWindow' => 10000,
-];
-// 下单
-$response = $app->spot->order($params);
+$app = Factory::houbi($config['houbi']);
+```
 
-// 获取单据信息
-$params = [
-    'symbol' => 'LTCUSDT',
-    'orderId' => 3948,
-    'recvWindow' => 10000,
-];
-$response = $app->spot->get($params);
-
-// 当前挂单
-$response = $app->spot->openOrders();
-
-$params = [
-    'symbol' => 'LTCUSDT',
-    'recvWindow' => 10000,
-];
-//$response = $app->spot->allOrders($params);
-
-$params = [
-    'symbol' => 'LTCUSDT',
-    'orderId' => 3946,
-    'recvWindow' => 10000,
-];
-//$response = $app->spot->cancelOrder($params);
-//$response = $app->spot->cancelOrders('LTCUSDT');
-
-//$response = $app->basic->ping();
-//$response = $app->basic->systemTime();
-//$response = $app->basic->exchangeInfo();
-//$response = $app->basic->systemStatus();
-
-//$response = $app->market->depth('LTCBTC');
-//$response = $app->market->trades('ETHBTC', 10);
-//$response = $app->market->historicalTrades('ETHBTC', 10);
-//$response = $app->market->aggTrades('ETHBTC');
-
-//$response = $app->wallet->getAll();
-//$response = $app->wallet->account();
-$params = [
-    'type' => 'SPOT',
-];
-//$response = $app->wallet->accountSnapshot($params);
-
-// huobi 火币--------------------------------------------
+```php
 $app = Factory::huobi($config['huobi']);
-//$response = $app->basic->systemTime();
-//$response = $app->basic->exchangeInfo();
-//$response = $app->basic->systemStatus();
-//$response = $app->basic->currencys();
-//$response = $app->basic->symbols();
+$app->basic->systemTime();
+$app->basic->exchangeInfo();
+$app->basic->systemStatus();
+$app->basic->currencys();
+$app->basic->symbols();
 
 $params = [
     'account-id' => 360000,
@@ -254,40 +188,58 @@ $params = [
     'amount' => 0.001,
     'price' => 10000,
 ];
-//$response = $app->spot->order($params);
-//$response = $app->spot->cancelOrder('204533841408061');
+$app->spot->order($params);
+$app->spot->cancelOrder('204533841408061');
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
 //    'side' => 'both',
 ];
-//$response = $app->spot->openOrders($params);
+$app->spot->openOrders($params);
 
-//$response = $app->market->trades('btcusdt');
-//$response = $app->market->depth('btcusdt', 'step0', 5);
-//$response = $app->market->marketStatus();
-//$response = $app->market->exchangeInfo();
+$app->market->trades('btcusdt');
+$app->market->depth('btcusdt', 'step0', 5);
+$app->market->marketStatus();
+$app->market->exchangeInfo();
 
 
-//$response = $app->wallet->accounts();
-//$response = $app->wallet->account(360218);
-//$response = $app->wallet->assetValuation();
+$app->wallet->accounts();
+$app->wallet->account(360218);
+$app->wallet->assetValuation();
 $params = [
     'account-id' => 3600000,
 ];
-//$response = $app->wallet->history($params);
-//$response = $app->wallet->depositAddress('btc');
+$app->wallet->history($params);
+$app->wallet->depositAddress('btc');
 $params = [
     'currency' => 'xrp',
 ];
-//$response = $app->wallet->withdrawAddress($params);
+$app->wallet->withdrawAddress($params);
+```
 
-// okex 欧易--------------------------------------------
+#### 欧易
+```php
+<?php
+
+use EasyExchange\Factory;
+
+// 配置
+$config = [
+    'okex' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://www.okexcn.com',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+    ],
+];
+
 $app = Factory::okex($config['okex']);
-//$response = $app->basic->systemTime();
-//$response = $app->basic->exchangeInfo('SPOT');
+```
 
-//$response = $app->market->depth('BTC-USD-SWAP', 5);
+```php
+$app = Factory::okex($config['okex']);
+$app->basic->systemTime();
+$app->basic->exchangeInfo('SPOT');
 
-print_r($response);
+$app->market->depth('BTC-USD-SWAP', 5);
 ```
