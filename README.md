@@ -42,9 +42,28 @@ $config = [
 $app = Factory::binance($config['binance']);
 ```
 
-1. 市场行情相关
+1. 基础信息
 ```php
-$app = Factory::binance($config['binance']);
+// 测试服务器连通性
+$app->basic->ping();
+// 获取服务器时间
+$app->basic->systemTime();
+// 交易规范信息
+$app->basic->exchangeInfo();
+// 系统状态
+$app->basic->systemStatus();
+```
+
+2. 用户信息
+```php
+// 获取BNB抵扣开关状态
+$app->user->getBnbBurnStatus();
+// 现货交易和杠杆利息BNB抵扣开关
+$app->user->bnbBurn();
+```
+
+3. 市场行情相关
+```php
 // 深度信息
 $app->market->depth('LTCBTC');
 // 近期成交列表
@@ -72,7 +91,7 @@ $app->market->price('ETHBTC');
 $app->market->bookTicker('ETHBTC');
 ```
 
-2. 钱包相关
+4. 钱包相关
 ```php
 // 获取所有币信息
 $app->market->getAll();
@@ -120,7 +139,7 @@ $app->market->transfer($params);
 $app->market->transferHistory($params);
 ```
 
-3. 现货交易相关
+5. 现货交易相关
 ```php
 // 测试下单
 $params = [
@@ -179,7 +198,7 @@ $app->spot->allOrderList($params);
 $app->spot->openOrderList($params);
 ```
 
-4. 杠杆交易相关
+6. 杠杆交易相关
 ```php
 // 全仓杠杆账户划转
 $app->margin->transfer($params);
@@ -243,7 +262,7 @@ $app->margin->isolatedPair($symbol);
 $app->margin->isolatedAllPairs();
 ```
 
-5. 合约交易相关
+7. 合约交易相关
 ```php
 // 合约资金划转
 $app->future->transfer($params);
@@ -283,6 +302,36 @@ $app->future->collateralRepay($quoteId);
 $app->future->collateralRepayResult($quoteId);
 // 混合保证金利息收取历史
 $app->future->interestHistory($params);
+```
+
+8. 矿池相关
+```php
+// 获取算法
+$app->pool->algoList();
+// 获取币种
+$app->pool->coinList();
+// 请求矿工列表明细
+$app->pool->workerDetail($params);
+// 请求矿工列表
+$app->pool->workerList($params);
+// 收益列表
+$app->pool->paymentList($params);
+// 其他收益列表
+$app->pool->paymentOther($params);
+// 算力转让详情列表
+$app->pool->hashTransferConfigDetails($params);
+// 算力转让列表
+$app->pool->hashTransferConfigDetailsList($params);
+// 算力转让详情
+$app->pool->hashTransferProfitDetails($params);
+// 算力转让请求
+$app->pool->hashTransferConfig($params);
+// 取消算力转让设置
+$app->pool->hashTransferConfigCancel($params);
+// 统计列表
+$app->pool->userStatus($params);
+// 账号列表
+$app->pool->userList($params);
 ```
 
 ### 火币
