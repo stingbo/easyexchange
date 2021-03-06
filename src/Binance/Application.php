@@ -17,6 +17,7 @@ class Application extends ServiceContainer
         Future\ServiceProvider::class,
         Margin\ServiceProvider::class,
         Market\ServiceProvider::class,
+        Pool\ServiceProvider::class,
         Spot\ServiceProvider::class,
         User\ServiceProvider::class,
         Wallet\ServiceProvider::class,
