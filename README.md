@@ -22,7 +22,7 @@ $ composer require "stingbo/easyexchange" -vvv
 
 ## 使用说明
 
-#### 币安
+### 币安
 ```php
 <?php
 
@@ -83,6 +83,41 @@ $app->market->accountSnapshot($params);
 $app->market->disableFastWithdrawSwitch($params);
 // 开启站内划转
 $app->market->enableFastWithdrawSwitch($params);
+// 提币-Submit a withdraw request
+$app->market->withdrawApply($params);
+// 提币-提交提现请求
+$app->market->withdraw($params);
+// 获取充值历史(支持多网络)
+$app->market->capitalDepositHistory($params);
+// 获取充值历史
+$app->market->depositHistory($params);
+// 获取提币历史
+$app->market->capitalWithdrawHistory($params);
+// 获取提币历史
+$app->market->withdrawHistory($params);
+// 获取充值地址 (支持多网络)
+$app->market->capitalDepositAddress($params);
+// 获取充值地址
+$app->market->depositAddress($params);
+// 账户状态
+$app->market->accountStatus();
+// 账户API交易状态
+$app->market->apiTradingStatus();
+// 小额资产转换BNB历史
+$app->market->userAssetDribbletLog();
+// 小额资产转换
+$asset = []; //币安文档上写的:ARRAY,正在转换的资产。例如：asset = BTC＆asset = USDT
+$app->market->assetDust($asset);
+// 资产利息记录
+$app->market->assetDividend($params);
+// 上架资产详情
+$app->market->assetDetail();
+// 交易手续费率查询
+$app->market->tradeFee();
+// 用户万向划转
+$app->market->transfer($params);
+// 查询用户万向划转历史
+$app->market->transferHistory($params);
 ```
 
 3. 现货交易相关
@@ -154,7 +189,7 @@ $app->margin;
 $app->future;
 ```
 
-#### 火币
+### 火币
 ```php
 <?php
 
@@ -217,7 +252,7 @@ $params = [
 $app->wallet->withdrawAddress($params);
 ```
 
-#### 欧易
+### 欧易
 ```php
 <?php
 
