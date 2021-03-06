@@ -245,7 +245,44 @@ $app->margin->isolatedAllPairs();
 
 5. 合约交易相关
 ```php
-$app->future;
+// 合约资金划转
+$app->future->transfer($params);
+// 获取合约资金划转历史
+$app->future->transferHistory($params);
+// 混合保证金借款
+$app->future->borrow($params);
+// 混合保证金借款历史
+$app->future->borrowHistory($params);
+// 混合保证金还款
+$app->future->repay($params);
+// 混合保证金还款历史
+$app->future->repayHistory($params);
+// 混合保证金钱包 v1 & v2，默认为v1，下同
+$version = 'v1';
+$app->future->wallet($version);
+// 混合保证金信息 v1 & v2，默认为v1，下同
+$app->future->configs($params, $version);
+// 计算调整后的混合保证金质押率 v1 & v2
+$app->future->calcAdjustLevel($params, $version);
+// 可供调整混合保证金质押率的最大额 v1 & v2
+$app->future->calcMaxAdjustAmount($params, $version);
+// 调整混合保证金质押率 v1 & v2
+$app->future->adjustCollateral($params, $version);
+// 混合保证金调整质押率历史
+$app->future->adjustCollateralHistory($params);
+// 混合保证金强平历史
+$app->future->liquidationHistory($params);
+// 混合保证金抵押物还款上下限
+$app->future->collateralRepayLimit($params);
+// 获取混合保证金抵押物还款兑换比率
+$app->future->getCollateralRepay($params);
+// 混合保证金抵押物还款
+$quoteId = '8a03da95f0ad4fdc8067e3b6cde72423';
+$app->future->collateralRepay($quoteId);
+// 混合保证金抵押物还款结果
+$app->future->collateralRepayResult($quoteId);
+// 混合保证金利息收取历史
+$app->future->interestHistory($params);
 ```
 
 ### 火币
