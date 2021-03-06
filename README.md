@@ -181,7 +181,66 @@ $app->spot->openOrderList($params);
 
 4. 杠杆交易相关
 ```php
-$app->margin;
+// 全仓杠杆账户划转
+$app->margin->transfer($params);
+// 杠杆账户借贷
+$app->margin->loan($params);
+// 杠杆账户归还借贷
+$app->margin->repay($params);
+// 查询杠杆资产
+$asset = 'BNB';
+$app->margin->asset($asset);
+// 获取所有杠杆资产信息
+$app->margin->allAssets();
+// 查询全仓杠杆交易对
+$symbol = 'LTCUSDT';
+$app->margin->pair($symbol);
+// 获取所有全仓杠杆交易对
+$app->margin->allPairs();
+// 查询杠杆价格指数
+$app->margin->priceIndex($symbol);
+// 杠杆账户下单
+$app->margin->order($params);
+// 杠杆账户撤销订单
+$app->margin->cancelOrder($params);
+// 杠杆账户撤销单一交易对的所有挂单
+$app->margin->cancelOrders($params);
+// 获取全仓杠杆划转历史
+$app->margin->transferHistory($params);
+// 查询借贷记录
+$app->margin->loanHistory($params);
+// 查询还贷记录
+$app->margin->repayHistory($params);
+// 获取利息历史
+$app->margin->interestHistory($params);
+// 获取账户强制平仓记录
+$app->margin->forceLiquidationRec($params);
+// 查询全仓杠杆账户详情
+$app->margin->account();
+// 查询杠杆账户订单
+$app->margin->get($params);
+// 查询杠杆账户挂单记录
+$app->margin->openOrders($params);
+// 查询杠杆账户的所有订单
+$app->margin->allOrders($params);
+// 查询杠杆账户交易历史
+$app->margin->myTrades($params);
+// 查询账户最大可借贷额度
+$app->margin->maxBorrowable($params);
+// 查询最大可转出额
+$app->margin->maxTransferable($params);
+// 创建杠杆逐仓账户
+$app->margin->create($params);
+// 杠杆逐仓账户划转
+$app->margin->isolatedTransfer($params);
+// 获取杠杆逐仓划转历史
+$app->margin->isolatedTransferHistory($params);
+// 查询杠杆逐仓账户信息
+$app->margin->isolatedAccount($symbol);
+// 查询逐仓杠杆交易对
+$app->margin->isolatedPair($symbol);
+// 获取所有逐仓杠杆交易对
+$app->margin->isolatedAllPairs();
 ```
 
 5. 合约交易相关
