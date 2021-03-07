@@ -37,18 +37,16 @@ class Client extends BaseClient
     /**
      * 按照BTC或法币计价单位，获取指定账户的总资产估值.
      *
-     * @param string $accountType
-     * @param string $valuationCurrency
-     * @param string $subUid
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function assetValuation($accountType = 'spot', $valuationCurrency = 'BTC', $subUid = '')
+    public function assetValuation($params)
     {
-        return $this->httpGet('/v2/account/asset-valuation', compact('accountType', 'valuationCurrency', 'subUid'), 'SIGN');
+        return $this->httpGet('/v2/account/asset-valuation', $params, 'SIGN');
     }
 
     /**
