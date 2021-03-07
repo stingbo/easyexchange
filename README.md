@@ -422,11 +422,19 @@ $app->market->etp($symbol);
 // 充币地址查询
 $currency = 'btc';
 $app->wallet->depositAddress($currency);
+// 提币额度查询
+$app->wallet->withdrawQuota($currency);
 // 充币地址查询
 $params = [
     'currency' => 'xrp',
 ];
 $app->wallet->withdrawAddress($params);
+// 虚拟币提币
+$app->wallet->withdraw($params);
+// 取消提币
+$app->wallet->cancelWithdraw($params);
+// 充提记录
+$app->wallet->depositHistory($params);
 ```
 
 5. 现货交易相关
