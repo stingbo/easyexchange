@@ -353,6 +353,24 @@ $config = [
 $app = Factory::houbi($config['houbi']);
 ```
 
+1. 基础信息
+```php
+// 系统状态
+$app->basic->systemStatus();
+// 获取当前市场状态
+$app->basic->marketStatus();
+// 获取所有交易对
+$app->basic->exchangeInfo();
+// 获取所有币种
+$app->basic->currencys();
+// APIv2 币链参考信息
+$app->basic->currencies();
+// 获取当前系统时间戳
+$app->basic->systemTime();
+// 获取当前市场状态
+$app->basic->marketStatus();
+```
+
 ```php
 $app = Factory::huobi($config['huobi']);
 $app->basic->systemTime();
