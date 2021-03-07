@@ -372,7 +372,6 @@ $app->basic->marketStatus();
 ```
 
 ```php
-$app = Factory::huobi($config['huobi']);
 $app->basic->systemTime();
 $app->basic->exchangeInfo();
 $app->basic->systemStatus();
