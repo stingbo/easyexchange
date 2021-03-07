@@ -29,7 +29,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function account($account_id)
+    public function balance($account_id)
     {
         return $this->httpGet(sprintf('/v1/account/accounts/%s/balance', $account_id), [], 'SIGN');
     }
@@ -109,5 +109,25 @@ class Client extends BaseClient
     public function futuresTransfer($params)
     {
         return $this->httpPost('/v1/futures/transfer', $params, 'SIGN');
+    }
+
+    /**
+     * 点卡余额查询.
+     *
+     * @param $subUid
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function point($subUid = '')
+    {
+        $request = [];
+        if ($subUid) {
+            $request['subUid'] = $subUid;
+        }
+
+        return $this->httpGet('/v2/point/account', $request, 'SIGN');
     }
 }
