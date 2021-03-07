@@ -371,13 +371,31 @@ $app->basic->systemTime();
 $app->basic->marketStatus();
 ```
 
+2. 用户信息
 ```php
-$app->basic->systemTime();
-$app->basic->exchangeInfo();
-$app->basic->systemStatus();
-$app->basic->currencys();
-$app->basic->symbols();
+// 账户信息
+$app->user->accounts();
+// 账户余额
+$account_id = 360218;
+$app->user->balance($account_id);
+// 获取账户资产估值
+$params = []; // 具体值详见对应api文档，下同
+$app->user->assetValuation($params);
+// 资产划转
+$app->user->transfer($params);
+// 账户流水
+$app->user->history($params);
+// 财务流水
+$app->user->ledger($params);
+// 币币现货账户与合约账户划转
+$app->user->futuresTransfer($params);
+// 点卡余额查询
+$app->user->point($params);
+// 点卡划转
+$app->user->pointTransfer($params);
+```
 
+```php
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
@@ -400,9 +418,6 @@ $app->market->marketStatus();
 $app->market->exchangeInfo();
 
 
-$app->wallet->accounts();
-$app->wallet->account(360218);
-$app->wallet->assetValuation();
 $params = [
     'account-id' => 3600000,
 ];
@@ -434,7 +449,6 @@ $app = Factory::okex($config['okex']);
 ```
 
 ```php
-$app = Factory::okex($config['okex']);
 $app->basic->systemTime();
 $app->basic->exchangeInfo('SPOT');
 
