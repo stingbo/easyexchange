@@ -50,4 +50,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/account/withdraw/address', $params, 'SIGN');
     }
+
+    /**
+     * 虚拟币提币.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdraw($params)
+    {
+        return $this->httpPostJson('/v1/dw/withdraw/api/create', $params, [], 'SIGN');
+    }
 }
