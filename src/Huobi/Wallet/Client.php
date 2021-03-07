@@ -65,4 +65,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v1/dw/withdraw/api/create', $params, [], 'SIGN');
     }
+
+    /**
+     * 取消提币.
+     *
+     * @param $withdraw_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelWithdraw($withdraw_id)
+    {
+        return $this->httpPostJson(sprintf('/v1/dw/withdraw-virtual/%s/cancel', $withdraw_id), [], [], 'SIGN');
+    }
 }
