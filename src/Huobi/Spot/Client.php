@@ -216,4 +216,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/order/matchresults', $params, 'SIGN');
     }
+
+    /**
+     * 获取用户当前手续费率.
+     *
+     * @param $symbols
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function transactFeeRate($symbols)
+    {
+        return $this->httpGet('/v2/reference/transact-fee-rate', compact('symbols'), 'SIGN');
+    }
 }
