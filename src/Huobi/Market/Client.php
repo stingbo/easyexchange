@@ -99,4 +99,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/market/history/kline', compact('symbol', 'period', 'size'));
     }
+
+    /**
+     * 所有交易对的最新 Tickers.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function tickers()
+    {
+        return $this->httpGet('/market/tickers', []);
+    }
 }
