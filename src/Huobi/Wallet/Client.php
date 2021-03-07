@@ -22,6 +22,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 提币额度查询.
+     *
+     * @param $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawQuota($currency)
+    {
+        return $this->httpGet('/v2/account/withdraw/quota', compact('currency'), 'SIGN');
+    }
+
+    /**
      * 提币地址查询.
      *
      * @param $params
