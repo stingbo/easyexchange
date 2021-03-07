@@ -7,19 +7,6 @@ use EasyExchange\Huobi\Kernel\BaseClient;
 class Client extends BaseClient
 {
     /**
-     * 获取当前市场状态.
-     *
-     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     *
-     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function marketStatus()
-    {
-        return $this->httpGet('/v2/market-status');
-    }
-
-    /**
      * 深度信息.
      *
      * @param $symbol
