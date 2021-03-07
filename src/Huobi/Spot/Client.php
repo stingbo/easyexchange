@@ -167,7 +167,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function matchResults($order_id)
+    public function matchResult($order_id)
     {
         return $this->httpGet(sprintf('/v1/order/orders/%s/matchresults', $order_id), [], 'SIGN');
     }
@@ -200,5 +200,20 @@ class Client extends BaseClient
     public function hr48History($params)
     {
         return $this->httpGet('/v1/order/history', $params, 'SIGN');
+    }
+
+    /**
+     * 当前和历史成交.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function matchResults($params)
+    {
+        return $this->httpGet('/v1/order/matchresults', $params, 'SIGN');
     }
 }
