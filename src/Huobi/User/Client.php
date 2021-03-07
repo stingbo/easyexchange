@@ -95,4 +95,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/account/ledger', $params, 'SIGN');
     }
+
+    /**
+     * 币币现货账户与合约账户划转.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function futuresTransfer($params)
+    {
+        return $this->httpPost('/v1/futures/transfer', $params, 'SIGN');
+    }
 }
