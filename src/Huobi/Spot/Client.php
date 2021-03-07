@@ -171,4 +171,19 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/v1/order/orders/%s/matchresults', $order_id), [], 'SIGN');
     }
+
+    /**
+     * 搜索历史订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getOrders($params)
+    {
+        return $this->httpGet('/v1/order/orders', $params, 'SIGN');
+    }
 }
