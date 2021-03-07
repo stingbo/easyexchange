@@ -1,8 +1,8 @@
 <?php
 
-namespace EasyExchange\Tests\Huobi\Spot;
+namespace EasyExchange\Tests\Huobi\Trade;
 
-use EasyExchange\Huobi\Spot\Client;
+use EasyExchange\Huobi\Trade\Client;
 use EasyExchange\Tests\TestCase;
 
 class ClientTest extends TestCase

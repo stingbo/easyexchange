@@ -437,7 +437,7 @@ $app->wallet->cancelWithdraw($params);
 $app->wallet->depositHistory($params);
 ```
 
-5. 现货交易相关
+5. 现货/杠杆交易相关
 ```php
 // 下单
 $params = [
@@ -447,16 +447,46 @@ $params = [
     'amount' => 0.001,
     'price' => 10000,
 ];
-$app->spot->order($params);
+$app->trade->order($params);
 // 撤销订单
-$app->spot->cancelOrder('204533841408061');
+$app->trade->cancelOrder('204533841408061');
 // 查询当前未成交订单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
 //    'side' => 'both',
 ];
-$app->spot->openOrders($params);
+$app->trade->openOrders($params);
+// 批量下单
+$app->trade->batchOrders($params);
+// 撤销订单（基于client order ID）
+$client_order_id = 'a0001';
+$app->trade->cancelClientOrder($client_order_id);
+// 自动撤销订单
+$timeout = 10;
+$app->trade->cancelAllAfter($timeout);
+// 批量撤销所有订单
+$app->trade->batchCancelOpenOrders($params);
+// 批量撤销指定订单
+$order_ids = ['5983466', '5722939', '5721027'];
+$app->trade->batchCancel($order_ids);
+// 查询订单详情
+$order_id = '59378';
+$app->trade->get($order_id);
+// 查询订单详情（基于client order ID）
+$order_client_id = 'a0001';
+$app->trade->getClientOrder($order_client_id);
+// 成交明细
+$app->trade->matchResult($order_id);
+// 搜索历史订单
+$app->trade->getOrders($params);
+// 搜索最近48小时内历史订单
+$app->trade->hr48History($params);
+// 当前和历史成交
+$app->trade->matchResults($params);
+// 获取用户当前手续费率
+$symbols = 'btcusdt,ethusdt,ltcusdt';
+$app->trade->transactFeeRate($symbols);
 ```
 
 ### 欧易
