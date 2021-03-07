@@ -80,4 +80,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/account/history', $params, 'SIGN');
     }
+
+    /**
+     * 财务流水.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function ledger($params)
+    {
+        return $this->httpGet('/v2/account/ledger', $params, 'SIGN');
+    }
 }
