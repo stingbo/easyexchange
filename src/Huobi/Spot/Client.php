@@ -50,4 +50,19 @@ class Client extends BaseClient
     {
         return $this->httpPost(sprintf('/v1/order/orders/%s/submitcancel', $order_id), [], 'SIGN');
     }
+
+    /**
+     * 批量下单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function batchOrders($params)
+    {
+        return $this->httpPostJson('/v1/order/batch-orders', $params, [], 'SIGN');
+    }
 }
