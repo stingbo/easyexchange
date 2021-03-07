@@ -395,7 +395,43 @@ $app->user->point($params);
 $app->user->pointTransfer($params);
 ```
 
+3. 市场行情相关
 ```php
+// K 线数据（蜡烛图）
+$symbol = 'btcusdt';
+$period = '5min';
+$app->market->kline($symbol, $period);
+// 聚合行情（Ticker）
+$app->market->aggTrades($symbol);
+// 所有交易对的最新 Tickers
+$app->market->tickers();
+// 市场深度数据
+$app->market->depth('btcusdt', 'step0', 5);
+// 最近市场成交记录
+$app->market->trades($symbol);
+// 获得近期交易记录
+$app->market->historicalTrades($symbol);
+// 最近24小时行情数据
+$app->market->hr24($symbol);
+// 获取杠杆ETP实时净值
+$app->market->etp($symbol);
+```
+
+4. 钱包相关
+```php
+// 充币地址查询
+$currency = 'btc';
+$app->wallet->depositAddress($currency);
+// 充币地址查询
+$params = [
+    'currency' => 'xrp',
+];
+$app->wallet->withdrawAddress($params);
+```
+
+5. 现货交易相关
+```php
+// 下单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
@@ -404,29 +440,15 @@ $params = [
     'price' => 10000,
 ];
 $app->spot->order($params);
+// 撤销订单
 $app->spot->cancelOrder('204533841408061');
+// 查询当前未成交订单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
 //    'side' => 'both',
 ];
 $app->spot->openOrders($params);
-
-$app->market->trades('btcusdt');
-$app->market->depth('btcusdt', 'step0', 5);
-$app->market->marketStatus();
-$app->market->exchangeInfo();
-
-
-$params = [
-    'account-id' => 3600000,
-];
-$app->wallet->history($params);
-$app->wallet->depositAddress('btc');
-$params = [
-    'currency' => 'xrp',
-];
-$app->wallet->withdrawAddress($params);
 ```
 
 ### 欧易
