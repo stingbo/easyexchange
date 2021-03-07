@@ -72,6 +72,22 @@ class Client extends BaseClient
     }
 
     /**
+     * APIv2 币链参考信息.
+     *
+     * @param $currency
+     * @param bool $authorizedUser
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function currencies($currency, $authorizedUser = true)
+    {
+        return $this->httpGet('/v2/reference/currencies', compact('currency', 'authorizedUser'));
+    }
+
+    /**
      * 此接口返回所有火币全球站支持的交易对.
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
