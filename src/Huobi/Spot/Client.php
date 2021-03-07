@@ -65,4 +65,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v1/order/batch-orders', $params, [], 'SIGN');
     }
+
+    /**
+     * 撤销订单（基于client order ID）.
+     *
+     * @param $client_order_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelClientOrder($client_order_id)
+    {
+        return $this->httpPostJson('/v1/order/orders/submitCancelClientOrder', compact('client_order_id'), [], 'SIGN');
+    }
 }
