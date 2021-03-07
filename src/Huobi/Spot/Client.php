@@ -186,4 +186,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/order/orders', $params, 'SIGN');
     }
+
+    /**
+     * 搜索最近48小时内历史订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function Hr48History($params)
+    {
+        return $this->httpGet('/v1/order/history', $params, 'SIGN');
+    }
 }
