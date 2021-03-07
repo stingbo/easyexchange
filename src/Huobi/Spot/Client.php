@@ -126,4 +126,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v1/order/orders/batchcancel', compact('order_ids', 'client_order_ids'), [], 'SIGN');
     }
+
+    /**
+     * 查询订单详情.
+     *
+     * @param $order_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get($order_id)
+    {
+        return $this->httpGet(sprintf('/v1/order/orders/%s', $order_id), [], 'SIGN');
+    }
 }
