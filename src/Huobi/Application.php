@@ -15,7 +15,7 @@ class Application extends ServiceContainer
     protected $providers = [
         Basic\ServiceProvider::class,
         Market\ServiceProvider::class,
-        Spot\ServiceProvider::class,
+        Trade\ServiceProvider::class,
         User\ServiceProvider::class,
         Wallet\ServiceProvider::class,
     ];
