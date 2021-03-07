@@ -80,4 +80,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v1/order/orders/submitCancelClientOrder', compact('client_order_id'), [], 'SIGN');
     }
+
+    /**
+     * 自动撤销订单.
+     *
+     * @param $timeout
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelAllAfter($timeout)
+    {
+        return $this->httpPostJson('/v2/algo-orders/cancel-all-after', compact('timeout'), [], 'SIGN');
+    }
 }
