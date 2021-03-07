@@ -353,14 +353,93 @@ $config = [
 $app = Factory::houbi($config['houbi']);
 ```
 
+1. 基础信息
 ```php
-$app = Factory::huobi($config['huobi']);
-$app->basic->systemTime();
-$app->basic->exchangeInfo();
+// 系统状态
 $app->basic->systemStatus();
+// 获取当前市场状态
+$app->basic->marketStatus();
+// 获取所有交易对
+$app->basic->exchangeInfo();
+// 获取所有币种
 $app->basic->currencys();
-$app->basic->symbols();
+// APIv2 币链参考信息
+$app->basic->currencies();
+// 获取当前系统时间戳
+$app->basic->systemTime();
+// 获取当前市场状态
+$app->basic->marketStatus();
+```
 
+2. 用户信息
+```php
+// 账户信息
+$app->user->accounts();
+// 账户余额
+$account_id = 360218;
+$app->user->balance($account_id);
+// 获取账户资产估值
+$params = []; // 具体值详见对应api文档，下同
+$app->user->assetValuation($params);
+// 资产划转
+$app->user->transfer($params);
+// 账户流水
+$app->user->history($params);
+// 财务流水
+$app->user->ledger($params);
+// 币币现货账户与合约账户划转
+$app->user->futuresTransfer($params);
+// 点卡余额查询
+$app->user->point($params);
+// 点卡划转
+$app->user->pointTransfer($params);
+```
+
+3. 市场行情相关
+```php
+// K 线数据（蜡烛图）
+$symbol = 'btcusdt';
+$period = '5min';
+$app->market->kline($symbol, $period);
+// 聚合行情（Ticker）
+$app->market->aggTrades($symbol);
+// 所有交易对的最新 Tickers
+$app->market->tickers();
+// 市场深度数据
+$app->market->depth('btcusdt', 'step0', 5);
+// 最近市场成交记录
+$app->market->trades($symbol);
+// 获得近期交易记录
+$app->market->historicalTrades($symbol);
+// 最近24小时行情数据
+$app->market->hr24($symbol);
+// 获取杠杆ETP实时净值
+$app->market->etp($symbol);
+```
+
+4. 钱包相关
+```php
+// 充币地址查询
+$currency = 'btc';
+$app->wallet->depositAddress($currency);
+// 提币额度查询
+$app->wallet->withdrawQuota($currency);
+// 充币地址查询
+$params = [
+    'currency' => 'xrp',
+];
+$app->wallet->withdrawAddress($params);
+// 虚拟币提币
+$app->wallet->withdraw($params);
+// 取消提币
+$app->wallet->cancelWithdraw($params);
+// 充提记录
+$app->wallet->depositHistory($params);
+```
+
+5. 现货交易相关
+```php
+// 下单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
@@ -369,32 +448,15 @@ $params = [
     'price' => 10000,
 ];
 $app->spot->order($params);
+// 撤销订单
 $app->spot->cancelOrder('204533841408061');
+// 查询当前未成交订单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
 //    'side' => 'both',
 ];
 $app->spot->openOrders($params);
-
-$app->market->trades('btcusdt');
-$app->market->depth('btcusdt', 'step0', 5);
-$app->market->marketStatus();
-$app->market->exchangeInfo();
-
-
-$app->wallet->accounts();
-$app->wallet->account(360218);
-$app->wallet->assetValuation();
-$params = [
-    'account-id' => 3600000,
-];
-$app->wallet->history($params);
-$app->wallet->depositAddress('btc');
-$params = [
-    'currency' => 'xrp',
-];
-$app->wallet->withdrawAddress($params);
 ```
 
 ### 欧易
@@ -417,7 +479,6 @@ $app = Factory::okex($config['okex']);
 ```
 
 ```php
-$app = Factory::okex($config['okex']);
 $app->basic->systemTime();
 $app->basic->exchangeInfo('SPOT');
 

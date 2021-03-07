@@ -1,60 +1,41 @@
 <?php
 
-namespace EasyExchange\Huobi\Market;
+namespace EasyExchange\Huobi\User;
 
 use EasyExchange\Huobi\Kernel\BaseClient;
 
 class Client extends BaseClient
 {
     /**
-     * 深度信息.
-     *
-     * @param $symbol
-     * @param string $type
+     * Get all Accounts of the Current User.
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function depth($symbol, $type = 'step0', int $depth = 20)
+    public function accounts()
     {
-        return $this->httpGet('/market/depth', compact('symbol', 'type', 'depth'));
+        return $this->httpGet('/v1/account/accounts', [], 'SIGN');
     }
 
     /**
-     * 近期成交列表.
+     * 账户余额.
      *
-     * @param $symbol
+     * @param $account_id
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function trades($symbol)
+    public function balance($account_id)
     {
-        return $this->httpGet('/market/trade', compact('symbol'));
+        return $this->httpGet(sprintf('/v1/account/accounts/%s/balance', $account_id), [], 'SIGN');
     }
 
     /**
-     * 查询历史成交.
-     *
-     * @param $symbol
-     *
-     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     *
-     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function historicalTrades($symbol, int $size = 10)
-    {
-        return $this->httpGet('/market/history/trade', compact('symbol', 'size'));
-    }
-
-    /**
-     * 聚合行情（Ticker）.
-     * 此接口获取ticker信息同时提供最近24小时的交易聚合信息.
+     * 按照BTC或法币计价单位，获取指定账户的总资产估值.
      *
      * @param $params
      *
@@ -63,68 +44,103 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function aggTrades($symbol)
+    public function assetValuation($params)
     {
-        return $this->httpGet('/market/detail/merged', compact('symbol'));
+        return $this->httpGet('/v2/account/asset-valuation', $params, 'SIGN');
     }
 
     /**
-     * 最近24小时行情数据.
+     * 资产划转.
      *
-     * @param $symbol
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function hr24($symbol)
+    public function transfer($params)
     {
-        return $this->httpGet('/market/detail', compact('symbol'));
+        return $this->httpPostJson('/v1/account/transfer', $params, [], 'SIGN');
     }
 
     /**
-     * K 线数据（蜡烛图）.
+     * 账户流水.
      *
-     * @param $symbol
-     * @param $period
-     * @param int $size
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function kline($symbol, $period, $size = 150)
+    public function history($params)
     {
-        return $this->httpGet('/market/history/kline', compact('symbol', 'period', 'size'));
+        return $this->httpGet('/v1/account/history', $params, 'SIGN');
     }
 
     /**
-     * 所有交易对的最新 Tickers.
+     * 财务流水.
+     *
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function tickers()
+    public function ledger($params)
     {
-        return $this->httpGet('/market/tickers', []);
+        return $this->httpGet('/v2/account/ledger', $params, 'SIGN');
     }
 
     /**
-     * 获取杠杆ETP实时净值.
+     * 币币现货账户与合约账户划转.
      *
-     * @param $symbol
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function etp($symbol)
+    public function futuresTransfer($params)
     {
-        return $this->httpGet('/market/etp', compact('symbol'));
+        return $this->httpPostJson('/v1/futures/transfer', $params, [], 'SIGN');
+    }
+
+    /**
+     * 点卡余额查询.
+     *
+     * @param $subUid
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function point($subUid = '')
+    {
+        $request = [];
+        if ($subUid) {
+            $request['subUid'] = $subUid;
+        }
+
+        return $this->httpGet('/v2/point/account', $request, 'SIGN');
+    }
+
+    /**
+     * 点卡划转.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function pointTransfer($params)
+    {
+        return $this->httpPostJson('/v2/point/transfer', $params, [], 'SIGN');
     }
 }

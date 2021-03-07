@@ -20,6 +20,19 @@ class Client extends BaseClient
     }
 
     /**
+     * 获取当前市场状态.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function marketStatus()
+    {
+        return $this->httpGet('/v2/market-status');
+    }
+
+    /**
      * 获取所有交易对.
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
@@ -56,6 +69,22 @@ class Client extends BaseClient
     public function currencys()
     {
         return $this->httpGet('/v1/common/currencys');
+    }
+
+    /**
+     * APIv2 币链参考信息.
+     *
+     * @param $currency
+     * @param bool $authorizedUser
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function currencies($currency, $authorizedUser = true)
+    {
+        return $this->httpGet('/v2/reference/currencies', compact('currency', 'authorizedUser'));
     }
 
     /**
