@@ -22,21 +22,6 @@ class Client extends BaseClient
     }
 
     /**
-     * 查询当前未成交订单.
-     *
-     * @param $params
-     *
-     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     *
-     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function openOrders($params)
-    {
-        return $this->httpGet('/v1/order/openOrders', $params, 'SIGN');
-    }
-
-    /**
      * 撤销订单.
      *
      * @param $order_id
@@ -94,5 +79,35 @@ class Client extends BaseClient
     public function cancelAllAfter($timeout)
     {
         return $this->httpPostJson('/v2/algo-orders/cancel-all-after', compact('timeout'), [], 'SIGN');
+    }
+
+    /**
+     * 查询当前未成交订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function openOrders($params)
+    {
+        return $this->httpGet('/v1/order/openOrders', $params, 'SIGN');
+    }
+
+    /**
+     * 批量撤销所有订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function batchCancelOpenOrders($params)
+    {
+        return $this->httpPostJson('/v1/order/orders/batchCancelOpenOrders', $params, [], 'SIGN');
     }
 }
