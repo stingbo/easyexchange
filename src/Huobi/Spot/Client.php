@@ -197,7 +197,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function Hr48History($params)
+    public function hr48History($params)
     {
         return $this->httpGet('/v1/order/history', $params, 'SIGN');
     }
