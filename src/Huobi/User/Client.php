@@ -130,4 +130,19 @@ class Client extends BaseClient
 
         return $this->httpGet('/v2/point/account', $request, 'SIGN');
     }
+
+    /**
+     * 点卡划转.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function pointTransfer($params)
+    {
+        return $this->httpPost('/v2/point/transfer', $params, 'SIGN');
+    }
 }
