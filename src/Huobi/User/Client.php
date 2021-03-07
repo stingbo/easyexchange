@@ -61,7 +61,7 @@ class Client extends BaseClient
      */
     public function transfer($params)
     {
-        return $this->httpPost('/v1/account/transfer', $params, 'SIGN');
+        return $this->httpPostJson('/v1/account/transfer', $params, [], 'SIGN');
     }
 
     /**
@@ -106,7 +106,7 @@ class Client extends BaseClient
      */
     public function futuresTransfer($params)
     {
-        return $this->httpPost('/v1/futures/transfer', $params, 'SIGN');
+        return $this->httpPostJson('/v1/futures/transfer', $params, [], 'SIGN');
     }
 
     /**
@@ -141,6 +141,6 @@ class Client extends BaseClient
      */
     public function pointTransfer($params)
     {
-        return $this->httpPost('/v2/point/transfer', $params, 'SIGN');
+        return $this->httpPostJson('/v2/point/transfer', $params, [], 'SIGN');
     }
 }
