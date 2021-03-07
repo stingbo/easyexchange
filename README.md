@@ -457,6 +457,36 @@ $params = [
 //    'side' => 'both',
 ];
 $app->spot->openOrders($params);
+// 批量下单
+$app->spot->batchOrders($params);
+// 撤销订单（基于client order ID）
+$client_order_id = 'a0001';
+$app->spot->cancelClientOrder($client_order_id);
+// 自动撤销订单
+$timeout = 10;
+$app->spot->cancelAllAfter($timeout);
+// 批量撤销所有订单
+$app->spot->batchCancelOpenOrders($params);
+// 批量撤销指定订单
+$order_ids = ['5983466', '5722939', '5721027'];
+$app->spot->batchCancel($order_ids);
+// 查询订单详情
+$order_id = '59378';
+$app->spot->get($order_id);
+// 查询订单详情（基于client order ID）
+$order_client_id = 'a0001';
+$app->spot->getClientOrder($order_client_id);
+// 成交明细
+$app->spot->matchResult($order_id);
+// 搜索历史订单
+$app->spot->getOrders($params);
+// 搜索最近48小时内历史订单
+$app->spot->hr48History($params);
+// 当前和历史成交
+$app->spot->matchResults($params);
+// 获取用户当前手续费率
+$symbols = 'btcusdt,ethusdt,ltcusdt';
+$app->spot->transactFeeRate($symbols);
 ```
 
 ### 欧易
