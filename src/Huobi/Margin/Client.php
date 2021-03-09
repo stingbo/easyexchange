@@ -80,4 +80,20 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v1/margin/orders', $params, [], 'SIGN');
     }
+
+    /**
+     * 归还借币（逐仓）.
+     *
+     * @param $order_id
+     * @param $amount
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repay($order_id, $amount)
+    {
+        return $this->httpPostJson(sprintf('/v1/margin/orders/%s/repay', $order_id), compact('amount'), [], 'SIGN');
+    }
 }
