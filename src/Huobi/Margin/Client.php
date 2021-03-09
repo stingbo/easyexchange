@@ -111,4 +111,28 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/margin/loan-orders', $params, 'SIGN');
     }
+
+    /**
+     * 借币账户详情（逐仓）.
+     *
+     * @param string $symbol
+     * @param string $sub_uid
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function balance($symbol = '', $sub_uid = '')
+    {
+        $request = [];
+        if ($symbol) {
+            $request['symbol'] = $symbol;
+        }
+        if ($sub_uid) {
+            $request['sub-uid'] = $sub_uid;
+        }
+
+        return $this->httpGet('/v1/margin/accounts/balance', $request, 'SIGN');
+    }
 }
