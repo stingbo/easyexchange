@@ -65,4 +65,74 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/margin/loan-info', $params, 'SIGN');
     }
+
+    /**
+     * 申请借币（逐仓）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function orders($params)
+    {
+        return $this->httpPostJson('/v1/margin/orders', $params, [], 'SIGN');
+    }
+
+    /**
+     * 归还借币（逐仓）.
+     *
+     * @param $order_id
+     * @param $amount
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repay($order_id, $amount)
+    {
+        return $this->httpPostJson(sprintf('/v1/margin/orders/%s/repay', $order_id), compact('amount'), [], 'SIGN');
+    }
+
+    /**
+     * 查询借币订单（逐仓）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loanOrders($params)
+    {
+        return $this->httpGet('/v1/margin/loan-orders', $params, 'SIGN');
+    }
+
+    /**
+     * 借币账户详情（逐仓）.
+     *
+     * @param string $symbol
+     * @param string $sub_uid
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function balance($symbol = '', $sub_uid = '')
+    {
+        $request = [];
+        if ($symbol) {
+            $request['symbol'] = $symbol;
+        }
+        if ($sub_uid) {
+            $request['sub-uid'] = $sub_uid;
+        }
+
+        return $this->httpGet('/v1/margin/accounts/balance', $request, 'SIGN');
+    }
 }
