@@ -96,4 +96,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson(sprintf('/v1/margin/orders/%s/repay', $order_id), compact('amount'), [], 'SIGN');
     }
+
+    /**
+     * 查询借币订单（逐仓）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loanOrders($params)
+    {
+        return $this->httpGet('/v1/margin/loan-orders', $params, 'SIGN');
+    }
 }
