@@ -65,4 +65,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/margin/loan-info', $params, 'SIGN');
     }
+
+    /**
+     * 申请借币（逐仓）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function orders($params)
+    {
+        return $this->httpPostJson('/v1/margin/orders', $params, [], 'SIGN');
+    }
 }
