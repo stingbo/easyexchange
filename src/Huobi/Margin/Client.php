@@ -167,4 +167,17 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v1/cross-margin/transfer-out', compact('currency', 'amount'), [], 'SIGN');
     }
+
+    /**
+     * 查询借币币息率及额度（全仓）.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function crossLoanInfo()
+    {
+        return $this->httpGet('/v1/cross-margin/loan-info', [], 'SIGN');
+    }
 }
