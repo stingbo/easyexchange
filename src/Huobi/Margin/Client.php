@@ -135,4 +135,20 @@ class Client extends BaseClient
 
         return $this->httpGet('/v1/margin/accounts/balance', $request, 'SIGN');
     }
+
+    /**
+     * 资产划转（全仓）-从现货账户划转至全仓杠杆账.
+     *
+     * @param $currency
+     * @param $amount
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function crossTransferIn($currency, $amount)
+    {
+        return $this->httpPostJson('/v1/cross-margin/transfer-in', compact('currency', 'amount'), [], 'SIGN');
+    }
 }
