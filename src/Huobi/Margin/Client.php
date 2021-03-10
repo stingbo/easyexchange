@@ -227,4 +227,24 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v1/cross-margin/loan-orders', $params, 'SIGN');
     }
+
+    /**
+     * 借币账户详情（全仓）.
+     *
+     * @param string $sub_uid
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function crossBalance($sub_uid = '')
+    {
+        $request = [];
+        if ($sub_uid) {
+            $request['sub-uid'] = $sub_uid;
+        }
+
+        return $this->httpGet('v1/cross-margin/accounts/balance', $request, 'SIGN');
+    }
 }
