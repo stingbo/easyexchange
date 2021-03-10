@@ -247,4 +247,19 @@ class Client extends BaseClient
 
         return $this->httpGet('v1/cross-margin/accounts/balance', $request, 'SIGN');
     }
+
+    /**
+     * 还币交易记录查询（全仓）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getRepayment($params)
+    {
+        return $this->httpGet('/v2/account/repayment', $params, 'SIGN');
+    }
 }
