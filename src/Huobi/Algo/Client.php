@@ -35,4 +35,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v2/algo-orders/cancellation', compact('clientOrderIds'), [], 'SIGN');
     }
+
+    /**
+     * 查询未触发OPEN策略委托.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function openOrders($params)
+    {
+        return $this->httpGet('/v2/algo-orders/opening', $params, 'SIGN');
+    }
 }
