@@ -65,4 +65,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/algo-orders/history', $params, 'SIGN');
     }
+
+    /**
+     * 查询特定策略委托.
+     *
+     * @param $clientOrderId
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function specific($clientOrderId)
+    {
+        return $this->httpGet('/v2/algo-orders/specific', compact('clientOrderId'), 'SIGN');
+    }
 }
