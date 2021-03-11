@@ -18,6 +18,21 @@ class Client extends BaseClient
      */
     public function order($params)
     {
-        return $this->httpPostJson(' /v2/algo-orders', $params, [], 'SIGN');
+        return $this->httpPostJson('/v2/algo-orders', $params, [], 'SIGN');
+    }
+
+    /**
+     * 策略委托（触发前）撤单.
+     *
+     * @param $clientOrderIds
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOrder($clientOrderIds)
+    {
+        return $this->httpPostJson('/v2/algo-orders/cancellation', compact('clientOrderIds'), [], 'SIGN');
     }
 }
