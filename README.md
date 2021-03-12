@@ -489,6 +489,18 @@ $symbols = 'btcusdt,ethusdt,ltcusdt';
 $app->trade->transactFeeRate($symbols);
 ```
 
+6. 借币（逐仓/全仓杠杆）
+```php
+```
+
+7. 策略委托
+```php
+```
+
+8. 借币（C2C）
+```php
+```
+
 ### 欧易
 ```php
 <?php
