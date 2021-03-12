@@ -16,8 +16,23 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function offer($params)
+    public function order($params)
     {
         return $this->httpPostJson('/v2/c2c/offer', $params, [], 'SIGN');
+    }
+
+    /**
+     * 借入借出撤单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancel($params)
+    {
+        return $this->httpPostJson('/v2/c2c/cancellation', $params, [], 'SIGN');
     }
 }
