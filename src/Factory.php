@@ -16,9 +16,9 @@ use EasyExchange\Kernel\ServiceContainer;
 /**
  * Class Factory.
  *
- * @method static \EasyWeChat\Binance\Application     binance(array $config)
- * @method static \EasyWeChat\Huobi\Application       huobi(array $config)
- * @method static \EasyWeChat\Okex\Application        okex(array $config)
+ * @method static \EasyExchange\Binance\Application     binance(array $config)
+ * @method static \EasyExchange\Huobi\Application       huobi(array $config)
+ * @method static \EasyExchange\Okex\Application        okex(array $config)
  */
 class Factory
 {
