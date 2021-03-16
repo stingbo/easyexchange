@@ -80,4 +80,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/c2c/offer', compact('offerId'), 'SIGN');
     }
+
+    /**
+     * 查询借入借出交易记录.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function transactions($params)
+    {
+        return $this->httpGet('/v2/c2c/transactions', $params, 'SIGN');
+    }
 }
