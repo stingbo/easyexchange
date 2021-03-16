@@ -50,4 +50,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/v2/c2c/cancel-all', $params, [], 'SIGN');
     }
+
+    /**
+     * 查询借入借出订单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getOrders($params)
+    {
+        return $this->httpGet('/v2/c2c/offers', $params, 'SIGN');
+    }
 }
