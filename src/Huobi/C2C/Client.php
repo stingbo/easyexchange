@@ -95,4 +95,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/v2/c2c/transactions', $params, 'SIGN');
     }
+
+    /**
+     * 还币.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repayment($params)
+    {
+        return $this->httpPostJson('/v2/c2c/repayment', $params, [], 'SIGN');
+    }
 }
