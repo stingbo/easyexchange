@@ -97,6 +97,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 市价仓位全平.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function closePosition($params)
+    {
+        return $this->httpPostJson('/api/v5/trade/close-position', $params, [], 'SIGN');
+    }
+
+    /**
      * 获取订单信息.
      *
      * @param $params
