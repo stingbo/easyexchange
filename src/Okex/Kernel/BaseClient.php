@@ -6,6 +6,10 @@ use Psr\Http\Message\RequestInterface;
 
 class BaseClient extends \EasyExchange\Kernel\BaseClient
 {
+    public $timestamp;
+
+    public $message;
+
     /**
      * 获取签名.
      *
@@ -21,11 +25,10 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
         }
         $body = $params ? json_encode($params, JSON_UNESCAPED_SLASHES) : '';
 
-        $sign_param = $timestamp.$method.$uri_path.$body;
+        $this->message = (string) $timestamp.$method.$uri_path.(string) $body;
         $secret = $this->app->config->get('secret');
-        $signature = hash_hmac('sha256', $sign_param, $secret, true);
 
-        return base64_encode($signature);
+        return base64_encode(hash_hmac('sha256', $this->message, $secret, true));
     }
 
     /**
@@ -33,16 +36,20 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     protected function registerHttpMiddlewares()
     {
-        $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header');
+        $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
+//        $this->pushMiddleware($this->addHeaderMiddleware('x-simulated-trading', 1), 'add_header_test');
         if ('SIGN' == $this->sign_type) {
             // signature
+            $this->timestamp = $this->getRequestDateTime();
+            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-KEY', $this->app->config->get('app_key')), 'add_header_appkey');
+            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-TIMESTAMP', $this->timestamp), 'add_header_timestamp');
+            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header_passphrase');
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header');
         }
     }
 
     /**
-     * Attache signature to request query.
+     * Attache signature to request header.
      *
      * @return \Closure
      */
@@ -50,21 +57,17 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
-                $app_key = $this->app->config->get('app_key');
-                $timestamp = $this->getRequestDateTime();
-                $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-KEY', $app_key), 'add_header');
-                $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-TIMESTAMP', $timestamp), 'add_header');
-
                 $method = $request->getMethod();
                 $uri_path = $request->getUri()->getPath();
-                parse_str($request->getBody()->getContents(), $params);
-                parse_str($request->getUri()->getQuery(), $query);
-                if ($params) { // POST
-                    $signature = $this->getSignature($timestamp, $method, $uri_path, $params);
+                if ('POST' == $method) { // POST
+                    $body = $request->getBody();
+                    $params = json_decode($body, true);
+                    $signature = $this->getSignature($this->timestamp, $method, $uri_path, $params);
                 } else { // GET
-                    $signature = $this->getSignature($timestamp, $method, $uri_path, $query);
+                    parse_str($request->getUri()->getQuery(), $query);
+                    $signature = $this->getSignature($this->timestamp, $method, $uri_path, $query);
                 }
-                $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-SIGN', $signature), 'add_header');
+                $request = $request->withHeader('OK-ACCESS-SIGN', $signature);
 
                 return $handler($request, $options);
             };
@@ -80,6 +83,6 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         date_default_timezone_set('UTC');
 
-        return date('Y-m-d\TH:i:s'.substr((string)microtime(), 1, 4)).'Z';
+        return date('Y-m-d\TH:i:s'.substr((string) microtime(), 1, 4)).'Z';
     }
 }

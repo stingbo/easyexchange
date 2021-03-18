@@ -514,6 +514,7 @@ $config = [
         'base_uri' => 'https://www.okexcn.com',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'passphrase' => 'your passphrase',
     ],
 ];
 
