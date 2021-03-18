@@ -67,6 +67,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 修改当前未成交的挂单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function amendOrder($params)
+    {
+        return $this->httpPostJson('/api/v5/trade/amend-order', $params, [], 'SIGN');
+    }
+
+    /**
      * 获取订单信息.
      *
      * @param $params
