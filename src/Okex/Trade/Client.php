@@ -140,4 +140,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/trade/orders-pending', $params, 'SIGN');
     }
+
+    /**
+     * 获取历史订单记录（近七天）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function orderHistory($params)
+    {
+        return $this->httpGet('/api/v5/trade/orders-history', $params, 'SIGN');
+    }
 }
