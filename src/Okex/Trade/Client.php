@@ -52,6 +52,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 批量撤单.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelBatchOrders($params)
+    {
+        return $this->httpPostJson('/api/v5/trade/cancel-batch-orders', $params, [], 'SIGN');
+    }
+
+    /**
      * 获取订单信息.
      *
      * @param $params
