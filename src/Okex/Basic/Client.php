@@ -108,4 +108,20 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/public/price-limit', compact('instId'));
     }
+
+    /**
+     * 获取期权定价.
+     *
+     * @param $uly
+     * @param string $expTime
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function optSummary($uly, $expTime = '')
+    {
+        return $this->httpGet('/api/v5/public/opt-summary', compact('uly', 'expTime'));
+    }
 }
