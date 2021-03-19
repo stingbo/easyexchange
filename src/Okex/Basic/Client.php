@@ -124,4 +124,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/public/opt-summary', compact('uly', 'expTime'));
     }
+
+    /**
+     * 获取预估交割/行权价格.
+     *
+     * @param $instId
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function estimatedPrice($instId)
+    {
+        return $this->httpGet('/api/v5/public/estimated-price', compact('instId'));
+    }
 }
