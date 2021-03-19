@@ -128,4 +128,20 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/market/mark-price-candles', $params);
     }
+
+    /**
+     * 获取交易产品公共成交数据.
+     *
+     * @param $instId
+     * @param int $limit
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function trades($instId, $limit = 100)
+    {
+        return $this->httpGet('/api/v5/market/trades', compact('instId', 'limit'));
+    }
 }
