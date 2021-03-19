@@ -501,7 +501,7 @@ $app->trade->transactFeeRate($symbols);
 ```php
 ```
 
-### 欧易
+### 欧易 V5 版本
 ```php
 <?php
 
