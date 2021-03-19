@@ -153,4 +153,20 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/api/v5/account/position/margin-balance', $params, [], 'SIGN');
     }
+
+    /**
+     * 获取杠杆倍数.
+     *
+     * @param $instId
+     * @param $mgnMode
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function leverageInfo($instId, $mgnMode)
+    {
+        return $this->httpGet('/api/v5/account/leverage-info', compact('instId', 'mgnMode'), 'SIGN');
+    }
 }
