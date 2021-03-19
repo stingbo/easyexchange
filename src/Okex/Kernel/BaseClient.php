@@ -37,7 +37,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     protected function registerHttpMiddlewares()
     {
         $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
-//        $this->pushMiddleware($this->addHeaderMiddleware('x-simulated-trading', 1), 'add_header_test');
+        $this->pushMiddleware($this->addHeaderMiddleware('x-simulated-trading', $this->app->config->get('x-simulated-trading')), 'add_header_test');
         if ('SIGN' == $this->sign_type) {
             // signature
             $this->timestamp = $this->getRequestDateTime();

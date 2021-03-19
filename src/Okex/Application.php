@@ -17,5 +17,6 @@ class Application extends ServiceContainer
         Basic\ServiceProvider::class,
         Market\ServiceProvider::class,
         Trade\ServiceProvider::class,
+        User\ServiceProvider::class,
     ];
 }
