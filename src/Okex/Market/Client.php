@@ -68,4 +68,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/market/books', compact('instId', 'sz'));
     }
+
+    /**
+     * 获取所有交易产品K线数据.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function kline($params)
+    {
+        return $this->httpGet('/api/v5/market/candles', $params);
+    }
 }
