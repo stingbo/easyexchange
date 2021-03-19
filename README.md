@@ -54,7 +54,7 @@ $app->basic->exchangeInfo();
 $app->basic->systemStatus();
 ```
 
-2. 用户信息
+2. 账户信息
 ```php
 // 获取BNB抵扣开关状态
 $app->user->getBnbBurnStatus();
@@ -371,7 +371,7 @@ $app->basic->systemTime();
 $app->basic->marketStatus();
 ```
 
-2. 用户信息
+2. 账户信息
 ```php
 // 账户信息
 $app->user->accounts();
@@ -521,9 +521,45 @@ $config = [
 $app = Factory::okex($config['okex']);
 ```
 
+1. 基础信息
 ```php
+// 获取系统时间
 $app->basic->systemTime();
-$app->basic->exchangeInfo('SPOT');
+$params = [
+    'instType' => 'SPOT',
+];
+// 获取交易产品基础信息
+$app->basic->exchangeInfo($params);
+```
 
+2. 账户信息
+
+3. 市场行情相关
+```php
+// 获取产品深度
 $app->market->depth('BTC-USD-SWAP', 5);
 ```
+
+4. 资金相关
+
+5. 交易相关
+```php
+$params = [
+    'instId' => 'BTC-USD-190927-5000-C',
+    'tdMode' => 'cash',
+    'side' => 'buy',
+    'ordType' => 'limit', // 限价单
+    'sz' => '0.0001', // 委托数量
+    'px' => '1000', // 委托价格，仅适用于限价单
+];
+// 下单
+$app->trade->order($params);
+$params = [
+    'instId' => 'BTC-USD-190927-5000-C',
+    'ordId' => '2510789768709120',
+];
+// 获取订单信息
+$app->trade->get($params);
+```
+
+6. 策略委托
