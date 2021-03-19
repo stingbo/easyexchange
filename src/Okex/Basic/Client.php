@@ -139,4 +139,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/public/estimated-price', compact('instId'));
     }
+
+    /**
+     * 获取免息额度和币种折算率等级.
+     *
+     * @param string $ccy
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function discountRateInterestFreeQuota($ccy = '')
+    {
+        return $this->httpGet('/api/v5/public/discount-rate-interest-free-quota', compact('ccy'));
+    }
 }
