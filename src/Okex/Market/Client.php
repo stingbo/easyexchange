@@ -38,6 +38,22 @@ class Client extends BaseClient
     }
 
     /**
+     * 获取指数行情.
+     *
+     * @param string $quoteCcy
+     * @param string $instId
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function indexTickers($quoteCcy = '', $instId = '')
+    {
+        return $this->httpGet('/api/v5/market/index-tickers', compact('quoteCcy', 'instId'));
+    }
+
+    /**
      * 获取产品深度.
      *
      * @param $instId
