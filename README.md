@@ -533,6 +533,8 @@ $app->basic->exchangeInfo($params);
 ```
 
 2. 账户信息
+```php
+```
 
 3. 市场行情相关
 ```php
@@ -541,6 +543,8 @@ $app->market->depth('BTC-USD-SWAP', 5);
 ```
 
 4. 资金相关
+```php
+```
 
 5. 交易相关
 ```php
@@ -563,3 +567,5 @@ $app->trade->get($params);
 ```
 
 6. 策略委托
+```php
+```
