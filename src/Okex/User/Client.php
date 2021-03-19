@@ -35,4 +35,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/account/positions', $params, 'SIGN');
     }
+
+    /**
+     * 账单流水查询（近七天）.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function bills($params)
+    {
+        return $this->httpGet('/api/v5/account/bills', $params, 'SIGN');
+    }
 }
