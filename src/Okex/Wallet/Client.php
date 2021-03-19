@@ -95,4 +95,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/asset/withdrawal-history', $params, 'SIGN');
     }
+
+    /**
+     * 获取币种列表.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function currencies()
+    {
+        return $this->httpGet('/api/v5/asset/currencies', [], 'SIGN');
+    }
 }
