@@ -78,4 +78,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/public/funding-rate', compact('instId'));
     }
+
+    /**
+     * 获取永续合约历史资金费率.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fundingRateHistory($params)
+    {
+        return $this->httpGet('/api/v5/public/funding-rate-history', $params);
+    }
 }
