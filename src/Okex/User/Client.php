@@ -138,4 +138,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/account/max-avail-size', $params, 'SIGN');
     }
+
+    /**
+     * 调整保证金.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function marginBalance($params)
+    {
+        return $this->httpPostJson('/api/v5/account/position/margin-balance', $params, [], 'SIGN');
+    }
 }
