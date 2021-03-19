@@ -113,4 +113,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/market/index-candles', $params);
     }
+
+    /**
+     * 获取标记价格K线数据.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function markPriceKline($params)
+    {
+        return $this->httpGet('/api/v5/market/mark-price-candles', $params);
+    }
 }
