@@ -65,4 +65,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/account/bills-archive', $params, 'SIGN');
     }
+
+    /**
+     * 查看账户配置.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function config()
+    {
+        return $this->httpGet('/api/v5/account/config', [], 'SIGN');
+    }
 }
