@@ -108,4 +108,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/asset/currencies', [], 'SIGN');
     }
+
+    /**
+     * 余币宝申购/赎回.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function purchaseRedempt($params)
+    {
+        return $this->httpPostJson('/api/v5/asset/purchase_redempt', $params, [], 'SIGN');
+    }
 }
