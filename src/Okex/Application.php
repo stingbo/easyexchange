@@ -18,5 +18,6 @@ class Application extends ServiceContainer
         Market\ServiceProvider::class,
         Trade\ServiceProvider::class,
         User\ServiceProvider::class,
+        Wallet\ServiceProvider::class,
     ];
 }
