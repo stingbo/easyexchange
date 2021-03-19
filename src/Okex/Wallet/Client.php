@@ -123,4 +123,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/api/v5/asset/purchase_redempt', $params, [], 'SIGN');
     }
+
+    /**
+     * 资金流水查询.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function bills($params)
+    {
+        return $this->httpGet('/api/v5/asset/bills', $params, 'SIGN');
+    }
 }
