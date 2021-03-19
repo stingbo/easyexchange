@@ -23,6 +23,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 获取单个产品行情信息.
+     *
+     * @param $instId
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function ticker($instId)
+    {
+        return $this->httpGet('/api/v5/market/tickers', compact('instId'));
+    }
+
+    /**
      * 获取产品深度.
      *
      * @param $instId
