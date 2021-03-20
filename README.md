@@ -493,14 +493,20 @@ $app->trade->transactFeeRate($symbols);
 
 6. 借币（逐仓/全仓杠杆）
 ```php
+// 归还借币（全仓逐仓通用）
+$app->margin->repayment($params);
 ```
 
 7. 策略委托
 ```php
+// 策略委托下单
+$app->algo->order($params);
 ```
 
 8. 借币（C2C）
 ```php
+// 借入借出下单
+$app->c2c->order($params);
 ```
 
 ### 欧易 V5 版本
