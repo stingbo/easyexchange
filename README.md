@@ -14,11 +14,13 @@
 $ composer require "stingbo/easyexchange" -vvv
 ```
 
-## 约束
+## 约定
 
-1. 对应平台接口，在大于或等于三个参数以上的，使用数组传入，否则使用同名参数传入
-2. 币安的 timestamp 参数已内置，不需要额外传入
-3. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
+1. 你已非常熟悉了项目里接入平台的API文档
+2. 大于或等于三个参数以上的，使用数组传入，否则使用同名参数传入
+3. 接口名称不一定和对应平台的一致，多个平台类似的接口，我做了统一，但参数需要传入平台对应的名称
+4. 币安的 timestamp 参数已内置，不需要额外传入
+5. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
 
 ## 使用说明
 
@@ -515,6 +517,7 @@ $config = [
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
+        'x-simulated-trading' => 1,
     ],
 ];
 
@@ -523,27 +526,99 @@ $app = Factory::okex($config['okex']);
 
 1. 基础信息
 ```php
-// 获取系统时间
-$app->basic->systemTime();
 $params = [
     'instType' => 'SPOT',
 ];
 // 获取交易产品基础信息
 $app->basic->exchangeInfo($params);
+// 获取交割和行权记录
+$app->basic->deliveryExerciseHistory($params);
+// 获取持仓总量
+$app->basic->openInterest($params);
+// 获取永续合约当前资金费率
+$app->basic->fundingRate($instId);
+// 获取永续合约历史资金费率
+$app->basic->fundingRateHistory($params);
+// 获取限价
+$app->basic->priceLimit($instId);
+// 获取期权定价
+$app->basic->optSummary($uly, $expTime = '');
+// 获取预估交割/行权价格
+$app->basic->estimatedPrice($instId);
+// 获取免息额度和币种折算率等级
+$app->basic->discountRateInterestFreeQuota($ccy = '');
+// 获取系统时间
+$app->basic->systemTime();
+// 获取平台公共爆仓单信息
+$app->basic->liquidationOrders($params);
+// 获取标记价格
+$app->basic->markPrice($params);
 ```
 
 2. 账户信息
 ```php
+// 查看账户余额
+$app->user->balance($ccy = '');
+// 查看持仓信息
+$app->user->positions($params);
+// 账单流水查询（近七天）
+$app->user->bills($params);
+// 账单流水查询（近三个月）
+$app->user->billsArchive($params);
+// 查看账户配置
+$app->user->config();
+// 设置持仓模式
+$app->user->setPositionMode($posMode);
+// 设置杠杆倍数
+$app->user->setLeverage($params);
+// 获取最大可买卖/开仓数量
+$app->user->maxSize($params);
+// 获取最大可用数量
+$app->user->maxAvailSize($params);
+// 调整保证金
+$app->user->marginBalance($params);
+// 获取杠杆倍数
+$app->user->leverageInfo($instId, $mgnMode);
+// 获取交易产品最大可借
+$app->user->maxLoan($params);
+// 获取当前账户交易手续费费率
+$app->user->tradeFee($params);
+// 获取计息记录
+$app->user->interestAccrued($params);
+// 期权希腊字母PA/BS切换
+$app->user->setGreeks($greeksType);
+// 查看账户最大可转余额
+$app->user->maxWithdrawal($ccy = '');
 ```
 
 3. 市场行情相关
 ```php
+// 获取所有产品行情信息
+$app->market->tickers($instType, $uly = '');
+// 获取单个产品行情信息
+$app->market->ticker($instId);
+// 获取指数行情
+$app->market->indexTickers($quoteCcy = '', $instId = '');
 // 获取产品深度
-$app->market->depth('BTC-USD-SWAP', 5);
+$instId = 'BTC-USD-SWAP';
+$sz = 1
+$app->market->depth($instId, $sz);
+// 获取所有交易产品K线数据
+$app->market->kline($params);
+// 获取交易产品历史K线数据（仅主流币）
+$app->market->klineHistory($params);
+// 获取指数K线数据
+$app->market->indexKline($params);
+// 获取标记价格K线数据
+$app->market->markPriceKline($params);
+// 获取交易产品公共成交数据
+$app->market->trades($instId, $limit = 100);
 ```
 
 4. 资金相关
 ```php
+// 获取充值地址信息
+$app->wallet->depositAddress($ccy);
 ```
 
 5. 交易相关
@@ -568,4 +643,6 @@ $app->trade->get($params);
 
 6. 策略委托
 ```php
+// 策略委托下单
+$app->algo->order($params);
 ```
