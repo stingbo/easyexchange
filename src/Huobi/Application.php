@@ -15,6 +15,7 @@ class Application extends ServiceContainer
     protected $providers = [
         Algo\ServiceProvider::class,
         Basic\ServiceProvider::class,
+        C2C\ServiceProvider::class,
         Margin\ServiceProvider::class,
         Market\ServiceProvider::class,
         Trade\ServiceProvider::class,
