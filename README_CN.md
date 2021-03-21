@@ -1,40 +1,41 @@
-## PHP Easy Exchange Api
-- Easy use digital currency exchange SDK, include `Binance`, `OKEX`, `Huobi pro` etc
-- [中文文档](README_CN.md)
-- [接口列表](api.md)
+## EasyExchange
+- 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
+- [English Doc](README_EN.md)
+- [API List](api.md)
 
-## Requirement
+## 依赖
 
 1. PHP >= 7.2
 2. **[Composer](https://getcomposer.org/)**
 
-## Installation
+## 安装
 
 ```shell
 $ composer require "stingbo/easyexchange" -vvv
 ```
 
-## Agreement
+## 约定
 
-1. You are very familiar with the API documentation of the access platform in the project
-2. If it is greater than or equal to more than three parameters, use an array to pass in, otherwise use a parameter with the same name to pass in
-3. The interface name is not necessarily consistent with the corresponding platform. I have unified the interfaces of multiple platforms, but the parameters need to be passed in the corresponding name of the platform
-4. Binance's timestamp parameter is built-in, no additional input is required
-5. Huobi’s AccessKeyId, SignatureMethod, SignatureVersion, and Timestamp are already built-in, no additional input is required
+1. 你已非常熟悉了项目里接入平台的API文档
+2. 大于或等于三个参数以上的，使用数组传入，否则使用同名参数传入
+3. 接口名称不一定和对应平台的一致，多个平台类似的接口，我做了统一，但参数需要传入平台对应的名称
+4. 币安的 timestamp 参数已内置，不需要额外传入
+5. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
 
-## Usage
+## 使用说明
 
-### Binance
+### 币安
 ```php
 <?php
 
 use EasyExchange\Factory;
 
+// 配置
 $config = [
     'binance' => [
         'response_type' => 'array',
-        //'base_uri' => 'https://api.binance.com',
-        'base_uri' => 'https://testnet.binance.vision', // testnet
+        //'base_uri' => 'https://api.binance.com', // 正式网
+        'base_uri' => 'https://testnet.binance.vision', // 测试网
         'app_key' => 'your app key',
         'secret' => 'your secret',
     ],
@@ -43,109 +44,106 @@ $config = [
 $app = Factory::binance($config['binance']);
 ```
 
-1. Basic Information
+1. 基础信息
 ```php
-// Test Connectivity
+// 测试服务器连通性
 $app->basic->ping();
-// Check Server Time
+// 获取服务器时间
 $app->basic->systemTime();
-// Exchange Information
+// 交易规范信息
 $app->basic->exchangeInfo();
-// System Status
+// 系统状态
 $app->basic->systemStatus();
 ```
 
-2. Account Information
+2. 账户信息
 ```php
-// Get BNB Burn Status
+// 获取BNB抵扣开关状态
 $app->user->getBnbBurnStatus();
-// Toggle BNB Burn On Spot Trade And Margin Interest
-$params = []; // For specific values, see the corresponding api document, the same below
-$app->user->bnbBurn($params);
+// 现货交易和杠杆利息BNB抵扣开关
+$app->user->bnbBurn();
 ```
 
-3. Market Data
+3. 市场行情相关
 ```php
-// Order Book
-$symbol = 'ETHBTC';
-$app->market->depth($symbol);
-// Recent Trades List
-$app->market->trades($symbol, 10);
-// Old Trade Lookup
-$app->market->historicalTrades($symbol, 10);
-// Compressed/Aggregate Trades List
-$app->market->aggTrades($symbol);
-// Kline/Candlestick Data
+// 深度信息
+$app->market->depth('LTCBTC');
+// 近期成交列表
+$app->market->trades('ETHBTC', 10);
+// 查询历史成交
+$app->market->historicalTrades('ETHBTC', 10);
+// 近期成交
+$app->market->aggTrades('ETHBTC');
+// 24hr 价格变动情况
+$app->market->hr24('ETHBTC');
+// K线数据
 $params = [
     'symbol' => 'ETHBTC',
     'interval' => 'DAY',
-    'startTime' => 'timestamp',
-    'endTime' => 'timestamp',
+    'startTime' => '时间戳',
+    'endTime' => '时间戳',
     'limit' => 10,
-];
+]; // 详见币安文档
 $app->market->kline($params);
-// Current Average Price
-$app->market->avgPrice($symbol);
-// 24hr Ticker Price Change Statistics
-$app->market->hr24($symbol);
-// Symbol Price Ticker
-$app->market->price($symbol);
-// Symbol Order Book Ticker
-$app->market->bookTicker($symbol);
+// 当前平均价格
+$app->market->avgPrice('ETHBTC');
+// 获取交易对最新价格
+$app->market->price('ETHBTC');
+// 返回当前最优的挂单(最高买单，最低卖单)
+$app->market->bookTicker('ETHBTC');
 ```
 
-4. Wallet
+4. 钱包相关
 ```php
-// All Coins' Information
+// 获取所有币信息
 $app->market->getAll();
-// Daily Account Snapshot
-$params = []; // For specific values, see the corresponding api document, the same below
+// 查询每日资产快照
+$params = []; // 具体值详见对应api文档，下同
 $app->market->accountSnapshot($params);
-// Disable Fast Withdraw Switch
+// 关闭站内划转
 $app->market->disableFastWithdrawSwitch();
-// Enable Fast Withdraw Switch
+// 开启站内划转
 $app->market->enableFastWithdrawSwitch();
-// Withdraw[SAPI]-Submit a withdraw request
+// 提币[SAPI]-Submit a withdraw request
 $app->market->withdrawApply($params);
-// Withdraw[WAPI]-Submit a withdraw request
+// 提币[WAPI]-提交提现请求
 $app->market->withdraw($params);
-// Deposit History(supporting network)
+// 获取充值历史(支持多网络)
 $app->market->capitalDepositHistory($params);
-// Deposit History
+// 获取充值历史
 $app->market->depositHistory($params);
-// Withdraw History(supporting network)
+// 获取提币历史
 $app->market->capitalWithdrawHistory($params);
-// Withdraw History
+// 获取提币历史
 $app->market->withdrawHistory($params);
-// Deposit Address (supporting network)
+// 获取充值地址 (支持多网络)
 $app->market->capitalDepositAddress($params);
-// Deposit Address
+// 获取充值地址
 $app->market->depositAddress($params);
-// Account Status
+// 账户状态
 $app->market->accountStatus();
-// Account API Trading Status
+// 账户API交易状态
 $app->market->apiTradingStatus();
-// DustLog-Fetch small amounts of assets exchanged BNB records
+// 小额资产转换BNB历史
 $app->market->userAssetDribbletLog();
-// Dust Transfer-Convert dust assets to BNB.
-//It is written on the Binance document:ARRAY,the asset being converted. For example：asset = BTC＆asset = USDT
-$asset = [];
+// 小额资产转换
+$asset = []; //币安文档上写的:ARRAY,正在转换的资产。例如：asset = BTC＆asset = USDT
 $app->market->assetDust($asset);
-// Asset Dividend Record
+// 资产利息记录
 $app->market->assetDividend($params);
-// Asset Detail
+// 上架资产详情
 $app->market->assetDetail();
-// Trade Fee
+// 交易手续费率查询
 $app->market->tradeFee();
-// User Universal Transfer
+// 用户万向划转
 $app->market->transfer($params);
-// Query User Universal Transfer History
+// 查询用户万向划转历史
 $app->market->transferHistory($params);
 ```
 
-5. Spot Trade
+5. 现货交易相关
 ```php
-// Test New Order
+// 测试下单
 $params = [
     'symbol' => 'LTCUSDT',
     'side' => 'SELL', //BUY or SELL
@@ -156,7 +154,7 @@ $params = [
     'recvWindow' => 10000,
 ];
 $app->spot->orderTest($params);
-// New Order
+// 下单
 $params = [
     'symbol' => 'LTCUSDT',
     'side' => 'SELL', //BUY or SELL
@@ -167,180 +165,184 @@ $params = [
     'recvWindow' => 10000,
 ];
 $app->spot->order($params);
-// Cancel Order
+// 获取交易对的所有当前挂单
+$app->spot->openOrders('ETHBTC');
+// 撤销订单
 $params = [
     'symbol' => 'LTCUSDT',
     'orderId' => 3946,
     'recvWindow' => 10000,
 ];
 $app->spot->cancelOrder($params);
-// Cancel all Open Orders on a Symbol
+// 撤销单一交易对的所有挂单
 $app->spot->cancelOrders('ETHBTC');
-// Query Order
-$params = []; // For specific values, see the corresponding api document, the same below
+// 查询订单
+$params = []; // 具体值详见对应api文档，下同
 $app->spot->get($params);
-// Current Open Orders
-$app->spot->openOrders('ETHBTC');
-// All Orders-Get all account orders; active, canceled, or filled.
+// 获取所有帐户订单； 有效，已取消或已完成
 $app->spot->allOrders($params);
-// New OCO
-$app->spot->oco($params);
-// Cancel OCO
-$app->spot->cancelOcoOrder($params);
-// Query OCO
-$app->spot->getOcoOrder($params);
-// Query all OCO
-$app->spot->allOrderList($params);
-// Query Open OCO
-$app->spot->openOrderList($params);
-// Account Trade List
+// 获取账户指定交易对的成交历史
+$params = []; // 具体值详见对应api文档，下同
 $app->spot->myTrades($params);
+// OCO下单
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->oco($params);
+// 取消 OCO 订单
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->cancelOcoOrder($params);
+// 查询 OCO
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->getOcoOrder($params);
+// 查询所有 OCO
+$params = []; // 具体值详见对应api文档，下同
+$app->spot->allOrderList($params);
+// 查询 OCO 挂单
+$app->spot->openOrderList($params);
 ```
 
-6. Cross Margin Account Transfer
+6. 杠杆交易相关
 ```php
-// Cross Margin Account Transfer
+// 全仓杠杆账户划转
 $app->margin->transfer($params);
-// Margin Account Borrow
+// 杠杆账户借贷
 $app->margin->loan($params);
-// Margin Account Repay
+// 杠杆账户归还借贷
 $app->margin->repay($params);
-// Query Margin Asset
+// 查询杠杆资产
 $asset = 'BNB';
 $app->margin->asset($asset);
-// Query Cross Margin Pair
+// 获取所有杠杆资产信息
+$app->margin->allAssets();
+// 查询全仓杠杆交易对
 $symbol = 'LTCUSDT';
 $app->margin->pair($symbol);
-// Get All Margin Assets
-$app->margin->allAssets();
-// Get All Cross Margin Pairs
+// 获取所有全仓杠杆交易对
 $app->margin->allPairs();
-// Query Margin PriceIndex
+// 查询杠杆价格指数
 $app->margin->priceIndex($symbol);
-// Margin Account New Order
+// 杠杆账户下单
 $app->margin->order($params);
-// Margin Account Cancel Order
+// 杠杆账户撤销订单
 $app->margin->cancelOrder($params);
-// Margin Account Cancel all Open Orders on a Symbol
+// 杠杆账户撤销单一交易对的所有挂单
 $app->margin->cancelOrders($params);
-// Get Cross Margin Transfer History
+// 获取全仓杠杆划转历史
 $app->margin->transferHistory($params);
-// Query Loan Record
+// 查询借贷记录
 $app->margin->loanHistory($params);
-// Query Repay Record
+// 查询还贷记录
 $app->margin->repayHistory($params);
-// Get Interest History
+// 获取利息历史
 $app->margin->interestHistory($params);
-// Get Force Liquidation Record
+// 获取账户强制平仓记录
 $app->margin->forceLiquidationRec($params);
-// Query Cross Margin Account Details
+// 查询全仓杠杆账户详情
 $app->margin->account();
-// Query Margin Account's Order
+// 查询杠杆账户订单
 $app->margin->get($params);
-// Query Margin Account's Open Orders
+// 查询杠杆账户挂单记录
 $app->margin->openOrders($params);
-// Query Margin Account's All Orders
+// 查询杠杆账户的所有订单
 $app->margin->allOrders($params);
-// Query Margin Account's Trade List
+// 查询杠杆账户交易历史
 $app->margin->myTrades($params);
-// Query Max Borrow
+// 查询账户最大可借贷额度
 $app->margin->maxBorrowable($params);
-// Query Max Transfer-Out Amount
+// 查询最大可转出额
 $app->margin->maxTransferable($params);
-// Create Isolated Margin Account
+// 创建杠杆逐仓账户
 $app->margin->create($params);
-// Isolated Margin Account Transfer
+// 杠杆逐仓账户划转
 $app->margin->isolatedTransfer($params);
-// Get Isolated Margin Transfer History
+// 获取杠杆逐仓划转历史
 $app->margin->isolatedTransferHistory($params);
-// Query Isolated Margin Account Info
+// 查询杠杆逐仓账户信息
 $app->margin->isolatedAccount($symbol);
-// Query Isolated Margin Symbol
+// 查询逐仓杠杆交易对
 $app->margin->isolatedPair($symbol);
-// Get All Isolated Margin Symbol
+// 获取所有逐仓杠杆交易对
 $app->margin->isolatedAllPairs();
-// Query Margin Interest Rate History
-$app->margin->interestRateHistory($params);
 ```
 
-7. Futures
+7. 合约交易相关
 ```php
-// New Future Account Transfer
+// 合约资金划转
 $app->future->transfer($params);
-// Get Future Account Transaction History List
+// 获取合约资金划转历史
 $app->future->transferHistory($params);
-// Borrow For Cross-Collateral
+// 混合保证金借款
 $app->future->borrow($params);
-// Cross-Collateral Borrow History
+// 混合保证金借款历史
 $app->future->borrowHistory($params);
-// Repay For Cross-Collateral
+// 混合保证金还款
 $app->future->repay($params);
-// Cross-Collateral Repayment History
+// 混合保证金还款历史
 $app->future->repayHistory($params);
-// Cross-Collateral Wallet - v1 & v2，default v1，the same below
+// 混合保证金钱包 v1 & v2，默认为v1，下同
 $version = 'v1';
 $app->future->wallet($version);
-// Cross-Collateral Information - v1 & v2，default v1，the same below
+// 混合保证金信息 v1 & v2，默认为v1，下同
 $app->future->configs($params, $version);
-// Calculate Rate After Adjust Cross-Collateral LTV - v1 & v2
+// 计算调整后的混合保证金质押率 v1 & v2
 $app->future->calcAdjustLevel($params, $version);
-// Get Max Amount for Adjust Cross-Collateral LTV - v1 & v2
+// 可供调整混合保证金质押率的最大额 v1 & v2
 $app->future->calcMaxAdjustAmount($params, $version);
-// Adjust Cross-Collateral LTV - v1 & v2
+// 调整混合保证金质押率 v1 & v2
 $app->future->adjustCollateral($params, $version);
-// Adjust Cross-Collateral LTV History
+// 混合保证金调整质押率历史
 $app->future->adjustCollateralHistory($params);
-// Cross-Collateral Liquidation History
+// 混合保证金强平历史
 $app->future->liquidationHistory($params);
-// Check Collateral Repay Limit-Check the maximum and minimum limit when repay with collateral
+// 混合保证金抵押物还款上下限
 $app->future->collateralRepayLimit($params);
-// Get Collateral Repay Quote
+// 获取混合保证金抵押物还款兑换比率
 $app->future->getCollateralRepay($params);
-// Repay with Collateral-Repay with collateral. Get quote before repay with collateral is mandatory, the quote will be valid within 25 seconds
+// 混合保证金抵押物还款
 $quoteId = '8a03da95f0ad4fdc8067e3b6cde72423';
 $app->future->collateralRepay($quoteId);
-// Collateral Repayment Result
+// 混合保证金抵押物还款结果
 $app->future->collateralRepayResult($quoteId);
-// Cross-Collateral Interest History
+// 混合保证金利息收取历史
 $app->future->interestHistory($params);
 ```
 
-8. Mining
+8. 矿池相关
 ```php
-// Acquiring Algorithm
+// 获取算法
 $app->pool->algoList();
-// Acquiring CoinName
+// 获取币种
 $app->pool->coinList();
-// Request for Detail Miner List
+// 请求矿工列表明细
 $app->pool->workerDetail($params);
-// Request for Miner List
+// 请求矿工列表
 $app->pool->workerList($params);
-// Earnings List
+// 收益列表
 $app->pool->paymentList($params);
-// Extra Bonus List
+// 其他收益列表
 $app->pool->paymentOther($params);
-// Hashrate Resale Detail List
+// 算力转让详情列表
 $app->pool->hashTransferConfigDetails($params);
-// Hashrate Resale List
+// 算力转让列表
 $app->pool->hashTransferConfigDetailsList($params);
-// Hashrate Resale Detail
+// 算力转让详情
 $app->pool->hashTransferProfitDetails($params);
-// Hashrate Resale Request
+// 算力转让请求
 $app->pool->hashTransferConfig($params);
-// Cancel hashrate resale configuration
+// 取消算力转让设置
 $app->pool->hashTransferConfigCancel($params);
-// Statistic List
+// 统计列表
 $app->pool->userStatus($params);
-// Account List
+// 账号列表
 $app->pool->userList($params);
 ```
 
-### Huobi
+### 火币
 ```php
 <?php
 
 use EasyExchange\Factory;
 
+// 配置
 $config = [
     'huobi' => [
         'response_type' => 'array',
@@ -353,93 +355,93 @@ $config = [
 $app = Factory::houbi($config['houbi']);
 ```
 
-1. Basic Information
+1. 基础信息
 ```php
-// Get system status
+// 系统状态
 $app->basic->systemStatus();
-// Get Market Status
+// 获取当前市场状态
 $app->basic->marketStatus();
-// Get all Supported Trading Symbol
+// 获取所有交易对
 $app->basic->exchangeInfo();
-// Get all Supported Currencies
+// 获取所有币种
 $app->basic->currencys();
-// APIv2 - Currency & Chains
+// APIv2 币链参考信息
 $app->basic->currencies();
-// Get Current Timestamp
+// 获取当前系统时间戳
 $app->basic->systemTime();
 ```
 
-2. Account Information
+2. 账户信息
 ```php
-// Get all Accounts of the Current User
+// 账户信息
 $app->user->accounts();
-// Get Account Balance of a Specific Account
+// 账户余额
 $account_id = 360218;
 $app->user->balance($account_id);
-// Get Asset Valuation
-$params = []; // For specific values, see the corresponding api document, the same below
+// 获取账户资产估值
+$params = []; // 具体值详见对应api文档，下同
 $app->user->assetValuation($params);
-// Asset Transfer
+// 资产划转
 $app->user->transfer($params);
-// Get Account History
+// 账户流水
 $app->user->history($params);
-// Get Account Ledger
+// 财务流水
 $app->user->ledger($params);
-// Transfer Fund Between Spot Account and Future Contract Account
+// 币币现货账户与合约账户划转
 $app->user->futuresTransfer($params);
-// Get Point Balance
+// 点卡余额查询
 $app->user->point($subUid = '');
-// Point Transfer
+// 点卡划转
 $app->user->pointTransfer($params);
 ```
 
-3. Market Data
+3. 市场行情相关
 ```php
-// Get Klines(Candles)
+// K 线数据（蜡烛图）
 $params = [
     'symbol' => 'btcusdt',
     'period' => '5min',
 ];
 $app->market->kline($params);
-// Get Latest Aggregated Ticker
+// 聚合行情（Ticker）
 $app->market->aggTrades($symbol);
-// Get Latest Tickers for All Pairs
+// 所有交易对的最新 Tickers
 $app->market->tickers();
-// Get Market Depth
+// 市场深度数据
 $app->market->depth($params);
-// Get the Last Trade
+// 最近市场成交记录
 $app->market->trades($symbol);
-// Get the Most Recent Trades
+// 获得近期交易记录
 $app->market->historicalTrades($symbol);
-// Get the Last 24h Market Summary
+// 最近24小时行情数据
 $app->market->hr24($symbol);
-// Get real time NAV
+// 获取杠杆ETP实时净值
 $app->market->etp($symbol);
 ```
 
-4. Wallet
+4. 钱包相关
 ```php
-// Query Deposit Address
+// 充币地址查询
 $currency = 'btc';
 $app->wallet->depositAddress($currency);
-// Query Withdraw Quota
+// 提币额度查询
 $app->wallet->withdrawQuota($currency);
-// Query withdraw address
+// 充币地址查询
 $params = [
     'currency' => 'xrp',
 ];
 $app->wallet->withdrawAddress($params);
-// Create a Withdraw Request
+// 虚拟币提币
 $app->wallet->withdraw($params);
-// Cancel a Withdraw Request
+// 取消提币
 $app->wallet->cancelWithdraw($params);
-// Search for Existed Withdraws and Deposits
+// 充提记录
 $app->wallet->depositHistory($params);
 ```
 
-5. Trading
+5. 现货/杠杆交易相关
 ```php
-// Place a New Order
+// 下单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
@@ -448,127 +450,128 @@ $params = [
     'price' => 10000,
 ];
 $app->trade->order($params);
-// Place a Batch of Orders
-$app->trade->batchOrders($params);
-// Submit Cancel for an Order
+// 撤销订单
 $app->trade->cancelOrder('204533841408061');
-// Submit Cancel for an Order (based on client order ID)
-$client_order_id = 'a0001';
-$app->trade->cancelClientOrder($client_order_id);
-// Get All Open Orders
+// 查询当前未成交订单
 $params = [
     'account-id' => 360000,
     'symbol' => 'btcusdt',
 //    'side' => 'both',
 ];
 $app->trade->openOrders($params);
-// Submit Cancel for Multiple Orders by Criteria
-$app->trade->batchCancelOpenOrders($params);
-// Submit Cancel for Multiple Orders by IDs
-$order_ids = ['5983466', '5722939', '5721027'];
-$app->trade->batchCancel($order_ids);
-// Dead man’s switch
+// 批量下单
+$app->trade->batchOrders($params);
+// 撤销订单（基于client order ID）
+$client_order_id = 'a0001';
+$app->trade->cancelClientOrder($client_order_id);
+// 自动撤销订单
 $timeout = 10;
 $app->trade->cancelAllAfter($timeout);
-// Get the Order Detail of an Order
+// 批量撤销所有订单
+$app->trade->batchCancelOpenOrders($params);
+// 批量撤销指定订单
+$order_ids = ['5983466', '5722939', '5721027'];
+$app->trade->batchCancel($order_ids);
+// 查询订单详情
 $order_id = '59378';
 $app->trade->get($order_id);
-// Get the Order Detail of an Order (based on client order ID)
+// 查询订单详情（基于client order ID）
 $order_client_id = 'a0001';
 $app->trade->getClientOrder($order_client_id);
-// Get the Match Result of an Order
+// 成交明细
 $app->trade->matchResult($order_id);
-// Search Past Orders
+// 搜索历史订单
 $app->trade->getOrders($params);
-// Search Historical Orders within 48 Hours
+// 搜索最近48小时内历史订单
 $app->trade->hr48History($params);
-// Search Match Results
+// 当前和历史成交
 $app->trade->matchResults($params);
-// Get Current Fee Rate Applied to The User
+// 获取用户当前手续费率
 $symbols = 'btcusdt,ethusdt,ltcusdt';
 $app->trade->transactFeeRate($symbols);
 ```
 
-6. Margin Loan（Cross/Isolated）
+6. 借币（逐仓/全仓杠杆）
 ```php
-// Repay Margin Loan（Cross/Isolated ）
+// 归还借币（全仓逐仓通用）
 $app->margin->repayment($params);
-// Transfer Asset from Spot Trading Account to Isolated Margin Account（Isolated）.
+// 资产划转（逐仓）-从现货账户划转至逐仓杠杆账户.
 $app->margin->transferIn($params);
-// Transfer Asset from Isolated Margin Account to Spot Trading Account（Isolated）.
+// 资产划转（逐仓）-从逐仓杠杆账户划转至现货账户.
 $app->margin->transferOut($params);
-// Get Loan Interest Rate and Quota（Isolated）.
+// 查询借币币息率及额度（逐仓）.
 $app->margin->loanInfo($params);
-// Request a Margin Loan（Isolated）.
+// 申请借币（逐仓）.
 $app->margin->orders($params);
-// Repay Margin Loan（Isolated）.
+// 归还借币（逐仓）.
 $app->margin->repay($order_id, $amount);
-// Search Past Margin Orders（Isolated）.
+// 查询借币订单（逐仓）.
 $app->margin->loanOrders($params);
-// Get the Balance of the Margin Loan Account（Isolated）.
+// 借币账户详情（逐仓）.
 $app->margin->balance($symbol = '', $sub_uid = '');
-// Transfer Asset from Spot Trading Account to Cross Margin Account（Cross）.
+// 资产划转（全仓）-从现货账户划转至全仓杠杆账.
 $app->margin->crossTransferIn($currency, $amount);
-// Transfer Asset from Cross Margin Account to Spot Trading Account（Cross）.
+// 资产划转（全仓）-从全仓杠杆账户划转至现货账户.
 $app->margin->crossTransferOut($currency, $amount);
-// Get Loan Interest Rate and Quota（Cross）.
+// 查询借币币息率及额度（全仓）.
 $app->margin->crossLoanInfo();
-// Request a Margin Loan（Cross）.
+// 申请借币（全仓）.
 $app->margin->crossOrders($currency, $amount);
-// Repay Margin Loan（Cross）.
+// 归还借币（全仓）.
 $app->margin->crossRepay($order_id, $amount);
-// Search Past Margin Orders（Cross）.
+// 查询借币订单（全仓）.
 $app->margin->crossLoanOrders($params);
-// Get the Balance of the Margin Loan Account（Cross）.
+// 借币账户详情（全仓）.
 $app->margin->crossBalance($sub_uid = '');
-// Repayment Record Reference（Cross）.
+// 还币交易记录查询（全仓）.
 $app->margin->getRepayment($params);
 ```
 
-7. Conditional Order
+7. 策略委托
 ```php
-// Place a conditional order
+// 策略委托下单
 $app->algo->order($params);
-// Cancel conditional orders (before triggering).
+// 策略委托（触发前）撤单.
 $app->algo->cancelOrder($clientOrderIds);
-// Query open conditional orders (before triggering).
+// 查询未触发OPEN策略委托.
 $app->algo->openOrders($params);
-// Query conditional order history.
+// 查询策略委托历史.
 $app->algo->orderHistory($params);
-// Query a specific conditional order.
+// 查询特定策略委托.
 $app->algo->specific($clientOrderId);
 ```
 
-8. Margin Loan（C2C）
+8. 借币（C2C）
 ```php
-// Place a lending/borrowing offer
+// 借入借出下单
 $app->c2c->order($params);
-// Cancel a lending/borrowing offer.
+// 借入借出撤单.
 $app->c2c->cancelOrder($params);
-// Cancel all lending/borrowing offers.
+// 撤销所有借入借出订单.
 $app->c2c->cancelAll($params);
-// Query lending/borrow offers.
+// 查询借入借出订单.
 $app->c2c->getOrders($params);
-// Query a lending/borrowing offer.
+// 查询特定借入借出订单及其交易记录.
 $app->c2c->get($offerId);
-// Query lending/borrowing transactions.
+// 查询借入借出交易记录.
 $app->c2c->transactions($params);
-// Repay a borrowing offer.
+// 还币.
 $app->c2c->repayment($params);
-// Query C2C repayments.
+// 查询还币交易记录.
 $app->c2c->getRepayment($params);
-// Transfer asset.
+// 资产划转.
 $app->c2c->transfer($params);
-// Query C2C account balance.
+// 查询账户余额
 $app->c2c->balance($accountId, $currency = '');
 ```
 
-### OKEX Version V5
+### 欧易 V5 版本
 ```php
 <?php
 
 use EasyExchange\Factory;
 
+// 配置
 $config = [
     'okex' => [
         'response_type' => 'array',
@@ -583,167 +586,167 @@ $config = [
 $app = Factory::okex($config['okex']);
 ```
 
-1. Basic Information
+1. 基础信息
 ```php
 $params = [
     'instType' => 'SPOT',
 ];
-// Get Instruments
+// 获取交易产品基础信息
 $app->basic->exchangeInfo($params);
-// Get Delivery/Exercise History
+// 获取交割和行权记录
 $app->basic->deliveryExerciseHistory($params);
-// Get Open Interest
+// 获取持仓总量
 $app->basic->openInterest($params);
-// Get Funding Rate
+// 获取永续合约当前资金费率
 $app->basic->fundingRate($instId);
-// Get Funding Rate History
+// 获取永续合约历史资金费率
 $app->basic->fundingRateHistory($params);
-// Get Limit Price
+// 获取限价
 $app->basic->priceLimit($instId);
-// Get Option Market Data
+// 获取期权定价
 $app->basic->optSummary($uly, $expTime = '');
-// Get Estimated Delivery/Excercise Price
+// 获取预估交割/行权价格
 $app->basic->estimatedPrice($instId);
-// Get Discount Rate And Interest-Free Quota
+// 获取免息额度和币种折算率等级
 $app->basic->discountRateInterestFreeQuota($ccy = '');
-// Get System Time
+// 获取系统时间
 $app->basic->systemTime();
-// Get Liquidation Orders
+// 获取平台公共爆仓单信息
 $app->basic->liquidationOrders($params);
-// Get Mark Price
+// 获取标记价格
 $app->basic->markPrice($params);
 ```
 
-2. Account Information
+2. 账户信息
 ```php
-// Get Balance
+// 查看账户余额
 $app->user->balance($ccy = '');
-// Get Positions
+// 查看持仓信息
 $app->user->positions($params);
-// Get Bills Details (last 7 days)
+// 账单流水查询（近七天）
 $app->user->bills($params);
-// Get Bills Details (last 3 months)
+// 账单流水查询（近三个月）
 $app->user->billsArchive($params);
-// Get Account Configuration
+// 查看账户配置
 $app->user->config();
-// Set Position mode
+// 设置持仓模式
 $app->user->setPositionMode($posMode);
-// Set Leverage
+// 设置杠杆倍数
 $app->user->setLeverage($params);
-// Get maximum buy/sell amount or open amount
+// 获取最大可买卖/开仓数量
 $app->user->maxSize($params);
-// Get Maximum Available Tradable Amount
+// 获取最大可用数量
 $app->user->maxAvailSize($params);
-// Increase/Decrease margin
+// 调整保证金
 $app->user->marginBalance($params);
-// Get Leverage
+// 获取杠杆倍数
 $app->user->leverageInfo($instId, $mgnMode);
-// Get the maximum loan of instrument
+// 获取交易产品最大可借
 $app->user->maxLoan($params);
-// Get Fee Rates
+// 获取当前账户交易手续费费率
 $app->user->tradeFee($params);
-// Get interest-accrued
+// 获取计息记录
 $app->user->interestAccrued($params);
-// Set Greeks (PA/BS)
+// 期权希腊字母PA/BS切换
 $app->user->setGreeks($greeksType);
-// Get Maximum Withdrawals
+// 查看账户最大可转余额
 $app->user->maxWithdrawal($ccy = '');
 ```
 
-3. Market Data
+3. 市场行情相关
 ```php
-// Get Tickers - Retrieve the latest price snapshot, best bid/ask price, and trading volume in the last 24 hours
+// 获取所有产品行情信息
 $app->market->tickers($instType, $uly = '');
-// Get Ticker
+// 获取单个产品行情信息
 $app->market->ticker($instId);
-// Get Index Tickers
+// 获取指数行情
 $app->market->indexTickers($quoteCcy = '', $instId = '');
-// Get Order Book
+// 获取产品深度
 $instId = 'BTC-USD-SWAP';
 $sz = 1
 $app->market->depth($instId, $sz);
-// Get Candlesticks
+// 获取所有交易产品K线数据
 $app->market->kline($params);
-// Get Candlesticks History（top currencies only）
+// 获取交易产品历史K线数据（仅主流币）
 $app->market->klineHistory($params);
-// Get Index Candlesticks
+// 获取指数K线数据
 $app->market->indexKline($params);
-// Get Mark Price Candlesticks
+// 获取标记价格K线数据
 $app->market->markPriceKline($params);
-// Get Trades
+// 获取交易产品公共成交数据
 $app->market->trades($instId, $limit = 100);
 ```
 
-4. Funding
+4. 资金相关
 ```php
-// Get Deposit Address
+// 获取充值地址信息
 $app->wallet->depositAddress($ccy);
-// Get Balance.
+// 获取资金账户余额信息.
 $app->wallet->balance($ccy = '');
-// Funds Transfer.
+// 资金划转.
 $app->wallet->transfer($params);
-// Withdrawal.
+// 提币.
 $app->wallet->withdrawal($params);
-// Get Deposit History.
+// 充值记录.
 $app->wallet->depositHistory($params = []);
-// Get Withdrawal History.
+// 提币记录.
 $app->wallet->withdrawalHistory($params = []);
-// Get Currencies.
+// 获取币种列表.
 $app->wallet->currencies();
-// PiggyBank Purchase/Redemption.
+// 余币宝申购/赎回.
 $app->wallet->purchaseRedempt($params);
-// Asset Bills Details.
+// 资金流水查询.
 $app->wallet->bills($params);
 ```
 
-5. Trade
+5. 交易相关
 ```php
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
     'tdMode' => 'cash',
     'side' => 'buy',
-    'ordType' => 'limit', // limit
-    'sz' => '0.0001', // Quantity to buy or sell
-    'px' => '1000', // Order price. Only applicable to limit order
+    'ordType' => 'limit', // 限价单
+    'sz' => '0.0001', // 委托数量
+    'px' => '1000', // 委托价格，仅适用于限价单
 ];
-// Place Order
+// 下单
 $app->trade->order($params);
-// Place Multiple Orders.
+// 批量下单.
 $app->trade->batchOrders($params);
-// Cancel Order.
+// 撤销之前下的未完成订单.
 $app->trade->cancelOrder($params);
-// Cancel Multiple Orders.
+// 批量撤单.
 $app->trade->cancelBatchOrders($params);
-// Amend Order - Amend an incomplete order.
+// 修改当前未成交的挂单.
 $app->trade->amendOrder($params);
-// Amend Multiple Orders.
+// 批量修改订单.
 $app->trade->amendBatchOrders($params);
-// Close Positions.
+// 市价仓位全平.
 $app->trade->closePosition($params);
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
     'ordId' => '2510789768709120',
 ];
-// Get Order Details
+// 获取订单信息
 $app->trade->get($params);
-// Get Order List.
+// 获取未成交订单列表.
 $app->trade->openOrders($params);
-// Get Order History (last 7 days）.
+// 获取历史订单记录（近七天）.
 $app->trade->orderHistory($params);
-// Get Order History (last 3 months).
+// 获取历史订单记录（近三个月）.
 $app->trade->orderHistoryArchive($params);
-// Get Transaction Details.
+// 获取成交明细.
 $app->trade->fills($params);
 ```
 
-6. Conditional Order(Algo Order)
+6. 策略委托
 ```php
-// Place Algo Order
+// 策略委托下单
 $app->algo->order($params);
-// Cancel Algo Order.
+// 撤销策略委托订单.
 $app->algo->cancelOrder($params);
-// Get Algo Order List.
+// 获取未完成策略委托单列表.
 $app->algo->openOrders($params);
-// Get Algo Order History.
+// 获取历史策略委托单列表.
 $app->algo->orderHistory($params);
 ```

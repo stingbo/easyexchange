@@ -31,7 +31,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function cancel($params)
+    public function cancelOrder($params)
     {
         return $this->httpPostJson('/v2/c2c/cancellation', $params, [], 'SIGN');
     }
@@ -139,5 +139,21 @@ class Client extends BaseClient
     public function transfer($params)
     {
         return $this->httpPostJson('/v2/c2c/transfer', $params, [], 'SIGN');
+    }
+
+    /**
+     * Query C2C account balance.
+     *
+     * @param $accountId
+     * @param string $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function balance($accountId, $currency = '')
+    {
+        return $this->httpGet('/v2/c2c/account', compact('accountId', 'currency'), 'SIGN');
     }
 }

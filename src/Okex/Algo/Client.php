@@ -61,7 +61,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function history($params)
+    public function orderHistory($params)
     {
         return $this->httpGet('/api/v5/trade/orders-algo-history', $params, 'SIGN');
     }
