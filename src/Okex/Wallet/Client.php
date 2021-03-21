@@ -31,7 +31,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function balances($ccy = '')
+    public function balance($ccy = '')
     {
         return $this->httpGet('/api/v5/asset/balances', compact('ccy'), 'SIGN');
     }
