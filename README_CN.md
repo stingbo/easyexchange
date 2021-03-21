@@ -1,6 +1,6 @@
 ## EasyExchange
 - 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
-- [English Doc](README_EN.md)
+- [English Doc](README.md)
 - [API List](api.md)
 
 ## 依赖
