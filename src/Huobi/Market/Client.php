@@ -9,17 +9,16 @@ class Client extends BaseClient
     /**
      * 深度信息.
      *
-     * @param $symbol
-     * @param string $type
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function depth($symbol, $type = 'step0', int $depth = 20)
+    public function depth($params)
     {
-        return $this->httpGet('/market/depth', compact('symbol', 'type', 'depth'));
+        return $this->httpGet('/market/depth', $params);
     }
 
     /**
@@ -86,18 +85,16 @@ class Client extends BaseClient
     /**
      * K 线数据（蜡烛图）.
      *
-     * @param $symbol
-     * @param $period
-     * @param int $size
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function kline($symbol, $period, $size = 150)
+    public function kline($params)
     {
-        return $this->httpGet('/market/history/kline', compact('symbol', 'period', 'size'));
+        return $this->httpGet('/market/history/kline', $params);
     }
 
     /**
