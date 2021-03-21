@@ -583,167 +583,167 @@ $config = [
 $app = Factory::okex($config['okex']);
 ```
 
-1. 基础信息
+1. Basic Information
 ```php
 $params = [
     'instType' => 'SPOT',
 ];
-// 获取交易产品基础信息
+// Get Instruments
 $app->basic->exchangeInfo($params);
-// 获取交割和行权记录
+// Get Delivery/Exercise History
 $app->basic->deliveryExerciseHistory($params);
-// 获取持仓总量
+// Get Open Interest
 $app->basic->openInterest($params);
-// 获取永续合约当前资金费率
+// Get Funding Rate
 $app->basic->fundingRate($instId);
-// 获取永续合约历史资金费率
+// Get Funding Rate History
 $app->basic->fundingRateHistory($params);
-// 获取限价
+// Get Limit Price
 $app->basic->priceLimit($instId);
-// 获取期权定价
+// Get Option Market Data
 $app->basic->optSummary($uly, $expTime = '');
-// 获取预估交割/行权价格
+// Get Estimated Delivery/Excercise Price
 $app->basic->estimatedPrice($instId);
-// 获取免息额度和币种折算率等级
+// Get Discount Rate And Interest-Free Quota
 $app->basic->discountRateInterestFreeQuota($ccy = '');
-// 获取系统时间
+// Get System Time
 $app->basic->systemTime();
-// 获取平台公共爆仓单信息
+// Get Liquidation Orders
 $app->basic->liquidationOrders($params);
-// 获取标记价格
+// Get Mark Price
 $app->basic->markPrice($params);
 ```
 
-2. 账户信息
+2. Account Information
 ```php
-// 查看账户余额
+// Get Balance
 $app->user->balance($ccy = '');
-// 查看持仓信息
+// Get Positions
 $app->user->positions($params);
-// 账单流水查询（近七天）
+// Get Bills Details (last 7 days)
 $app->user->bills($params);
-// 账单流水查询（近三个月）
+// Get Bills Details (last 3 months)
 $app->user->billsArchive($params);
-// 查看账户配置
+// Get Account Configuration
 $app->user->config();
-// 设置持仓模式
+// Set Position mode
 $app->user->setPositionMode($posMode);
-// 设置杠杆倍数
+// Set Leverage
 $app->user->setLeverage($params);
-// 获取最大可买卖/开仓数量
+// Get maximum buy/sell amount or open amount
 $app->user->maxSize($params);
-// 获取最大可用数量
+// Get Maximum Available Tradable Amount
 $app->user->maxAvailSize($params);
-// 调整保证金
+// Increase/Decrease margin
 $app->user->marginBalance($params);
-// 获取杠杆倍数
+// Get Leverage
 $app->user->leverageInfo($instId, $mgnMode);
-// 获取交易产品最大可借
+// Get the maximum loan of instrument
 $app->user->maxLoan($params);
-// 获取当前账户交易手续费费率
+// Get Fee Rates
 $app->user->tradeFee($params);
-// 获取计息记录
+// Get interest-accrued
 $app->user->interestAccrued($params);
-// 期权希腊字母PA/BS切换
+// Set Greeks (PA/BS)
 $app->user->setGreeks($greeksType);
-// 查看账户最大可转余额
+// Get Maximum Withdrawals
 $app->user->maxWithdrawal($ccy = '');
 ```
 
-3. 市场行情相关
+3. Market Data
 ```php
-// 获取所有产品行情信息
+// Get Tickers - Retrieve the latest price snapshot, best bid/ask price, and trading volume in the last 24 hours
 $app->market->tickers($instType, $uly = '');
-// 获取单个产品行情信息
+// Get Ticker
 $app->market->ticker($instId);
-// 获取指数行情
+// Get Index Tickers
 $app->market->indexTickers($quoteCcy = '', $instId = '');
-// 获取产品深度
+// Get Order Book
 $instId = 'BTC-USD-SWAP';
 $sz = 1
 $app->market->depth($instId, $sz);
-// 获取所有交易产品K线数据
+// Get Candlesticks
 $app->market->kline($params);
-// 获取交易产品历史K线数据（仅主流币）
+// Get Candlesticks History（top currencies only）
 $app->market->klineHistory($params);
-// 获取指数K线数据
+// Get Index Candlesticks
 $app->market->indexKline($params);
-// 获取标记价格K线数据
+// Get Mark Price Candlesticks
 $app->market->markPriceKline($params);
-// 获取交易产品公共成交数据
+// Get Trades
 $app->market->trades($instId, $limit = 100);
 ```
 
-4. 资金相关
+4. Funding
 ```php
-// 获取充值地址信息
+// Get Deposit Address
 $app->wallet->depositAddress($ccy);
-// 获取资金账户余额信息.
+// Get Balance.
 $app->wallet->balance($ccy = '');
-// 资金划转.
+// Funds Transfer.
 $app->wallet->transfer($params);
-// 提币.
+// Withdrawal.
 $app->wallet->withdrawal($params);
-// 充值记录.
+// Get Deposit History.
 $app->wallet->depositHistory($params = []);
-// 提币记录.
+// Get Withdrawal History.
 $app->wallet->withdrawalHistory($params = []);
-// 获取币种列表.
+// Get Currencies.
 $app->wallet->currencies();
-// 余币宝申购/赎回.
+// PiggyBank Purchase/Redemption.
 $app->wallet->purchaseRedempt($params);
-// 资金流水查询.
+// Asset Bills Details.
 $app->wallet->bills($params);
 ```
 
-5. 交易相关
+5. Trade
 ```php
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
     'tdMode' => 'cash',
     'side' => 'buy',
-    'ordType' => 'limit', // 限价单
-    'sz' => '0.0001', // 委托数量
-    'px' => '1000', // 委托价格，仅适用于限价单
+    'ordType' => 'limit', // limit
+    'sz' => '0.0001', // Quantity to buy or sell
+    'px' => '1000', // Order price. Only applicable to limit order
 ];
-// 下单
+// Place Order
 $app->trade->order($params);
-// 批量下单.
+// Place Multiple Orders.
 $app->trade->batchOrders($params);
-// 撤销之前下的未完成订单.
+// Cancel Order.
 $app->trade->cancelOrder($params);
-// 批量撤单.
+// Cancel Multiple Orders.
 $app->trade->cancelBatchOrders($params);
-// 修改当前未成交的挂单.
+// Amend Order - Amend an incomplete order.
 $app->trade->amendOrder($params);
-// 批量修改订单.
+// Amend Multiple Orders.
 $app->trade->amendBatchOrders($params);
-// 市价仓位全平.
+// Close Positions.
 $app->trade->closePosition($params);
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
     'ordId' => '2510789768709120',
 ];
-// 获取订单信息
+// Get Order Details
 $app->trade->get($params);
-// 获取未成交订单列表.
+// Get Order List.
 $app->trade->openOrders($params);
-// 获取历史订单记录（近七天）.
+// Get Order History (last 7 days）.
 $app->trade->orderHistory($params);
-// 获取历史订单记录（近三个月）.
+// Get Order History (last 3 months).
 $app->trade->orderHistoryArchive($params);
-// 获取成交明细.
+// Get Transaction Details.
 $app->trade->fills($params);
 ```
 
-6. 策略委托
+6. Conditional Order(Algo Order)
 ```php
-// 策略委托下单
+// Place Algo Order
 $app->algo->order($params);
-// 撤销策略委托订单.
+// Cancel Algo Order.
 $app->algo->cancelOrder($params);
-// 获取未完成策略委托单列表.
+// Get Algo Order List.
 $app->algo->openOrders($params);
-// 获取历史策略委托单列表.
+// Get Algo Order History.
 $app->algo->orderHistory($params);
 ```
