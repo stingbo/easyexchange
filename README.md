@@ -679,6 +679,22 @@ $app->market->trades($instId, $limit = 100);
 ```php
 // 获取充值地址信息
 $app->wallet->depositAddress($ccy);
+// 获取资金账户余额信息.
+$app->wallet->balance($ccy = '');
+// 资金划转.
+$app->wallet->transfer($params);
+// 提币.
+$app->wallet->withdrawal($params);
+// 充值记录.
+$app->wallet->depositHistory($params = []);
+// 提币记录.
+$app->wallet->withdrawalHistory($params = []);
+// 获取币种列表.
+$app->wallet->currencies();
+// 余币宝申购/赎回.
+$app->wallet->purchaseRedempt($params);
+// 资金流水查询.
+$app->wallet->bills($params);
 ```
 
 5. 交易相关
@@ -693,16 +709,42 @@ $params = [
 ];
 // 下单
 $app->trade->order($params);
+// 批量下单.
+$app->trade->batchOrders($params);
+// 撤销之前下的未完成订单.
+$app->trade->cancelOrder($params);
+// 批量撤单.
+$app->trade->cancelBatchOrders($params);
+// 修改当前未成交的挂单.
+$app->trade->amendOrder($params);
+// 批量修改订单.
+$app->trade->amendBatchOrders($params);
+// 市价仓位全平.
+$app->trade->closePosition($params);
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
     'ordId' => '2510789768709120',
 ];
 // 获取订单信息
 $app->trade->get($params);
+// 获取未成交订单列表.
+$app->trade->openOrders($params);
+// 获取历史订单记录（近七天）.
+$app->trade->orderHistory($params);
+// 获取历史订单记录（近三个月）.
+$app->trade->orderHistoryArchive($params);
+// 获取成交明细.
+$app->trade->fills($params);
 ```
 
 6. 策略委托
 ```php
 // 策略委托下单
 $app->algo->order($params);
+// 撤销策略委托订单.
+$app->algo->cancelOrder($params);
+// 获取未完成策略委托单列表.
+$app->algo->openOrders($params);
+// 获取历史策略委托单列表.
+$app->algo->orderHistory($params);
 ```
