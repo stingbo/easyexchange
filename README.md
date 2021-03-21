@@ -1,7 +1,7 @@
 ## EasyExchange
 - 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
-- [接口列表](api.md)
 - [English Doc](README_EN.md)
+- [API List](api.md)
 
 ## 依赖
 
@@ -101,12 +101,12 @@ $app->market->getAll();
 $params = []; // 具体值详见对应api文档，下同
 $app->market->accountSnapshot($params);
 // 关闭站内划转
-$app->market->disableFastWithdrawSwitch($params);
+$app->market->disableFastWithdrawSwitch();
 // 开启站内划转
-$app->market->enableFastWithdrawSwitch($params);
-// 提币-Submit a withdraw request
+$app->market->enableFastWithdrawSwitch();
+// 提币[SAPI]-Submit a withdraw request
 $app->market->withdrawApply($params);
-// 提币-提交提现请求
+// 提币[WAPI]-提交提现请求
 $app->market->withdraw($params);
 // 获取充值历史(支持多网络)
 $app->market->capitalDepositHistory($params);
