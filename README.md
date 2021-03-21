@@ -766,7 +766,14 @@ $config = [
 $app = Factory::gate($config['gate']);
 ```
 
-1. Spot Trade
+1. Wallet
+```php
+// Generate currency deposit address.
+$currency = 'USDT';
+$app->wallet->depositAddress($currency);
+```
+
+2. Spot Trade
 ```php
 // List all currencies' detail.
 $app->spot->currencies();
@@ -789,4 +796,12 @@ $app->spot->depth($params);
 $app->spot->trades($params);
 // Market candlesticks.
 $app->spot->kline($params);
+// Create an order.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+    'side' => 'buy',
+    'amount' => '0.1',
+    'price' => '10',
+];
+$app->spot->order($params);
 ```
