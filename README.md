@@ -747,3 +747,46 @@ $app->algo->openOrders($params);
 // Get Algo Order History.
 $app->algo->orderHistory($params);
 ```
+
+### Gate Version V4
+
+```php
+<?php
+
+use EasyExchange\Factory;
+
+$config = [
+    'gate' => [
+        'base_uri' => 'https://api.gateio.ws',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+    ],
+];
+
+$app = Factory::gate($config['gate']);
+```
+
+1. Spot Trade
+```php
+// List all currencies' detail.
+$app->spot->currencies();
+// Get detail of one particular currency.
+$currency = 'GT';
+$app->spot->currency($currency);
+// List all currency pairs supported.
+$app->spot->currencyPairs();
+// Get detail of one single order.
+$currency_pair = 'ETH_USDT';
+$app->spot->currencyPair($currency_pair);
+// Retrieve ticker information.
+$app->spot->tickers($currency_pair);
+// Retrieve order book.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+];
+$app->spot->depth($params);
+// Retrieve market trades.
+$app->spot->trades($params);
+// Market candlesticks.
+$app->spot->kline($params);
+```
