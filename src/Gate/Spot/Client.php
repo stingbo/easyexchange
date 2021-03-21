@@ -46,4 +46,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/spot/currency_pairs');
     }
+
+    /**
+     * Get detail of one single order.
+     *
+     * @param $currency_pair
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function currencyPair($currency_pair)
+    {
+        return $this->httpGet(sprintf('/api/v4/spot/currency_pairs/%s', $currency_pair));
+    }
 }
