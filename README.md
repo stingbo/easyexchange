@@ -369,8 +369,6 @@ $app->basic->currencys();
 $app->basic->currencies();
 // 获取当前系统时间戳
 $app->basic->systemTime();
-// 获取当前市场状态
-$app->basic->marketStatus();
 ```
 
 2. 账户信息
@@ -392,7 +390,7 @@ $app->user->ledger($params);
 // 币币现货账户与合约账户划转
 $app->user->futuresTransfer($params);
 // 点卡余额查询
-$app->user->point($params);
+$app->user->point($subUid = '');
 // 点卡划转
 $app->user->pointTransfer($params);
 ```
@@ -400,15 +398,17 @@ $app->user->pointTransfer($params);
 3. 市场行情相关
 ```php
 // K 线数据（蜡烛图）
-$symbol = 'btcusdt';
-$period = '5min';
-$app->market->kline($symbol, $period);
+$params = [
+    'symbol' => 'btcusdt',
+    'period' => '5min',
+];
+$app->market->kline($params);
 // 聚合行情（Ticker）
 $app->market->aggTrades($symbol);
 // 所有交易对的最新 Tickers
 $app->market->tickers();
 // 市场深度数据
-$app->market->depth('btcusdt', 'step0', 5);
+$app->market->depth($params);
 // 最近市场成交记录
 $app->market->trades($symbol);
 // 获得近期交易记录
@@ -536,7 +536,7 @@ $app->algo->cancelOrder($clientOrderIds);
 // 查询未触发OPEN策略委托.
 $app->algo->openOrders($params);
 // 查询策略委托历史.
-$app->algo->history($params);
+$app->algo->orderHistory($params);
 // 查询特定策略委托.
 $app->algo->specific($clientOrderId);
 ```
@@ -561,6 +561,8 @@ $app->c2c->repayment($params);
 $app->c2c->getRepayment($params);
 // 资产划转.
 $app->c2c->transfer($params);
+// 查询账户余额
+$app->c2c->balance($accountId, $currency = '');
 ```
 
 ### 欧易 V5 版本
@@ -573,7 +575,7 @@ use EasyExchange\Factory;
 $config = [
     'okex' => [
         'response_type' => 'array',
-        'base_uri' => 'https://www.okexcn.com',
+        'base_uri' => 'https://www.okex.com',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
