@@ -495,18 +495,72 @@ $app->trade->transactFeeRate($symbols);
 ```php
 // 归还借币（全仓逐仓通用）
 $app->margin->repayment($params);
+// 资产划转（逐仓）-从现货账户划转至逐仓杠杆账户.
+$app->margin->transferIn($params);
+// 资产划转（逐仓）-从逐仓杠杆账户划转至现货账户.
+$app->margin->transferOut($params);
+// 查询借币币息率及额度（逐仓）.
+$app->margin->loanInfo($params);
+// 申请借币（逐仓）.
+$app->margin->orders($params);
+// 归还借币（逐仓）.
+$app->margin->repay($order_id, $amount);
+// 查询借币订单（逐仓）.
+$app->margin->loanOrders($params);
+// 借币账户详情（逐仓）.
+$app->margin->balance($symbol = '', $sub_uid = '');
+// 资产划转（全仓）-从现货账户划转至全仓杠杆账.
+$app->margin->crossTransferIn($currency, $amount);
+// 资产划转（全仓）-从全仓杠杆账户划转至现货账户.
+$app->margin->crossTransferOut($currency, $amount);
+// 查询借币币息率及额度（全仓）.
+$app->margin->crossLoanInfo();
+// 申请借币（全仓）.
+$app->margin->crossOrders($currency, $amount);
+// 归还借币（全仓）.
+$app->margin->crossRepay($order_id, $amount);
+// 查询借币订单（全仓）.
+$app->margin->crossLoanOrders($params);
+// 借币账户详情（全仓）.
+$app->margin->crossBalance($sub_uid = '');
+// 还币交易记录查询（全仓）.
+$app->margin->getRepayment($params);
 ```
 
 7. 策略委托
 ```php
 // 策略委托下单
 $app->algo->order($params);
+// 策略委托（触发前）撤单.
+$app->algo->cancelOrder($clientOrderIds);
+// 查询未触发OPEN策略委托.
+$app->algo->openOrders($params);
+// 查询策略委托历史.
+$app->algo->history($params);
+// 查询特定策略委托.
+$app->algo->specific($clientOrderId);
 ```
 
 8. 借币（C2C）
 ```php
 // 借入借出下单
 $app->c2c->order($params);
+// 借入借出撤单.
+$app->c2c->cancelOrder($params);
+// 撤销所有借入借出订单.
+$app->c2c->cancelAll($params);
+// 查询借入借出订单.
+$app->c2c->getOrders($params);
+// 查询特定借入借出订单及其交易记录.
+$app->c2c->get($offerId);
+// 查询借入借出交易记录.
+$app->c2c->transactions($params);
+// 还币.
+$app->c2c->repayment($params);
+// 查询还币交易记录.
+$app->c2c->getRepayment($params);
+// 资产划转.
+$app->c2c->transfer($params);
 ```
 
 ### 欧易 V5 版本

@@ -31,7 +31,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function cancel($params)
+    public function cancelOrder($params)
     {
         return $this->httpPostJson('/v2/c2c/cancellation', $params, [], 'SIGN');
     }
