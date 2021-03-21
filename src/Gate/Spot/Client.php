@@ -76,4 +76,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/spot/tickers', compact('currency_pair'));
     }
+
+    /**
+     * Retrieve order book.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depth($params)
+    {
+        return $this->httpGet('/api/v4/spot/order_book', $params);
+    }
 }
