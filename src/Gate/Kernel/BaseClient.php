@@ -6,6 +6,8 @@ use Psr\Http\Message\RequestInterface;
 
 class BaseClient extends \EasyExchange\Kernel\BaseClient
 {
+    public $timestamp;
+
     /**
      * 获取签名.
      *
@@ -13,16 +15,13 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      *
      * @return string
      */
-    public function getSignature($params = [], $method = '', $uri_host = '', $uri_path = '')
+    public function getSignature($query, $body, $method, $uri_path)
     {
-        ksort($params);
-        $data = http_build_query($params);
-
-        $sign_param = $method."\n".$uri_host."\n".$uri_path."\n".$data;
+        $data = hash('sha512', (null !== $body) ? $body : '');
+        $sign_param = $method."\n".$uri_path."\n".$query."\n".$data."\n".$this->timestamp;
         $secret = $this->app->config->get('secret');
-        $signature = hash_hmac('sha256', $sign_param, $secret, true);
 
-        return base64_encode($signature);
+        return hash_hmac('sha512', $sign_param, $secret);
     }
 
     /**
@@ -30,6 +29,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     protected function registerHttpMiddlewares()
     {
+        $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
         if ('SIGN' == $this->sign_type) {
             // signature
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
@@ -45,32 +45,17 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                $key = $this->app->config->get('app_key');
+                $this->timestamp = time();
                 $method = $request->getMethod();
-                $uri_host = $request->getUri()->getHost();
                 $uri_path = $request->getUri()->getPath();
-                parse_str($request->getBody()->getContents(), $params);
-                parse_str($request->getUri()->getQuery(), $query);
+                $query = $request->getUri()->getQuery();
+                $body = $request->getBody();
+                $signature = $this->getSignature($query, $body, $method, $uri_path);
 
-                date_default_timezone_set('UTC');
-                $sign_params = [
-                    'AccessKeyId' => $this->app->config->get('app_key'),
-                    'SignatureMethod' => 'HmacSHA256',
-                    'SignatureVersion' => 2,
-                    'Timestamp' => date('Y-m-d\TH:i:s'),
-                ];
-
-                // For GET request, all the parameters must be signed.
-                $query = array_merge($query, $sign_params);
-                if ($params) {
-                    // For POST request, the parameters needn't be signed and they should be put in request body.
-                    $params = array_merge([], $sign_params);
-                    $signature = $this->getSignature($params, $method, $uri_host, $uri_path);
-                } else {
-                    $signature = $this->getSignature($query, $method, $uri_host, $uri_path);
-                }
-
-                $query = http_build_query(array_merge($query, ['Signature' => $signature]));
-                $request = $request->withUri($request->getUri()->withQuery($query));
+                $request = $request->withHeader('KEY', $key);
+                $request = $request->withHeader('Timestamp', $this->timestamp);
+                $request = $request->withHeader('SIGN', $signature);
 
                 return $handler($request, $options);
             };
