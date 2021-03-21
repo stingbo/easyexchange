@@ -91,4 +91,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/spot/order_book', $params);
     }
+
+    /**
+     * Retrieve market trades.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function trades($params)
+    {
+        return $this->httpGet('/api/v4/spot/trades', $params);
+    }
 }
