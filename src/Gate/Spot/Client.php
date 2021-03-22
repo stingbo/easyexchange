@@ -182,4 +182,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/spot/open_orders', compact('page', 'limit'), 'SIGN');
     }
+
+    /**
+     * List orders.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function orders($params)
+    {
+        return $this->httpGet('/api/v4/spot/orders', $params, 'SIGN');
+    }
 }
