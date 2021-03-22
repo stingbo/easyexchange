@@ -212,4 +212,19 @@ class Client extends BaseClient
     {
         return $this->httpDelete('/api/v4/spot/orders', $params, 'SIGN');
     }
+
+    /**
+     * Cancel a batch of orders with an ID list.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOrders($params)
+    {
+        return $this->httpPostJson('/api/v4/spot/cancel_batch_orders', $params, [], 'SIGN');
+    }
 }
