@@ -166,4 +166,20 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/api/v4/spot/batch_orders', $params, [], 'SIGN');
     }
+
+    /**
+     * List all open orders.
+     *
+     * @param string $page
+     * @param string $limit
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function openOrders($page = '', $limit = '')
+    {
+        return $this->httpGet('/api/v4/spot/open_orders', compact('page', 'limit'), 'SIGN');
+    }
 }
