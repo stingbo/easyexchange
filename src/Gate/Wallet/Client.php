@@ -95,4 +95,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/wallet/sub_account_transfers', $params, 'SIGN');
     }
+
+    /**
+     * Retrieve withdrawal status.
+     *
+     * @param string $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawStatus($currency = '')
+    {
+        return $this->httpGet('/api/v4/wallet/withdraw_status', compact('currency'), 'SIGN');
+    }
 }
