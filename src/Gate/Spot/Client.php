@@ -123,6 +123,21 @@ class Client extends BaseClient
     }
 
     /**
+     * List spot accounts.
+     *
+     * @param string $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function accounts($currency = '')
+    {
+        return $this->httpGet('/api/v4/spot/accounts', compact('currency'), 'SIGN');
+    }
+
+    /**
      * Create an order.
      *
      * @param $params
@@ -138,17 +153,17 @@ class Client extends BaseClient
     }
 
     /**
-     * List spot accounts.
+     * Create a batch of orders.
      *
-     * @param string $currency
+     * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function accounts($currency = '')
+    public function batchOrders($params)
     {
-        return $this->httpGet('/api/v4/spot/accounts', compact('currency'), 'SIGN');
+        return $this->httpPostJson('/api/v4/spot/batch_orders', $params, [], 'SIGN');
     }
 }
