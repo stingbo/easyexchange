@@ -771,6 +771,23 @@ $app = Factory::gate($config['gate']);
 // Generate currency deposit address.
 $currency = 'USDT';
 $app->wallet->depositAddress($currency);
+// Retrieve withdrawal records.
+$params = [];
+$app->wallet->withdrawHistory($params);
+// Retrieve deposit records.
+$app->wallet->depositHistory($params);
+// Transfer between trading accounts.
+$app->wallet->transfer($params);
+// Transfer between main and sub accounts.
+$app->wallet->subAccountTransfer($params);
+// Transfer records between main and sub accounts.
+$app->wallet->subAccountTransferHistory($params);
+// Retrieve withdrawal status.
+$app->wallet->withdrawStatus($currency);
+// Retrieve sub account balances.
+$app->wallet->subAccountBalance($sub_uid = '');
+// Retrieve personal trading fee.
+$app->wallet->fee();
 ```
 
 2. Spot Trade
