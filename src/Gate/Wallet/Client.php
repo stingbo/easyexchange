@@ -35,4 +35,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/wallet/withdrawals', $params, 'SIGN');
     }
+
+    /**
+     * Retrieve deposit records.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depositHistory($params)
+    {
+        return $this->httpGet('/api/v4/wallet/deposits', $params, 'SIGN');
+    }
 }
