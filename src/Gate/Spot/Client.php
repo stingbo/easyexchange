@@ -227,4 +227,20 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/api/v4/spot/cancel_batch_orders', $params, [], 'SIGN');
     }
+
+    /**
+     * Get a single order.
+     *
+     * @param $order_id
+     * @param $currency_pair
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get($order_id, $currency_pair)
+    {
+        return $this->httpGet(sprintf('/api/v4/spot/orders/%s', $order_id), compact('currency_pair'), 'SIGN');
+    }
 }
