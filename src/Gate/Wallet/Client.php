@@ -125,4 +125,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/wallet/sub_account_balances', compact('sub_uid'), 'SIGN');
     }
+
+    /**
+     * Retrieve personal trading fee.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fee()
+    {
+        return $this->httpGet('/api/v4/wallet/fee', [], 'SIGN');
+    }
 }
