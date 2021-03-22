@@ -813,6 +813,8 @@ $app->spot->depth($params);
 $app->spot->trades($params);
 // Market candlesticks.
 $app->spot->kline($params);
+// List spot accounts.
+$app->spot->accounts($currency);
 // Create an order.
 $params = [
     'currency_pair' => 'ETH_USDT',
@@ -821,4 +823,20 @@ $params = [
     'price' => '10',
 ];
 $app->spot->order($params);
+// Create a batch of orders.
+$app->spot->batchOrders($params);
+// List all open orders.
+$app->spot->openOrders($page = '', $limit = '');
+// List orders.
+$app->spot->orders($params);
+// Cancel all open orders in specified currency pair.
+$app->spot->cancelOrders($params);
+// Cancel a batch of orders with an ID list.
+$app->spot->cancelBatchOrders($params);
+// Get a single order
+$app->spot->get($order_id, $currency_pair);
+// Cancel a single order.
+$app->spot->cancelOrder($order_id, $currency_pair);
+// List personal trading history.
+$app->spot->myTrades($params);
 ```
