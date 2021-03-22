@@ -259,4 +259,19 @@ class Client extends BaseClient
     {
         return $this->httpDelete(sprintf('/api/v4/spot/orders/%s', $order_id), compact('currency_pair'), 'SIGN');
     }
+
+    /**
+     * List personal trading history.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function myTrades($params)
+    {
+        return $this->httpGet('/api/v4/spot/my_trades', $params, 'SIGN');
+    }
 }
