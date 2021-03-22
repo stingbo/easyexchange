@@ -136,4 +136,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/api/v4/spot/orders', $params, [], 'SIGN');
     }
+
+    /**
+     * List spot accounts.
+     *
+     * @param string $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function accounts($currency = '')
+    {
+        return $this->httpGet('/api/v4/spot/accounts', compact('currency'), 'SIGN');
+    }
 }
