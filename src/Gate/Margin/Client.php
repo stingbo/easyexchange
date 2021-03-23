@@ -48,4 +48,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/margin/funding_book', compact('currency'));
     }
+
+    /**
+     * Margin account list.
+     *
+     * @param string $currency_pair
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function accounts($currency_pair = '')
+    {
+        return $this->httpGet('/api/v4/margin/accounts', compact('currency_pair'), 'SIGN');
+    }
 }
