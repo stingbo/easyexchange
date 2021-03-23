@@ -93,4 +93,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/margin/funding_accounts', compact('currency'), 'SIGN');
     }
+
+    /**
+     * Lend or borrow.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loan($params)
+    {
+        return $this->httpPostJson('/api/v4/margin/loans', $params, [], 'SIGN');
+    }
 }
