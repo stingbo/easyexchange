@@ -265,4 +265,19 @@ class Client extends BaseClient
     {
         return $this->httpPatch(sprintf('/api/v4/margin/loan_records/%s', $loan_record_id), $params, [], 'SIGN');
     }
+
+    /**
+     * Update user's auto repayment setting.
+     *
+     * @param $status
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function autoRepay($status)
+    {
+        return $this->httpPostJson('/api/v4/margin/auto_repay', compact('status'), [], 'SIGN');
+    }
 }
