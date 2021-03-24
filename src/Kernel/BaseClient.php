@@ -101,6 +101,21 @@ class BaseClient
     }
 
     /**
+     * Patch request.
+     *
+     * @return array|Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function httpPatch(string $url, array $data = [], array $query = [], string $sign_type = 'NONE')
+    {
+        $this->sign_type = $sign_type;
+
+        return $this->request($url, 'PATCH', ['query' => $query, 'json' => $data]);
+    }
+
+    /**
      * DELETE request.
      *
      * @return array|Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
