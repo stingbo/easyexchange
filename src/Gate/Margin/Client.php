@@ -167,7 +167,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function modifyLoad($loan_id, $params)
+    public function modifyLoan($loan_id, $params)
     {
         return $this->httpPatch(sprintf('/api/v4/margin/loans/%s', $loan_id), $params, 'SIGN');
     }
@@ -183,7 +183,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function cancelLoad($loan_id, $currency)
+    public function cancelLoan($loan_id, $currency)
     {
         return $this->httpDelete(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('currency'), 'SIGN');
     }
@@ -261,7 +261,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function modifyLoadRecord($loan_record_id, $params)
+    public function modifyLoanRecord($loan_record_id, $params)
     {
         return $this->httpPatch(sprintf('/api/v4/margin/loan_records/%s', $loan_record_id), $params, [], 'SIGN');
     }
