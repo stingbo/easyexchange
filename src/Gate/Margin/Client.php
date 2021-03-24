@@ -151,8 +151,146 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getLoan($loan_id, $side)
+    public function get($loan_id, $side)
     {
         return $this->httpGet(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('side'), 'SIGN');
+    }
+
+    /**
+     * Modify a loan.
+     *
+     * @param $loan_id
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function modifyLoan($loan_id, $params)
+    {
+        return $this->httpPatch(sprintf('/api/v4/margin/loans/%s', $loan_id), $params, 'SIGN');
+    }
+
+    /**
+     * Cancel lending loan.
+     *
+     * @param $loan_id
+     * @param $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelLoan($loan_id, $currency)
+    {
+        return $this->httpDelete(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('currency'), 'SIGN');
+    }
+
+    /**
+     * Repay a loan.
+     *
+     * @param $loan_id
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repayment($loan_id, $params)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/margin/loans/%s/repayment', $loan_id), $params, [], 'SIGN');
+    }
+
+    /**
+     * List loan repayment records.
+     *
+     * @param $loan_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getRepayment($loan_id)
+    {
+        return $this->httpGet(sprintf('/api/v4/margin/loans/%s/repayment', $loan_id), [], 'SIGN');
+    }
+
+    /**
+     * List repayment records of specified loan.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loanRecords($params)
+    {
+        return $this->httpGet('/api/v4/margin/loan_records', $params, 'SIGN');
+    }
+
+    /**
+     * Get one single loan record.
+     *
+     * @param $loan_id
+     * @param $loan_record_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loanRecord($loan_id, $loan_record_id)
+    {
+        return $this->httpGet(sprintf('/api/v4/margin/loan_records/%s', $loan_record_id), compact('loan_id'), 'SIGN');
+    }
+
+    /**
+     * Modify a loan record.
+     *
+     * @param $loan_record_id
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function modifyLoanRecord($loan_record_id, $params)
+    {
+        return $this->httpPatch(sprintf('/api/v4/margin/loan_records/%s', $loan_record_id), $params, [], 'SIGN');
+    }
+
+    /**
+     * Update user's auto repayment setting.
+     *
+     * @param $status
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function autoRepay($status)
+    {
+        return $this->httpPostJson('/api/v4/margin/auto_repay', compact('status'), [], 'SIGN');
+    }
+
+    /**
+     * Retrieve user auto repayment setting.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getAutoRepayStatus()
+    {
+        return $this->httpGet('/api/v4/margin/auto_repay', [], 'SIGN');
     }
 }
