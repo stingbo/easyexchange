@@ -164,4 +164,19 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/futures/%s/liq_orders', $settle), $params);
     }
+
+    /**
+     * Query futures account.
+     *
+     * @param $settle
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function accounts($settle)
+    {
+        return $this->httpGet(sprintf('/api/v4/futures/%s/accounts', $settle), [], 'SIGN');
+    }
 }
