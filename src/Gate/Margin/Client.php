@@ -151,7 +151,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getLoan($loan_id, $side)
+    public function get($loan_id, $side)
     {
         return $this->httpGet(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('side'), 'SIGN');
     }
@@ -186,5 +186,21 @@ class Client extends BaseClient
     public function cancelOrder($loan_id, $currency)
     {
         return $this->httpDelete(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('currency'), 'SIGN');
+    }
+
+    /**
+     * Repay a loan.
+     *
+     * @param $loan_id
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function repay($loan_id, $params)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/margin/loans/%s/repayment', $loan_id), $params, [], 'SIGN');
     }
 }
