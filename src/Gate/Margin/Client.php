@@ -280,4 +280,17 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/api/v4/margin/auto_repay', compact('status'), [], 'SIGN');
     }
+
+    /**
+     * Retrieve user auto repayment setting.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getAutoRepayStatus()
+    {
+        return $this->httpGet('/api/v4/margin/auto_repay', [], 'SIGN');
+    }
 }
