@@ -155,4 +155,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('side'), 'SIGN');
     }
+
+    /**
+     * Modify a loan.
+     *
+     * @param $loan_id
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function updateLoad($loan_id, $params)
+    {
+        return $this->httpPatch(sprintf('/api/v4/margin/loans/%s', $loan_id), $params, 'SIGN');
+    }
 }
