@@ -840,3 +840,45 @@ $app->spot->cancelOrder($order_id, $currency_pair);
 // List personal trading history.
 $app->spot->myTrades($params);
 ```
+
+3. Margin
+```php
+// List all supported currency pairs supported in margin trading.
+$app->margin->currencyPairs()
+// Query one single margin currency pair.
+$app->margin->currencyPair($currency_pair)
+// Order book of lending loans.
+$app->margin->depth($currency)
+// Margin account list.
+$app->margin->accounts($currency_pair = '')
+// List margin account balance change history.
+$app->margin->accountHistory($params)
+// Funding account list.
+$app->margin->fundingAccounts($currency = '')
+// Lend or borrow.
+$app->margin->loan($params)
+// List all loans.
+$app->margin->loanHistory($params)
+// Merge multiple lending loans.
+$app->margin->mergeLoan($currency, $ids)
+// Retrieve one single loan detail.
+$app->margin->get($loan_id, $side)
+// Modify a loan.
+$app->margin->modifyLoan($loan_id, $params)
+// Cancel lending loan.
+$app->margin->cancelLoan($loan_id, $currency)
+// Repay a loan.
+$app->margin->repayment($loan_id, $params)
+// List loan repayment records.
+$app->margin->getRepayment($loan_id)
+// List repayment records of specified loan.
+$app->margin->loanRecords($params)
+// Get one single loan record.
+$app->margin->loanRecord($loan_id, $loan_record_id)
+// Modify a loan record.
+$app->margin->modifyLoanRecord($loan_record_id, $params)
+// Update user's auto repayment setting.
+$app->margin->autoRepay($status)
+// Retrieve user auto repayment setting.
+$app->margin->getAutoRepayStatus()
+```
