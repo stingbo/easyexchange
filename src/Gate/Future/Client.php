@@ -132,4 +132,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/futures/%s/insurance', $settle), compact('limit'));
     }
+
+    /**
+     * Futures stats.
+     *
+     * @param $settle
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function contractStats($settle, $params)
+    {
+        return $this->httpGet(sprintf('/api/v4/futures/%s/contract_stats', $settle), $params);
+    }
 }
