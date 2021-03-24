@@ -218,4 +218,19 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/margin/loans/%s/repayment', $loan_id), [], 'SIGN');
     }
+
+    /**
+     * List repayment records of specified loan.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loanRecords($params)
+    {
+        return $this->httpGet('/api/v4/margin/loan_records', $params, 'SIGN');
+    }
 }
