@@ -84,4 +84,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/futures/%s/candlesticks', $settle), $params);
     }
+
+    /**
+     * List futures tickers.
+     *
+     * @param $settle
+     * @param $contract
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function tickers($settle, $contract)
+    {
+        return $this->httpGet(sprintf('/api/v4/futures/%s/tickers', $settle), compact('contract'));
+    }
 }
