@@ -171,4 +171,20 @@ class Client extends BaseClient
     {
         return $this->httpPatch(sprintf('/api/v4/margin/loans/%s', $loan_id), $params, 'SIGN');
     }
+
+    /**
+     * Cancel lending loan.
+     *
+     * @param $loan_id
+     * @param $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOrder($loan_id, $currency)
+    {
+        return $this->httpDelete(sprintf('/api/v4/margin/loans/%s', $loan_id), compact('currency'), 'SIGN');
+    }
 }
