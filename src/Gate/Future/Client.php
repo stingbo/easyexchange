@@ -179,4 +179,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/futures/%s/accounts', $settle), [], 'SIGN');
     }
+
+    /**
+     * Query account book.
+     *
+     * @param $settle
+     * @param array $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function accountHistory($settle, $params = [])
+    {
+        return $this->httpGet(sprintf('/api/v4/futures/%s/account_book', $settle), $params, 'SIGN');
+    }
 }
