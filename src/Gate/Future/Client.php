@@ -488,4 +488,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/futures/%s/liquidates', $settle), $params, 'SIGN');
     }
+
+    /**
+     * Create a price-triggered order.
+     *
+     * @param $settle
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function priceOrder($settle, $params)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/price_orders', $settle), $params, [], 'SIGN');
+    }
 }
