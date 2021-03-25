@@ -536,4 +536,20 @@ class Client extends BaseClient
     {
         return $this->httpDelete(sprintf('/api/v4/futures/%s/price_orders', $settle), compact('contract'), 'SIGN');
     }
+
+    /**
+     * Get a single order.
+     *
+     * @param $settle
+     * @param $order_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getPriceOrder($settle, $order_id)
+    {
+        return $this->httpGet(sprintf('/api/v4/futures/%s/price_orders/%s', $settle, $order_id), [], 'SIGN');
+    }
 }
