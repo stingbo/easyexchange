@@ -241,7 +241,7 @@ class Client extends BaseClient
      */
     public function modifyPositionMargin($settle, $contract, $change)
     {
-        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/margin', $settle, $contract), compact('change'), [], 'SIGN');
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/margin', $settle, $contract), [], compact('change'), 'SIGN');
     }
 
     /**
@@ -258,7 +258,7 @@ class Client extends BaseClient
      */
     public function modifyPositionLeverage($settle, $contract, $leverage)
     {
-        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/leverage', $settle, $contract), compact('leverage'), [], 'SIGN');
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/leverage', $settle, $contract), [], compact('leverage'), 'SIGN');
     }
 
     /**
@@ -275,6 +275,22 @@ class Client extends BaseClient
      */
     public function modifyPositionRiskLimit($settle, $contract, $risk_limit)
     {
-        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/risk_limit', $settle, $contract), compact('risk_limit'), [], 'SIGN');
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/risk_limit', $settle, $contract), [], compact('risk_limit'), 'SIGN');
+    }
+
+    /**
+     * Enable or disable dual mode.
+     *
+     * @param $settle
+     * @param $dual_mode
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function setDualMode($settle, $dual_mode)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/dual_mode', $settle), [], compact('dual_mode'), 'SIGN');
     }
 }
