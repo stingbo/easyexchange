@@ -1,5 +1,5 @@
 ## PHP Easy Exchange Api
-- Easy use digital currency exchange SDK, include `Binance`, `OKEX`, `Huobi pro` etc
+- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate` etc
 - [中文文档](README_CN.md)
 - [接口列表](api.md)
 
@@ -881,4 +881,78 @@ $app->margin->modifyLoanRecord($loan_record_id, $params)
 $app->margin->autoRepay($status)
 // Retrieve user auto repayment setting.
 $app->margin->getAutoRepayStatus()
+```
+
+4. Future
+```php
+// List all futures contracts.
+$app->future->contracts($settle)
+// Get a single contract.
+$app->future->contract($settle, $contract)
+// Futures order book.
+$app->future->depth($settle, $params)
+// Futures trading history.
+$app->future->trades($settle, $params)
+// Get futures candlesticks.
+$app->future->kline($settle, $params)
+// List futures tickers.
+$app->future->tickers($settle, $contract)
+// Funding rate history.
+$app->future->fundingRateHistory($settle, $params)
+// Futures insurance balance history.
+$app->future->insuranceHistory($settle, $limit = '')
+// Futures stats.
+$app->future->contractStats($settle, $params)
+// Retrieve liquidation history.
+$app->future->liquidationOrders($settle, $params = [])
+// Query futures account.
+$app->future->accounts($settle)
+// Query account book.
+$app->future->accountHistory($settle, $params = [])
+// List all positions of a user.
+$app->future->positions($settle)
+// Get single position.
+$app->future->position($settle, $contract)
+// Update position margin.
+$app->future->modifyPositionMargin($settle, $contract, $change)
+// Update position leverage.
+$app->future->modifyPositionLeverage($settle, $contract, $leverage)
+// Update position risk limit.
+$app->future->modifyPositionRiskLimit($settle, $contract, $risk_limit)
+// Enable or disable dual mode.
+$app->future->setDualMode($settle, $dual_mode)
+// Retrieve position detail in dual mode.
+$app->future->dualCompPosition($settle, $contract)
+// Update position margin in dual mode.
+$app->future->modifyDualCompPositionMargin($settle, $contract, $change)
+// Update position leverage in dual mode.
+$app->future->modifyDualCompPositionLeverage($settle, $contract, $leverage)
+// Update position risk limit in dual mode.
+$app->future->modifyDualCompPositionRiskLimit($settle, $contract, $risk_limit)
+// Create a futures order.
+$app->future->order($settle, $params)
+// List futures orders.
+$app->future->orders($settle, $params)
+// Cancel all open orders matched.
+$app->future->cancelOrders($settle, $params)
+// Cancel a single order.
+$app->future->cancelOrder($settle, $order_id)
+// Get a single order.
+$app->future->get($settle, $order_id)
+// List personal trading history.
+$app->future->myTrades($settle, $params)
+// List position close history.
+$app->future->positionClose($settle, $params)
+// List liquidation history.
+$app->future->forceLiquidationRec($settle, $params)
+// Create a price-triggered order.
+$app->future->priceOrder($settle, $params)
+// List all auto orders.
+$app->future->priceOrders($settle, $params)
+// Cancel all open orders.
+$app->future->cancelPriceOrders($settle, $contract)
+// Get a single order.
+$app->future->getPriceOrder($settle, $order_id)
+// Cancel a single order.
+$app->future->cancelPriceOrder($settle, $order_id)
 ```
