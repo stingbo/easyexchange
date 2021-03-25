@@ -1,5 +1,5 @@
 ## EasyExchange
-- 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
+- 方便使用的数据货币交易所SDK，包含币安(Binance)，欧易(OKEx)，火币(Huobi)，芝麻开门(Gate)
 - [English Doc](README.md)
 - [API List](api.md)
 
