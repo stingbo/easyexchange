@@ -100,7 +100,7 @@ class Client extends BaseClient
      * 混合保证金钱包 v1 & v2.
      *
      * @param string $version
-     * @param int $recvWindow
+     * @param int    $recvWindow
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
@@ -182,6 +182,7 @@ class Client extends BaseClient
      * @param $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */

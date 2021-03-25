@@ -266,7 +266,7 @@ class Arr
             return false;
         }
 
-        if ($keys === []) {
+        if ([] === $keys) {
             return false;
         }
 
