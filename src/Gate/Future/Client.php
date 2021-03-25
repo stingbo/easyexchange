@@ -249,15 +249,32 @@ class Client extends BaseClient
      *
      * @param $settle
      * @param $contract
-     * @param $change
+     * @param $leverage
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function modifyPositionLeverage($settle, $contract, $change)
+    public function modifyPositionLeverage($settle, $contract, $leverage)
     {
-        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/leverage', $settle, $contract), compact('change'), [], 'SIGN');
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/leverage', $settle, $contract), compact('leverage'), [], 'SIGN');
+    }
+
+    /**
+     * Update position risk limit.
+     *
+     * @param $settle
+     * @param $contract
+     * @param $risk_limit
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function modifyPositionRiskLimit($settle, $contract, $risk_limit)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/positions/%s/risk_limit', $settle, $contract), compact('risk_limit'), [], 'SIGN');
     }
 }
