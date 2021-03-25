@@ -309,4 +309,21 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/futures/%s/dual_comp/positions/%s', $settle, $contract), [], 'SIGN');
     }
+
+    /**
+     * Update position margin in dual mode.
+     *
+     * @param $settle
+     * @param $contract
+     * @param $change
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function modifyDualCompPositionMargin($settle, $contract, $change)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/futures/%s/dual_comp/positions/%s/margin', $settle, $contract), [], compact('change'), 'SIGN');
+    }
 }
