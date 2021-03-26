@@ -309,4 +309,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/delivery/%s/orders/%s', $settle, $order_id), [], 'SIGN');
     }
+
+    /**
+     * List personal trading history.
+     *
+     * @param $settle
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function myTrades($settle, $params)
+    {
+        return $this->httpGet(sprintf('/api/v4/delivery/%s/my_trades', $settle), $params, 'SIGN');
+    }
 }
