@@ -212,4 +212,21 @@ class Client extends BaseClient
     {
         return $this->httpPostJson(sprintf('/api/v4/delivery/%s/positions/%s/leverage', $settle, $contract), [], compact('leverage'), 'SIGN');
     }
+
+    /**
+     * Update position risk limit.
+     *
+     * @param $settle
+     * @param $contract
+     * @param $risk_limit
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function modifyPositionRiskLimit($settle, $contract, $risk_limit)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/delivery/%s/positions/%s/risk_limit', $settle, $contract), [], compact('risk_limit'), 'SIGN');
+    }
 }
