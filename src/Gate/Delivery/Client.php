@@ -229,4 +229,20 @@ class Client extends BaseClient
     {
         return $this->httpPostJson(sprintf('/api/v4/delivery/%s/positions/%s/risk_limit', $settle, $contract), [], compact('risk_limit'), 'SIGN');
     }
+
+    /**
+     * Create a futures order.
+     *
+     * @param $settle
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function order($settle, $params)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/delivery/%s/orders', $settle), $params, [], 'SIGN');
+    }
 }
