@@ -137,4 +137,17 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/currencies/%s', $id));
     }
+
+    /**
+     * Get the API server time.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function time()
+    {
+        return $this->httpGet('/time');
+    }
 }
