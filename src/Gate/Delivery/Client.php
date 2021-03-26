@@ -162,4 +162,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/delivery/%s/positions', $settle), [], 'SIGN');
     }
+
+    /**
+     * Get single position.
+     *
+     * @param $settle
+     * @param $contract
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function position($settle, $contract)
+    {
+        return $this->httpGet(sprintf('/api/v4/delivery/%s/positions/%s', $settle, $contract), [], 'SIGN');
+    }
 }
