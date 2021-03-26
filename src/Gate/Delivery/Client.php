@@ -147,4 +147,19 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/delivery/%s/account_book', $settle), $params, 'SIGN');
     }
+
+    /**
+     * List all positions of a user.
+     *
+     * @param $settle
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function positions($settle)
+    {
+        return $this->httpGet(sprintf('/api/v4/delivery/%s/positions', $settle), [], 'SIGN');
+    }
 }
