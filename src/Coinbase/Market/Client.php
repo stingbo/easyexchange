@@ -94,4 +94,19 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/products/%s/candles', $product_id));
     }
+
+    /**
+     * Get 24hr Stats - Get 24 hr stats for the product. volume is in base currency units. open, high, low are in quote currency units.
+     *
+     * @param $product_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function hr24($product_id)
+    {
+        return $this->httpGet(sprintf('/products/%s/stats', $product_id));
+    }
 }
