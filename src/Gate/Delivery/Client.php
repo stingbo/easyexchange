@@ -261,4 +261,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/api/v4/delivery/%s/orders', $settle), $params, 'SIGN');
     }
+
+    /**
+     * Cancel all open orders matched.
+     *
+     * @param $settle
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelOrders($settle, $params)
+    {
+        return $this->httpDelete(sprintf('/api/v4/delivery/%s/orders', $settle), $params, 'SIGN');
+    }
 }
