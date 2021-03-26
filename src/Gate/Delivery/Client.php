@@ -195,4 +195,21 @@ class Client extends BaseClient
     {
         return $this->httpPostJson(sprintf('/api/v4/delivery/%s/positions/%s/margin', $settle, $contract), [], compact('change'), 'SIGN');
     }
+
+    /**
+     * Update position leverage.
+     *
+     * @param $settle
+     * @param $contract
+     * @param $leverage
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function modifyPositionLeverage($settle, $contract, $leverage)
+    {
+        return $this->httpPostJson(sprintf('/api/v4/delivery/%s/positions/%s/leverage', $settle, $contract), [], compact('leverage'), 'SIGN');
+    }
 }
