@@ -122,4 +122,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/currencies');
     }
+
+    /**
+     * Get a currency - List the currency for specified id.
+     *
+     * @param $id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function currency($id)
+    {
+        return $this->httpGet(sprintf('/currencies/%s', $id));
+    }
 }
