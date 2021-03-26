@@ -33,4 +33,20 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/products/%s', $product_id));
     }
+
+    /**
+     * Get Product Order Book - Get a list of open orders for a product. The amount of detail shown can be customized with the level parameter.
+     *
+     * @param $product_id
+     * @param int $level
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depth($product_id, $level = 1)
+    {
+        return $this->httpGet(sprintf('/products/%s/book', $product_id), compact('level'));
+    }
 }
