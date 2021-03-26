@@ -1,5 +1,5 @@
 ## PHP Easy Exchange Api
-- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate` etc
+- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `CoinBase` etc
 - [中文文档](README_CN.md)
 - [接口列表](api.md)
 
@@ -1015,4 +1015,51 @@ $app->delivery->cancelPriceOrders($settle, $contract);
 $app->delivery->getPriceOrder($settle, $order_id);
 // Cancel a single order.
 $app->delivery->cancelPriceOrder($settle, $order_id);
+```
+
+### CoinBase
+
+```php
+<?php
+
+use EasyExchange\Factory;
+
+$config = [
+    'coinbase' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://api.pro.coinbase.com',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+        'passphrase' => 'your passphrase',
+    ],
+];
+
+$app = Factory::coinbase($config['gate']);
+```
+
+1. Market Data
+```php
+// Get Products - Get a list of available currency pairs for trading.
+$app->market->products();
+// Get Single Product - Get market data for a specific currency pair.
+$product_id = 'BTC-USD';
+$app->market->product($product_id);
+// Get Product Order Book - Get a list of open orders for a product. The amount of detail shown can be customized with the level parameter.
+$level = 2;
+$app->market->depth($product_id, $level);
+// Get Product Ticker - Snapshot information about the last trade (tick), best bid/ask and 24h volume.
+$app->market->tickers($product_id);
+// Get Trades - List the latest trades for a product.
+$app->market->trades($product_id);
+// Get Historic Rates - Historic rates for a product. Rates are returned in grouped buckets based on requested granularity.
+$app->market->kline($product_id);
+// Get 24hr Stats - Get 24 hr stats for the product. volume is in base currency units. open, high, low are in quote currency units.
+$app->market->hr24($product_id);
+// Get currencies - List known currencies.
+$app->market->currencies();
+// Get a currency - List the currency for specified id.
+$id = 'BTC';
+$app->market->currency($id);
+// Get the API server time.
+$app->market->time();
 ```
