@@ -38,14 +38,31 @@ class Client extends BaseClient
      * Get Account History - List account activity of the API key's profile.
      *
      * @param $account_id
+     * @param array $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function accountHistory($account_id)
+    public function history($account_id, $params = [])
     {
-        return $this->httpGet(sprintf('/accounts/%s/ledger', $account_id), [], 'SIGN');
+        return $this->httpGet(sprintf('/accounts/%s/ledger', $account_id), $params, 'SIGN');
+    }
+
+    /**
+     * Get Holds - List holds of an account that belong to the same profile as the API key.
+     *
+     * @param $account_id
+     * @param array $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function holds($account_id, $params = [])
+    {
+        return $this->httpGet(sprintf('/accounts/%s/holds', $account_id), $params, 'SIGN');
     }
 }
