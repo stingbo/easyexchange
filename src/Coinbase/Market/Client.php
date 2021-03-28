@@ -69,15 +69,16 @@ class Client extends BaseClient
      * Get Trades - List the latest trades for a product.
      *
      * @param $product_id
+     * @param array $params
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function trades($product_id)
+    public function trades($product_id, $params = [])
     {
-        return $this->httpGet(sprintf('/products/%s/trades', $product_id));
+        return $this->httpGet(sprintf('/products/%s/trades', $product_id), $params);
     }
 
     /**
