@@ -1050,7 +1050,8 @@ $app->market->depth($product_id, $level);
 // Get Product Ticker - Snapshot information about the last trade (tick), best bid/ask and 24h volume.
 $app->market->tickers($product_id);
 // Get Trades - List the latest trades for a product.
-$app->market->trades($product_id);
+$params = [ 'before' => 10, 'limit' => 5];
+$app->market->trades($product_id, $params);
 // Get Historic Rates - Historic rates for a product. Rates are returned in grouped buckets based on requested granularity.
 $app->market->kline($product_id);
 // Get 24hr Stats - Get 24 hr stats for the product. volume is in base currency units. open, high, low are in quote currency units.
