@@ -18,4 +18,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/accounts', [], 'SIGN');
     }
+
+    /**
+     * Get an Account - Information for a single account.
+     *
+     * @param $account_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function account($account_id)
+    {
+        return $this->httpGet(sprintf('/accounts/%s', $account_id), [], 'SIGN');
+    }
 }
