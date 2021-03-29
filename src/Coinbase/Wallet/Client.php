@@ -20,7 +20,7 @@ class Client extends BaseClient
     }
 
     /**
-     * List Deposits.
+     * List Deposits Or List Withdrawals.
      *
      * @param $params
      *
@@ -29,7 +29,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function depositHistory($params)
+    public function transferHistory($params)
     {
         return $this->httpGet('/transfers', $params, 'SIGN');
     }
