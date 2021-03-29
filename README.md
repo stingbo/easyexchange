@@ -563,7 +563,7 @@ $app->c2c->transfer($params);
 $app->c2c->balance($accountId, $currency = '');
 ```
 
-### OKEX Version V5
+### OKEx Version V5
 ```php
 <?php
 
