@@ -1034,7 +1034,7 @@ $config = [
     ],
 ];
 
-$app = Factory::coinbase($config['gate']);
+$app = Factory::coinbase($config['coinbase']);
 ```
 
 1. Market Data
