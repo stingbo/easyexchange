@@ -38,12 +38,12 @@ class Client extends BaseClient
     public function cancelOrder($id = '', $client_oid = '', $product_id = '')
     {
         if (!$id && !$client_oid) {
-            throw new InvalidArgumentException('Order id or client_id cannot be empty');
+            throw new InvalidArgumentException('Order id or client_oid cannot be empty');
         }
         if ($id) {
             $url = sprintf('/orders/%s', $id);
         } elseif ($client_oid) {
-            $url = sprintf('/orders/%s', $client_oid);
+            $url = sprintf('/orders/client:%s', $client_oid);
         }
 
         return $this->httpDelete($url, compact('product_id'), 'SIGN');
@@ -77,5 +77,31 @@ class Client extends BaseClient
     public function orders($params)
     {
         return $this->httpGet('/orders', $params, 'SIGN');
+    }
+
+    /**
+     * Get an Order.
+     *
+     * @param string $id
+     * @param string $client_oid
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws InvalidArgumentException
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function get($id = '', $client_oid = '')
+    {
+        if (!$id && !$client_oid) {
+            throw new InvalidArgumentException('Order id or client_oid cannot be empty');
+        }
+        if ($id) {
+            $url = sprintf('/orders/%s', $id);
+        } elseif ($client_oid) {
+            $url = sprintf('/orders/client:%s', $client_oid);
+        }
+
+        return $this->httpGet($url, [], 'SIGN');
     }
 }
