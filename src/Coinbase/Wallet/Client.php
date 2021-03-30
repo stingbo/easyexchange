@@ -121,4 +121,17 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/withdrawals/coinbase-account', $params, [], 'SIGN');
     }
+
+    /**
+     * List Accounts - Get a list of your coinbase accounts.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function listAccounts()
+    {
+        return $this->httpGet('/coinbase-accounts', [], 'SIGN');
+    }
 }
