@@ -72,7 +72,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function deposit($params)
+    public function depositPaymentMethod($params)
     {
         return $this->httpPostJson('/deposits/payment-method', $params, [], 'SIGN');
     }
@@ -87,8 +87,23 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function withdrawal($params)
+    public function withdrawalPaymentMethod($params)
     {
         return $this->httpPostJson('/withdrawals/payment-method', $params, [], 'SIGN');
+    }
+
+    /**
+     * Coinbase - Deposit funds from a coinbase account.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function depositCoinbaseAccount($params)
+    {
+        return $this->httpPostJson('/deposits/coinbase-account', $params, [], 'SIGN');
     }
 }
