@@ -48,4 +48,17 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/transfers/%s', $transfer_id), [], 'SIGN');
     }
+
+    /**
+     * List Payment Methods.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function paymentMethods()
+    {
+        return $this->httpGet('/payment-methods', [], 'SIGN');
+    }
 }
