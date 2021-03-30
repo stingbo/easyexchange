@@ -76,4 +76,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/deposits/payment-method', $params, [], 'SIGN');
     }
+
+    /**
+     * Payment method - Withdraw funds to a payment method.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawal($params)
+    {
+        return $this->httpPostJson('/withdrawals/payment-method', $params, [], 'SIGN');
+    }
 }
