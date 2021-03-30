@@ -134,4 +134,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/coinbase-accounts', [], 'SIGN');
     }
+
+    /**
+     * Generate a Crypto Deposit Address.
+     *
+     * @param $account_id
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function generateDepositAddress($account_id)
+    {
+        return $this->httpPostJson(sprintf('/coinbase-accounts/%s/addresses', $account_id), [], [], 'SIGN');
+    }
 }
