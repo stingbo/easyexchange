@@ -563,7 +563,7 @@ $app->c2c->transfer($params);
 $app->c2c->balance($accountId, $currency = '');
 ```
 
-### OKEX Version V5
+### OKEx Version V5
 ```php
 <?php
 
@@ -1034,7 +1034,7 @@ $config = [
     ],
 ];
 
-$app = Factory::coinbase($config['gate']);
+$app = Factory::coinbase($config['coinbase']);
 ```
 
 1. Market Data
