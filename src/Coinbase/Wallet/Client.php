@@ -106,4 +106,19 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/deposits/coinbase-account', $params, [], 'SIGN');
     }
+
+    /**
+     * Coinbase - Withdraw funds to a coinbase account.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawalCoinbaseAccount($params)
+    {
+        return $this->httpPostJson('/withdrawals/coinbase-account', $params, [], 'SIGN');
+    }
 }
