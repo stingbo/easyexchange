@@ -31,8 +31,23 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function power($product_id)
+    public function buyingPower($product_id)
     {
         return $this->httpGet('/margin/buying_power', compact('product_id'), 'SIGN');
+    }
+
+    /**
+     * Get withdrawal power.
+     *
+     * @param $currency
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function withdrawalPower($currency)
+    {
+        return $this->httpGet('/margin/withdrawal_power', compact('currency'), 'SIGN');
     }
 }
