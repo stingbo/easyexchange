@@ -78,4 +78,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/coinbase-accounts', [], 'SIGN');
     }
+
+    /**
+     * fees - Get Current Fees.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function fees()
+    {
+        return $this->httpGet('/fees', [], 'SIGN');
+    }
 }
