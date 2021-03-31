@@ -65,4 +65,17 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/accounts/%s/holds', $account_id), $params, 'SIGN');
     }
+
+    /**
+     * List Accounts - Get a list of your coinbase accounts.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function coinbaseAccounts()
+    {
+        return $this->httpGet('/coinbase-accounts', [], 'SIGN');
+    }
 }
