@@ -76,4 +76,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/margin/exit_plan', [], 'SIGN');
     }
+
+    /**
+     * List liquidation history.
+     *
+     * @param string $after
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function liquidationHistory($after = '')
+    {
+        return $this->httpGet('/margin/liquidation_history', compact('after'), 'SIGN');
+    }
 }
