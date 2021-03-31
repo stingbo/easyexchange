@@ -180,4 +180,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/withdrawals/fee-estimate', compact('currency', 'crypto_address'), 'SIGN');
     }
+
+    /**
+     * Create Conversion - eg:Convert $10,000.00 to 10,000.00 USDC.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function conversion($params)
+    {
+        return $this->httpPostJson('/conversions', $params, [], 'SIGN');
+    }
 }
