@@ -104,4 +104,17 @@ class Client extends BaseClient
     {
         return $this->httpGet('/margin/position_refresh_amounts', [], 'SIGN');
     }
+
+    /**
+     * Get margin status - Returns whether margin is currently enabled.
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function status()
+    {
+        return $this->httpGet('/margin/status', [], 'SIGN');
+    }
 }
