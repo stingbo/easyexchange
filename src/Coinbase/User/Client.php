@@ -119,4 +119,19 @@ class Client extends BaseClient
     {
         return $this->httpGet(sprintf('/profiles/%s', $profile_id), [], 'SIGN');
     }
+
+    /**
+     * Create profile transfer - Transfer funds from API key's profile to another user owned profile.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function transfer($params)
+    {
+        return $this->httpPostJson('/profiles/transfer', $params, [], 'SIGN');
+    }
 }
