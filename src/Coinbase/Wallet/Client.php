@@ -164,4 +164,20 @@ class Client extends BaseClient
     {
         return $this->httpPostJson('/withdrawals/crypto', $params, [], 'SIGN');
     }
+
+    /**
+     * Fee Estimate - Gets the network fee estimate when sending to the given address.
+     *
+     * @param $currency
+     * @param $crypto_address
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function feeEstimate($currency, $crypto_address)
+    {
+        return $this->httpGet('/withdrawals/fee-estimate', compact('currency', 'crypto_address'), 'SIGN');
+    }
 }
