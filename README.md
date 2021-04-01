@@ -1064,3 +1064,33 @@ $app->market->currency($id);
 // Get the API server time.
 $app->market->time();
 ```
+
+2. Wallet
+```php
+// Get Current Exchange Limits.
+$app->wallet->exchangeLimits();
+// List Deposits Or List Withdrawals.
+$app->wallet->transferHistory($params);
+// Single Deposit Or Single Withdrawal.
+$app->wallet->getTransfer($transfer_id);
+// List Payment Methods.
+$app->wallet->paymentMethods();
+// Payment method - Deposit funds from a payment method.
+$app->wallet->depositPaymentMethod($params);
+// Payment method - Withdraw funds to a payment method.
+$app->wallet->withdrawalPaymentMethod($params);
+// Coinbase - Deposit funds from a coinbase account.
+$app->wallet->depositCoinbaseAccount($params);
+// Coinbase - Withdraw funds to a coinbase account.
+$app->wallet->withdrawalCoinbaseAccount($params);
+// List Accounts - Get a list of your coinbase accounts.
+$app->wallet->listAccounts();
+// Generate a Crypto Deposit Address.
+$app->wallet->generateDepositAddress($account_id);
+// Withdraws funds to a crypto address.
+$app->wallet->withdrawalCrypto($params);
+// Fee Estimate - Gets the network fee estimate when sending to the given address.
+$app->wallet->feeEstimate($currency, $crypto_address);
+// Create Conversion - eg:Convert $10,000.00 to 10,000.00 USDC.
+$app->wallet->conversion($params);
+```
