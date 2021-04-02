@@ -1037,7 +1037,29 @@ $config = [
 $app = Factory::coinbase($config['coinbase']);
 ```
 
-1. Market Data
+1. Account Information
+```php
+// List Accounts - Get a list of trading accounts from the profile of the API key.
+$app->user->accounts()
+// Get an Account - Information for a single account.
+$app->user->account($account_id)
+// Get Account History - List account activity of the API key's profile.
+$app->user->history($account_id, $params = [])
+// Get Holds - List holds of an account that belong to the same profile as the API key.
+$app->user->holds($account_id, $params = [])
+// List Accounts - Get a list of your coinbase accounts.
+$app->user->coinbaseAccounts()
+// fees - Get Current Fees.
+$app->user->fees()
+// List Profiles.
+$app->user->profiles()
+// Get a Profile.
+$app->user->profile($profile_id)
+// Create profile transfer - Transfer funds from API key's profile to another user owned profile.
+$app->user->transfer($params)
+```
+
+2. Market Data
 ```php
 // Get Products - Get a list of available currency pairs for trading.
 $app->market->products();
@@ -1065,7 +1087,7 @@ $app->market->currency($id);
 $app->market->time();
 ```
 
-2. Wallet
+3. Wallet
 ```php
 // Get Current Exchange Limits.
 $app->wallet->exchangeLimits();
@@ -1093,4 +1115,40 @@ $app->wallet->withdrawalCrypto($params);
 $app->wallet->feeEstimate($currency, $crypto_address);
 // Create Conversion - eg:Convert $10,000.00 to 10,000.00 USDC.
 $app->wallet->conversion($params);
+```
+
+4. Trade
+```php
+// Place a New Order.
+$app->trade->order($params)
+// Cancel an Order.
+$app->trade->cancelOrder($id = '', $client_oid = '', $product_id = '')
+// Cancel all.
+$app->trade->cancelOrders($product_id = '')
+// List Orders.
+$app->trade->orders($params)
+// Get an Order.
+$app->trade->get($id = '', $client_oid = '')
+// List Fills - Get a list of recent fills of the API key's profile.
+$app->trade->fills($params)
+```
+
+5. Margin
+```php
+// Get margin profile information.
+$app->margin->profileInformation($product_id)
+// Get buying power or selling power.
+$app->margin->buyingPower($product_id)
+// Get withdrawal power.
+$app->margin->withdrawalPower($currency)
+// Get all withdrawal powers.
+$app->margin->withdrawalPowers()
+// Get exit plan.
+$app->margin->exitPlan()
+// List liquidation history.
+$app->margin->liquidationHistory($after = '')
+// Get position refresh amounts.
+$app->margin->positionRefreshAmounts()
+// Get margin status - Returns whether margin is currently enabled.
+$app->margin->status()
 ```
