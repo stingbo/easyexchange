@@ -750,3 +750,45 @@ $app->algo->openOrders($params);
 // 获取历史策略委托单列表.
 $app->algo->orderHistory($params);
 ```
+
+### 芝麻开门 V4 版本
+
+```php
+<?php
+
+use EasyExchange\Factory;
+
+$config = [
+    'gate' => [
+        'base_uri' => 'https://api.gateio.ws',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+    ],
+];
+
+$app = Factory::gate($config['gate']);
+```
+
+1. 钱包相关
+```php
+// 获取币种充值地址.
+$currency = 'USDT';
+$app->wallet->depositAddress($currency);
+// 获取提现记录.
+$params = [];
+$app->wallet->withdrawHistory($params);
+// 获取充值记录.
+$app->wallet->depositHistory($params);
+// 交易账户互转.
+$app->wallet->transfer($params);
+// 主子账号互转.
+$app->wallet->subAccountTransfer($params);
+// 主子账号划转记录.
+$app->wallet->subAccountTransferHistory($params);
+// 查询提现状态.
+$app->wallet->withdrawStatus($currency);
+// 查询子账号余额信息.
+$app->wallet->subAccountBalance($sub_uid = '');
+// 查询个人交易费率.
+$app->wallet->fee();
+```
