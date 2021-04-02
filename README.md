@@ -1094,3 +1094,19 @@ $app->wallet->feeEstimate($currency, $crypto_address);
 // Create Conversion - eg:Convert $10,000.00 to 10,000.00 USDC.
 $app->wallet->conversion($params);
 ```
+
+3. Trade
+```php
+// Place a New Order.
+$app->trade->order($params)
+// Cancel an Order.
+$app->trade->cancelOrder($id = '', $client_oid = '', $product_id = '')
+// Cancel all.
+$app->trade->cancelOrders($product_id = '')
+// List Orders.
+$app->trade->orders($params)
+// Get an Order.
+$app->trade->get($id = '', $client_oid = '')
+// List Fills - Get a list of recent fills of the API key's profile.
+$app->trade->fills($params)
+```
