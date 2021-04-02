@@ -769,7 +769,7 @@ $config = [
 $app = Factory::gate($config['gate']);
 ```
 
-1. Wallet
+1. 钱包相关
 ```php
 // 获取币种充值地址.
 $currency = 'USDT';
