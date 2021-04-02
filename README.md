@@ -1037,7 +1037,29 @@ $config = [
 $app = Factory::coinbase($config['coinbase']);
 ```
 
-1. Market Data
+1. Account Information
+```php
+// List Accounts - Get a list of trading accounts from the profile of the API key.
+$app->user->accounts()
+// Get an Account - Information for a single account.
+$app->user->account($account_id)
+// Get Account History - List account activity of the API key's profile.
+$app->user->history($account_id, $params = [])
+// Get Holds - List holds of an account that belong to the same profile as the API key.
+$app->user->holds($account_id, $params = [])
+// List Accounts - Get a list of your coinbase accounts.
+$app->user->coinbaseAccounts()
+// fees - Get Current Fees.
+$app->user->fees()
+// List Profiles.
+$app->user->profiles()
+// Get a Profile.
+$app->user->profile($profile_id)
+// Create profile transfer - Transfer funds from API key's profile to another user owned profile.
+$app->user->transfer($params)
+```
+
+2. Market Data
 ```php
 // Get Products - Get a list of available currency pairs for trading.
 $app->market->products();
@@ -1065,7 +1087,7 @@ $app->market->currency($id);
 $app->market->time();
 ```
 
-2. Wallet
+3. Wallet
 ```php
 // Get Current Exchange Limits.
 $app->wallet->exchangeLimits();
@@ -1095,7 +1117,7 @@ $app->wallet->feeEstimate($currency, $crypto_address);
 $app->wallet->conversion($params);
 ```
 
-3. Trade
+4. Trade
 ```php
 // Place a New Order.
 $app->trade->order($params)
