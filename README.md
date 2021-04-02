@@ -1132,3 +1132,23 @@ $app->trade->get($id = '', $client_oid = '')
 // List Fills - Get a list of recent fills of the API key's profile.
 $app->trade->fills($params)
 ```
+
+5. Margin
+```php
+// Get margin profile information.
+$app->margin->profileInformation($product_id)
+// Get buying power or selling power.
+$app->margin->buyingPower($product_id)
+// Get withdrawal power.
+$app->margin->withdrawalPower($currency)
+// Get all withdrawal powers.
+$app->margin->withdrawalPowers()
+// Get exit plan.
+$app->margin->exitPlan()
+// List liquidation history.
+$app->margin->liquidationHistory($after = '')
+// Get position refresh amounts.
+$app->margin->positionRefreshAmounts()
+// Get margin status - Returns whether margin is currently enabled.
+$app->margin->status()
+```
