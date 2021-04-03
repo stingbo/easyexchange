@@ -792,3 +792,96 @@ $app->wallet->subAccountBalance($sub_uid = '');
 // 查询个人交易费率.
 $app->wallet->fee();
 ```
+
+2.  现货交易
+```php
+// 查询所有币种信息.
+$app->spot->currencies();
+// 查询单个币种信息.
+$currency = 'GT';
+$app->spot->currency($currency);
+// 查询支持的所有交易对.
+$app->spot->currencyPairs();
+// 查询单个交易对详情.
+$currency_pair = 'ETH_USDT';
+$app->spot->currencyPair($currency_pair);
+// 获取交易对 ticker 信息.
+$app->spot->tickers($currency_pair);
+// 获取市场深度信息.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+];
+$app->spot->depth($params);
+// 查询市场成交记录.
+$app->spot->trades($params);
+// 市场 K 线图.
+$app->spot->kline($params);
+// 获取现货交易账户列表.
+$app->spot->accounts($currency);
+// 下单.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+    'side' => 'buy',
+    'amount' => '0.1',
+    'price' => '10',
+];
+$app->spot->order($params);
+// 批量下单.
+$app->spot->batchOrders($params);
+// 查询所有挂单.
+$app->spot->openOrders($page = '', $limit = '');
+// 查询订单列表.
+$app->spot->orders($params);
+// 批量取消一个交易对里状态为 open 的订单.
+$app->spot->cancelOrders($params);
+// 批量撤销指定 ID 的订单列表.
+$app->spot->cancelBatchOrders($params);
+// 查询单个订单详情.
+$app->spot->get($order_id, $currency_pair);
+// 撤销单个订单.
+$app->spot->cancelOrder($order_id, $currency_pair);
+// 查询个人成交记录.
+$app->spot->myTrades($params);
+```
+
+3. 杠杆借贷
+```php
+// 查询支持杠杆交易的所有交易对.
+$app->margin->currencyPairs();
+// 查询单个杠杆交易对.
+$app->margin->currencyPair($currency_pair);
+// 借出市场的深度.
+$app->margin->depth($currency);
+// 杠杆账户列表.
+$app->margin->accounts($currency_pair = '');
+// 查询杠杆账户变动历史.
+$app->margin->accountHistory($params);
+// 理财账户列表.
+$app->margin->fundingAccounts($currency = '');
+// 借入或借出.
+$app->margin->loan($params);
+// 查询借贷订单列表.
+$app->margin->loanHistory($params);
+// 合并多个借贷订单.
+$app->margin->mergeLoan($currency, $ids);
+// 查询借贷订单详情.
+$app->margin->get($loan_id, $side);
+// 修改借贷订单.
+$app->margin->modifyLoan($loan_id, $params);
+// 撤销借出贷款订单.
+$app->margin->cancelLoan($loan_id, $currency);
+// 归还借贷.
+$app->margin->repayment($loan_id, $params);
+// 查询借贷归还记录.
+$app->margin->getRepayment($loan_id);
+// 查看某个借贷订单的借出记录.
+$app->margin->loanRecords($params);
+// 查看单个借出记录.
+$app->margin->loanRecord($loan_id, $loan_record_id);
+// 修改单个借出记录.
+$app->margin->modifyLoanRecord($loan_record_id, $params);
+// 修改用户自动还款设置.
+$app->margin->autoRepay($status);
+// 查询用户自动还款设置.
+$app->margin->getAutoRepayStatus();
+```
