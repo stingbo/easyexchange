@@ -304,4 +304,20 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v4/spot/price_orders', $params, 'SIGN');
     }
+
+    /**
+     * Cancel all open orders.
+     *
+     * @param string $market
+     * @param string $account
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelPriceOrders($market = '', $account = '')
+    {
+        return $this->httpDelete('/api/v4/spot/price_orders', compact('market', 'account'), 'SIGN');
+    }
 }
