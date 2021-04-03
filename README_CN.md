@@ -792,3 +792,54 @@ $app->wallet->subAccountBalance($sub_uid = '');
 // 查询个人交易费率.
 $app->wallet->fee();
 ```
+
+2.  现货交易
+```php
+// 查询所有币种信息.
+$app->spot->currencies();
+// 查询单个币种信息.
+$currency = 'GT';
+$app->spot->currency($currency);
+// 查询支持的所有交易对.
+$app->spot->currencyPairs();
+// 查询单个交易对详情.
+$currency_pair = 'ETH_USDT';
+$app->spot->currencyPair($currency_pair);
+// 获取交易对 ticker 信息.
+$app->spot->tickers($currency_pair);
+// 获取市场深度信息.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+];
+$app->spot->depth($params);
+// 查询市场成交记录.
+$app->spot->trades($params);
+// 市场 K 线图.
+$app->spot->kline($params);
+// 获取现货交易账户列表.
+$app->spot->accounts($currency);
+// 下单.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+    'side' => 'buy',
+    'amount' => '0.1',
+    'price' => '10',
+];
+$app->spot->order($params);
+// 批量下单.
+$app->spot->batchOrders($params);
+// 查询所有挂单.
+$app->spot->openOrders($page = '', $limit = '');
+// 查询订单列表.
+$app->spot->orders($params);
+// 批量取消一个交易对里状态为 open 的订单.
+$app->spot->cancelOrders($params);
+// 批量撤销指定 ID 的订单列表.
+$app->spot->cancelBatchOrders($params);
+// 查询单个订单详情.
+$app->spot->get($order_id, $currency_pair);
+// 撤销单个订单.
+$app->spot->cancelOrder($order_id, $currency_pair);
+// 查询个人成交记录.
+$app->spot->myTrades($params);
+```
