@@ -3,7 +3,10 @@
 namespace EasyExchange\Kernel;
 
 use EasyExchange\Kernel\Traits\HasHttpRequests;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\LogLevel;
 
 class BaseClient
 {
@@ -147,5 +150,17 @@ class BaseClient
                 return $handler($request, $options);
             };
         };
+    }
+
+    /**
+     * Log the request.
+     *
+     * @return \Closure
+     */
+    protected function logMiddleware()
+    {
+        $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
+
+        return Middleware::log($this->app['logger'], $formatter, LogLevel::DEBUG);
     }
 }
