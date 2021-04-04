@@ -39,7 +39,7 @@ $config = [
         'secret' => 'your secret',
         'log' => [
             'level' => 'debug',
-            'file'  => '/tmp/biexchange.log',
+            'file'  => '/tmp/exchange.log',
         ],
         // ...
     ],
@@ -354,7 +354,7 @@ $config = [
         'secret' => 'your secret',
         'log' => [
             'level' => 'debug',
-            'file'  => '/tmp/huobiexchange.log',
+            'file'  => '/tmp/exchange.log',
         ],
         // ...
     ],
@@ -589,7 +589,7 @@ $config = [
         'x-simulated-trading' => 1,
         'log' => [
             'level' => 'debug',
-            'file'  => '/tmp/biexchange.log',
+            'file'  => '/tmp/exchange.log',
         ],
     ],
 ];
@@ -777,7 +777,7 @@ $config = [
         'secret' => 'your secret',
         'log' => [
             'level' => 'debug',
-            'file'  => '/tmp/biexchange.log',
+            'file'  => '/tmp/exchange.log',
         ],
     ],
 ];
@@ -1062,7 +1062,7 @@ $config = [
         'passphrase' => 'your passphrase',
         'log' => [
             'level' => 'debug',
-            'file'  => '/tmp/biexchange.log',
+            'file'  => '/tmp/exchange.log',
         ],
     ],
 ];
