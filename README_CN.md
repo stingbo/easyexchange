@@ -842,6 +842,16 @@ $app->spot->get($order_id, $currency_pair);
 $app->spot->cancelOrder($order_id, $currency_pair);
 // 查询个人成交记录.
 $app->spot->myTrades($params);
+// 创建价格触发订单.
+$app->spot->priceOrder($params)
+// 查询进行中自动订单列表.
+$app->spot->priceOrders($params)
+// 批量取消自动订单.
+$app->spot->cancelPriceOrders($market = '', $account = '')
+// 查询单个订单详情.
+$app->spot->getPriceOrder($order_id)
+// 撤销单个订单.
+$app->spot->cancelPriceOrder($order_id)
 ```
 
 3. 杠杆借贷
