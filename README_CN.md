@@ -38,6 +38,10 @@ $config = [
         'base_uri' => 'https://testnet.binance.vision', // 测试网
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -349,6 +353,10 @@ $config = [
         'base_uri' => 'https://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -580,6 +588,10 @@ $config = [
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
         'x-simulated-trading' => 1,
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -760,9 +772,14 @@ use EasyExchange\Factory;
 
 $config = [
     'gate' => [
+        'response_type' => 'array',
         'base_uri' => 'https://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
