@@ -37,6 +37,11 @@ $config = [
         'base_uri' => 'https://testnet.binance.vision', // testnet
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
+        // ...
     ],
 ];
 
@@ -347,6 +352,11 @@ $config = [
         'base_uri' => 'https://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
+        // ...
     ],
 ];
 
@@ -577,6 +587,10 @@ $config = [
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
         'x-simulated-trading' => 1,
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -757,9 +771,14 @@ use EasyExchange\Factory;
 
 $config = [
     'gate' => [
+        'response_type' => 'array',
         'base_uri' => 'https://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -839,6 +858,16 @@ $app->spot->get($order_id, $currency_pair);
 $app->spot->cancelOrder($order_id, $currency_pair);
 // List personal trading history.
 $app->spot->myTrades($params);
+// Create a price-triggered order.
+$app->spot->priceOrder($params)
+// Retrieve running auto order list.
+$app->spot->priceOrders($params)
+// Cancel all open orders.
+$app->spot->cancelPriceOrders($market = '', $account = '')
+// Get a single order.
+$app->spot->getPriceOrder($order_id)
+// Cancel a single order.
+$app->spot->cancelPriceOrder($order_id)
 ```
 
 3. Margin
@@ -1031,6 +1060,10 @@ $config = [
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 

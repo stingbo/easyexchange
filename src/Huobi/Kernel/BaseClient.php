@@ -34,6 +34,9 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
             // signature
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
         }
+
+        // log
+        $this->pushMiddleware($this->logMiddleware(), 'log');
     }
 
     /**

@@ -38,6 +38,10 @@ $config = [
         'base_uri' => 'https://testnet.binance.vision', // 测试网
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -349,6 +353,10 @@ $config = [
         'base_uri' => 'https://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -580,6 +588,10 @@ $config = [
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
         'x-simulated-trading' => 1,
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -760,9 +772,14 @@ use EasyExchange\Factory;
 
 $config = [
     'gate' => [
+        'response_type' => 'array',
         'base_uri' => 'https://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
@@ -842,6 +859,16 @@ $app->spot->get($order_id, $currency_pair);
 $app->spot->cancelOrder($order_id, $currency_pair);
 // 查询个人成交记录.
 $app->spot->myTrades($params);
+// 创建价格触发订单.
+$app->spot->priceOrder($params)
+// 查询进行中自动订单列表.
+$app->spot->priceOrders($params)
+// 批量取消自动订单.
+$app->spot->cancelPriceOrders($market = '', $account = '')
+// 查询单个订单详情.
+$app->spot->getPriceOrder($order_id)
+// 撤销单个订单.
+$app->spot->cancelPriceOrder($order_id)
 ```
 
 3. 杠杆借贷
@@ -884,4 +911,139 @@ $app->margin->modifyLoanRecord($loan_record_id, $params);
 $app->margin->autoRepay($status);
 // 查询用户自动还款设置.
 $app->margin->getAutoRepayStatus();
+```
+
+4.  永续合约
+
+```php
+// 查询所有的合约信息.
+$app->future->contracts($settle);
+// 查询单个合约信息.
+$app->future->contract($settle, $contract);
+// 查询合约市场深度信息.
+$app->future->depth($settle, $params);
+// 合约市场成交记录.
+$app->future->trades($settle, $params);
+// 合约市场 K 线图.
+$app->future->kline($settle, $params);
+// 获取所有合约交易行情统计.
+$app->future->tickers($settle, $contract);
+// 合约市场历史资金费率.
+$app->future->fundingRateHistory($settle, $params);
+// 合约市场保险基金历史.
+$app->future->insuranceHistory($settle, $limit = '');
+// 合约统计信息.
+$app->future->contractStats($settle, $params);
+// 查询强平委托历史.
+$app->future->liquidationOrders($settle, $params = []);
+// 获取合约账号.
+$app->future->accounts($settle);
+// 查询合约账户变更历史.
+$app->future->accountHistory($settle, $params = []);
+// 获取用户头寸列表.
+$app->future->positions($settle);
+// 获取单个头寸信息.
+$app->future->position($settle, $contract);
+// 更新头寸保证金.
+$app->future->modifyPositionMargin($settle, $contract, $change);
+// 更新头寸杠杆.
+$app->future->modifyPositionLeverage($settle, $contract, $leverage);
+// 更新头寸风险限额.
+$app->future->modifyPositionRiskLimit($settle, $contract, $risk_limit);
+// 设置持仓模式.
+$app->future->setDualMode($settle, $dual_mode);
+// 获取双仓模式下的持仓信息.
+$app->future->dualCompPosition($settle, $contract);
+// 更新双仓模式下的保证金.
+$app->future->modifyDualCompPositionMargin($settle, $contract, $change);
+// 更新双仓模式下的杠杆.
+$app->future->modifyDualCompPositionLeverage($settle, $contract, $leverage);
+// 更新双仓模式下的风险限额.
+$app->future->modifyDualCompPositionRiskLimit($settle, $contract, $risk_limit);
+// 合约交易下单.
+$app->future->order($settle, $params);
+// 查询合约订单列表.
+$app->future->orders($settle, $params);
+// 批量取消状态为 open 的订单.
+$app->future->cancelOrders($settle, $params);
+// 撤销单个订单.
+$app->future->cancelOrder($settle, $order_id);
+// 查询单个订单详情.
+$app->future->get($settle, $order_id);
+// 查询个人成交记录.
+$app->future->myTrades($settle, $params);
+// 查询平仓历史.
+$app->future->positionClose($settle, $params);
+// 查询强制平仓历史.
+$app->future->forceLiquidationRec($settle, $params);
+// 创建价格触发订单.
+$app->future->priceOrder($settle, $params);
+// 查询自动订单列表.
+$app->future->priceOrders($settle, $params);
+// 批量取消自动订单.
+$app->future->cancelPriceOrders($settle, $contract);
+// 查询单个订单详情.
+$app->future->getPriceOrder($settle, $order_id);
+// 撤销单个订单.
+$app->future->cancelPriceOrder($settle, $order_id);
+```
+
+5. 交割合约
+```php
+// 查询所有的合约信息.
+$app->delivery->contracts($settle);
+// 查询单个合约信息.
+$app->delivery->contract($settle, $contract);
+// 查询合约市场深度信息.
+$app->delivery->depth($settle, $params);
+// 合约市场成交记录.
+$app->delivery->trades($settle, $params);
+// 合约市场 K 线图.
+$app->delivery->kline($settle, $params);
+// 获取所有合约交易行情统计.
+$app->delivery->tickers($settle, $contract);
+// 合约市场保险基金历史.
+$app->delivery->insuranceHistory($settle, $limit = '');
+// 获取合约账号.
+$app->delivery->accounts($settle);
+// 查询合约账户变更历史.
+$app->delivery->accountHistory($settle, $params = []);
+// 获取用户头寸列表.
+$app->delivery->positions($settle);
+// 获取单个头寸信息.
+$app->delivery->position($settle, $contract);
+// 更新头寸保证金.
+$app->delivery->modifyPositionMargin($settle, $contract, $change);
+// 更新头寸杠杆.
+$app->delivery->modifyPositionLeverage($settle, $contract, $leverage);
+// 更新头寸风险限额.
+$app->delivery->modifyPositionRiskLimit($settle, $contract, $risk_limit);
+// 合约交易下单.
+$app->delivery->order($settle, $params);
+// 查询合约订单列表.
+$app->delivery->orders($settle, $params);
+// 批量取消状态为 open 的订单.
+$app->delivery->cancelOrders($settle, $params);
+// 撤销单个订单.
+$app->delivery->cancelOrder($settle, $order_id);
+// 查询单个订单详情.
+$app->delivery->get($settle, $order_id);
+// 查询个人成交记录.
+$app->delivery->myTrades($settle, $params);
+// 查询平仓历史.
+$app->delivery->positionClose($settle, $params);
+// 查询强制平仓历史.
+$app->delivery->forceLiquidationRec($settle, $params);
+// 查询结算记录.
+$app->delivery->settlements($settle, $params = []);
+// 创建价格触发订单.
+$app->delivery->priceOrder($settle, $params);
+// 查询自动订单列表.
+$app->delivery->priceOrders($settle, $params);
+// 批量取消自动订单.
+$app->delivery->cancelPriceOrders($settle, $contract);
+// 查询单个订单详情.
+$app->delivery->getPriceOrder($settle, $order_id);
+// 撤销单个订单.
+$app->delivery->cancelPriceOrder($settle, $order_id);
 ```

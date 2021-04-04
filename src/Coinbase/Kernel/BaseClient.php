@@ -45,6 +45,9 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
             $this->pushMiddleware($this->addHeaderMiddleware('CB-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header_passphrase');
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
         }
+
+        // log
+        $this->pushMiddleware($this->logMiddleware(), 'log');
     }
 
     /**
