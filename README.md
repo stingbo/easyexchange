@@ -839,6 +839,16 @@ $app->spot->get($order_id, $currency_pair);
 $app->spot->cancelOrder($order_id, $currency_pair);
 // List personal trading history.
 $app->spot->myTrades($params);
+// Create a price-triggered order.
+$app->spot->priceOrder($params)
+// Retrieve running auto order list.
+$app->spot->priceOrders($params)
+// Cancel all open orders.
+$app->spot->cancelPriceOrders($market = '', $account = '')
+// Get a single order.
+$app->spot->getPriceOrder($order_id)
+// Cancel a single order.
+$app->spot->cancelPriceOrder($order_id)
 ```
 
 3. Margin
