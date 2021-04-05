@@ -1047,3 +1047,49 @@ $app->delivery->getPriceOrder($settle, $order_id);
 // 撤销单个订单.
 $app->delivery->cancelPriceOrder($settle, $order_id);
 ```
+
+### CoinBase
+
+```php
+<?php
+
+use EasyExchange\Factory;
+
+$config = [
+    'coinbase' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://api.pro.coinbase.com',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+        'passphrase' => 'your passphrase',
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
+    ],
+];
+
+$app = Factory::coinbase($config['coinbase']);
+```
+
+1. 账户信息
+```php
+// 账户列表.
+$app->user->accounts()
+// 获取单个账号信息.
+$app->user->account($account_id)
+// 账号余额变动记录.
+$app->user->history($account_id, $params = [])
+// 账号的保留记录.
+$app->user->holds($account_id, $params = [])
+// 获取 CoinBase 帐户列表.
+$app->user->coinbaseAccounts()
+// 获取当前费率.
+$app->user->fees()
+// 个人信息列表.
+$app->user->profiles()
+// 通过 profile_id 获取个人信息.
+$app->user->profile($profile_id)
+// 站内转账.
+$app->user->transfer($params)
+```
