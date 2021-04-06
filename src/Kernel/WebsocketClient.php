@@ -18,7 +18,7 @@ class WebsocketClient
     /**
      * @param $params
      */
-    public function request(string $url, $params, callable $f)
+    public function request(string $url, $params, callable $f = null)
     {
         $ws_base_uri = $this->app->config->get('ws_base_uri').$url;
         $worker = new Worker();
@@ -29,7 +29,11 @@ class WebsocketClient
                 $connection->send(json_encode($params));
             };
             $ws_connection->onMessage = function ($connection, $data) use ($f) {
-                $f($data);
+                if (is_callable($f)) {
+                    $f($data);
+                } else {
+                    echo $data.PHP_EOL;
+                }
             };
             $ws_connection->onError = function ($connection, $code, $msg) {
                 echo "error: $msg\n";
