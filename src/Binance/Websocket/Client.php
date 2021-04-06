@@ -8,6 +8,11 @@ use Workerman\Worker;
 
 class Client extends BaseClient
 {
+    /**
+     * Live Subscribing to streams.
+     *
+     * @param $params
+     */
     public function subscribe($params)
     {
         $params['method'] = 'SUBSCRIBE';
