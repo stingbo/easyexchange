@@ -4,8 +4,6 @@
 ```php
 <?php
 
-namespace EasyExchange\Tests;
-
 use EasyExchange\Factory;
 use EasyExchange\Kernel\Websocket\DataHandle;
 
@@ -31,8 +29,8 @@ class Test
                 'response_type' => 'array',
                 'base_uri' => 'https://api.huobi.pro',
                 'ws_base_uri' => 'ws://api.huobi.pro',
-                'app_key' => '17b00df5-54174f52-bg2hyw2dfg-4b2a0',
-                'secret' => '47d43695-d44aabd1-ed1cbdbc-4d777',
+                'app_key' => 'your app key',
+                'secret' => 'your secret',
             ],
         ];
         $app = Factory::huobi($config['huobi']);
