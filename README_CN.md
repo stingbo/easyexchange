@@ -22,6 +22,16 @@ $ composer require "stingbo/easyexchange" -vvv
 4. 币安的 timestamp 参数已内置，不需要额外传入
 5. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
 
+## Websocket
+
+| 平台 | 是否支持 |
+| :---: | :---: |
+| [币安](docs/binance_websocket_cn.md) | :heavy_check_mark: |
+| [火币](docs/huobi_websocket_cn.md) | :heavy_check_mark: |
+| [欧易](docs/okex_websocket_cn.md) | :heavy_multiplication_x: |
+| [芝麻开门](docs/gate_websocket_cn.md) | :heavy_multiplication_x: |
+| [coinbase](docs/coinbase_websocket_cn.md) | :heavy_multiplication_x: |
+
 ## 使用说明
 
 ### 币安
