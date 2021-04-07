@@ -7,7 +7,7 @@ use EasyExchange\Kernel\WebsocketClient;
 class Client extends WebsocketClient
 {
     /**
-     * Live Subscribing to streams.
+     * Subscribe to Topic.
      *
      * @param $params
      */
