@@ -22,6 +22,16 @@ $ composer require "stingbo/easyexchange" -vvv
 4. Binance's timestamp parameter is built-in, no additional input is required
 5. Huobi’s AccessKeyId, SignatureMethod, SignatureVersion, and Timestamp are already built-in, no additional input is required
 
+## Websocket
+
+| platform | support |
+| :---: | :---: |
+| [Binance](docs/binance_websocket_cn.md) | :heavy_check_mark: |
+| [Huobi](docs/huobi_websocket_cn.md) | :heavy_check_mark: |
+| [OKEx](docs/okex_websocket_cn.md) | :heavy_multiplication_x: |
+| [Gate](docs/gate_websocket_cn.md) | :heavy_multiplication_x: |
+| [CoinBase](docs/coinbase_websocket_cn.md) | :heavy_multiplication_x: |
+
 ## Usage
 
 ### Binance
