@@ -6,10 +6,10 @@ use EasyExchange\Kernel\ServiceContainer;
 use Workerman\Connection\AsyncTcpConnection;
 use Workerman\Worker;
 
-class Client
+class BaseClient
 {
     /**
-     * Client constructor.
+     * BaseClient constructor.
      */
     public function __construct(ServiceContainer $app)
     {
