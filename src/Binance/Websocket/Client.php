@@ -2,33 +2,32 @@
 
 namespace EasyExchange\Binance\Websocket;
 
-use EasyExchange\Kernel\WebsocketClient;
+use EasyExchange\Kernel\Websocket\BaseClient;
+use EasyExchange\Kernel\Websocket\DataHandle;
 
-class Client extends WebsocketClient
+class Client extends BaseClient
 {
     /**
      * Subscribe to a stream.
      *
      * @param $params
-     * @param null $f
      */
-    public function subscribe($params, $f = null)
+    public function subscribe($params, DataHandle $handle)
     {
         $params['method'] = 'SUBSCRIBE';
 
-        return $this->request('/ws', $params, $f);
+        $this->request('/ws', $params, $handle);
     }
 
     /**
      * Unsubscribe to a stream.
      *
      * @param $params
-     * @param null $f
      */
-    public function unsubscribe($params, $f = null)
+    public function unsubscribe($params, DataHandle $handle)
     {
         $params['method'] = 'UNSUBSCRIBE';
 
-        return $this->request('/ws', $params, $f = null);
+        $this->request('/ws', $params, $handle);
     }
 }
