@@ -16,4 +16,14 @@ class Client extends BaseClient
     {
         $this->request('/ws', $params, $handle);
     }
+
+    /**
+     * Unsubscribe.
+     *
+     * @param $params
+     */
+    public function unsubscribe($params, DataHandle $handle)
+    {
+        $this->request('/ws', $params, $handle);
+    }
 }
