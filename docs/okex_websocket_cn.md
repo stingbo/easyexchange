@@ -12,8 +12,17 @@ class DataTest implements DataHandle
     public function handle($connection, $data)
     {
         echo $data.PHP_EOL;
-        // 应该使用一个定时器来维持连接
-        $connection->send('ping');
+        $time_interval = 10;
+        $connect_time = time();
+        if ('pong' != $data) {
+            $connection->timer_id = Timer::add($time_interval, function () use ($connection, $connect_time) {
+                echo $connect_time.PHP_EOL;
+                $connection->send('ping');
+            });
+        } else {
+            // 删除定时器
+            Timer::del($connection->timer_id);
+        }
     }
 }
 
