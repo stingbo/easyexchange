@@ -1,4 +1,10 @@
-## 欧易 Websocket 行情数据
+## 欧易 Websocket 文档
+
+#### 说明
+
+> DataTest 必须是实现了 EasyExchange\Kernel\Websocket\DataHandle 接口的对象
+
+> DataHandle 里的 handle 方法接收两个参数，一个是 workerman 的 connection 客户端连接对象，一个是服务端返回的数据
 
 1. 示例
 ```php
@@ -6,14 +12,25 @@
 
 use EasyExchange\Factory;
 use EasyExchange\Kernel\Websocket\DataHandle;
+use Workerman\Timer;
 
 class DataTest implements DataHandle
 {
     public function handle($connection, $data)
     {
+        // your logic ....
         echo $data.PHP_EOL;
-        // 应该使用一个定时器来维持连接
-        $connection->send('ping');
+        $time_interval = 10;
+        $connect_time = time();
+        if ('pong' != $data) {
+            $connection->timer_id = Timer::add($time_interval, function () use ($connection, $connect_time) {
+                echo $connect_time.PHP_EOL;
+                $connection->send('ping');
+            });
+        } else {
+            // 删除定时器
+            Timer::del($connection->timer_id);
+        }
     }
 }
 
@@ -50,7 +67,6 @@ class Test
         $app->websocket->subscribe($params, $handle);
     }
 }
-
 
 $tc = new Test();
 $tc->ws();

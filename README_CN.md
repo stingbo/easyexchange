@@ -29,7 +29,7 @@ $ composer require "stingbo/easyexchange" -vvv
 | [币安](docs/binance_websocket_cn.md) | :heavy_check_mark: |
 | [火币](docs/huobi_websocket_cn.md) | :heavy_check_mark: |
 | [欧易](docs/okex_websocket_cn.md) | :heavy_check_mark: |
-| [芝麻开门](docs/gate_websocket_cn.md) | :heavy_multiplication_x: |
+| [芝麻开门](docs/gate_websocket_cn.md) | :heavy_check_mark: |
 | [coinbase](docs/coinbase_websocket_cn.md) | :heavy_multiplication_x: |
 
 ## 使用说明
