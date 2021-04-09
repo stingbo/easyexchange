@@ -1,4 +1,10 @@
-## 芝麻开门 Websocket 数据
+## 芝麻开门 Websocket 文档
+
+#### 说明
+
+> DataTest 必须是实现了 EasyExchange\Kernel\Websocket\DataHandle 接口的对象
+
+> DataHandle 里的 handle 方法接收两个参数，一个是 workerman 的 connection 客户端连接对象，一个是服务端返回的数据
 
 1. 示例
 ```php
@@ -11,6 +17,7 @@ class DataTest implements DataHandle
 {
     public function handle($connection, $data)
     {
+        // your logic ....
         echo $data.PHP_EOL;
     }
 }
@@ -38,7 +45,6 @@ class Test
         $app->websocket->subscribe($params, $handle);
     }
 }
-
 
 $tc = new Test();
 $tc->ws();
