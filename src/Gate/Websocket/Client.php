@@ -3,7 +3,7 @@
 namespace EasyExchange\Gate\Websocket;
 
 use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\DataHandle;
+use EasyExchange\Kernel\Websocket\Handle;
 
 class Client extends BaseClient
 {
@@ -12,7 +12,7 @@ class Client extends BaseClient
      *
      * @param $params
      */
-    public function subscribe($params, DataHandle $handle)
+    public function subscribe($params, Handle $handle)
     {
         $params['event'] = 'subscribe';
 
