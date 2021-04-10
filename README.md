@@ -1,7 +1,7 @@
 ## PHP Easy Exchange Api
 - Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `CoinBase` etc
+- If you don’t have what you want, please let me know, and I will fulfill your wish :smile:
 - [中文文档](README_CN.md)
-- [接口列表](api.md)
 
 ## Requirement
 
@@ -45,6 +45,7 @@ $config = [
         'response_type' => 'array',
         //'base_uri' => 'https://api.binance.com',
         'base_uri' => 'https://testnet.binance.vision', // testnet
+        'ws_base_uri' => 'ws://stream.binance.com:9443',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'log' => [
@@ -360,6 +361,7 @@ $config = [
     'huobi' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.huobi.pro',
+        'ws_base_uri' => 'ws://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'log' => [
@@ -593,6 +595,7 @@ $config = [
     'okex' => [
         'response_type' => 'array',
         'base_uri' => 'https://www.okex.com',
+        'ws_base_uri' => 'ws://ws.okex.com:8443',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
@@ -783,6 +786,7 @@ $config = [
     'gate' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.gateio.ws',
+        'ws_base_uri' => 'ws://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'log' => [
@@ -1067,6 +1071,7 @@ $config = [
     'coinbase' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.pro.coinbase.com',
+        'ws_base_uri' => 'ws://ws-feed.pro.coinbase.com',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',

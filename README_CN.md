@@ -1,7 +1,7 @@
 ## EasyExchange
-- 方便使用的数据货币交易所SDK，包含币安(Binance)，欧易(OKEx)，火币(Huobi)，芝麻开门(Gate)
+- 方便使用的数据货币交易所 SDK，包含币安(Binance)，欧易(OKEx)，火币(Huobi)，芝麻开门(Gate)
+- 如果没有你想要的交易所 SDK，你可以提 issue 告诉我，或者你开发好了提 merge request 给我都行，与君共勉 :laughing:
 - [English Doc](README.md)
-- [API List](api.md)
 
 ## 依赖
 
@@ -46,6 +46,7 @@ $config = [
         'response_type' => 'array',
         //'base_uri' => 'https://api.binance.com', // 正式网
         'base_uri' => 'https://testnet.binance.vision', // 测试网
+        'ws_base_uri' => 'ws://stream.binance.com:9443',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'log' => [
@@ -361,6 +362,7 @@ $config = [
     'huobi' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.huobi.pro',
+        'ws_base_uri' => 'ws://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'log' => [
@@ -594,6 +596,7 @@ $config = [
     'okex' => [
         'response_type' => 'array',
         'base_uri' => 'https://www.okex.com',
+        'ws_base_uri' => 'ws://ws.okex.com:8443',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
@@ -784,6 +787,7 @@ $config = [
     'gate' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.gateio.ws',
+        'ws_base_uri' => 'ws://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'log' => [
@@ -1069,6 +1073,7 @@ $config = [
     'coinbase' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.pro.coinbase.com',
+        'ws_base_uri' => 'ws://ws-feed.pro.coinbase.com',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
@@ -1085,21 +1090,21 @@ $app = Factory::coinbase($config['coinbase']);
 1. 账户信息
 ```php
 // 账户列表.
-$app->user->accounts()
+$app->user->accounts();
 // 获取单个账号信息.
-$app->user->account($account_id)
+$app->user->account($account_id);
 // 账号余额变动记录.
-$app->user->history($account_id, $params = [])
+$app->user->history($account_id, $params = []);
 // 账号的保留记录.
-$app->user->holds($account_id, $params = [])
+$app->user->holds($account_id, $params = []);
 // 获取 CoinBase 帐户列表.
-$app->user->coinbaseAccounts()
+$app->user->coinbaseAccounts();
 // 获取当前费率.
-$app->user->fees()
+$app->user->fees();
 // 个人信息列表.
-$app->user->profiles()
+$app->user->profiles();
 // 通过 profile_id 获取个人信息.
-$app->user->profile($profile_id)
+$app->user->profile($profile_id);
 // 站内转账.
-$app->user->transfer($params)
+$app->user->transfer($params);
 ```
