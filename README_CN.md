@@ -1090,21 +1090,21 @@ $app = Factory::coinbase($config['coinbase']);
 1. 账户信息
 ```php
 // 账户列表.
-$app->user->accounts()
+$app->user->accounts();
 // 获取单个账号信息.
-$app->user->account($account_id)
+$app->user->account($account_id);
 // 账号余额变动记录.
-$app->user->history($account_id, $params = [])
+$app->user->history($account_id, $params = []);
 // 账号的保留记录.
-$app->user->holds($account_id, $params = [])
+$app->user->holds($account_id, $params = []);
 // 获取 CoinBase 帐户列表.
-$app->user->coinbaseAccounts()
+$app->user->coinbaseAccounts();
 // 获取当前费率.
-$app->user->fees()
+$app->user->fees();
 // 个人信息列表.
-$app->user->profiles()
+$app->user->profiles();
 // 通过 profile_id 获取个人信息.
-$app->user->profile($profile_id)
+$app->user->profile($profile_id);
 // 站内转账.
-$app->user->transfer($params)
+$app->user->transfer($params);
 ```
