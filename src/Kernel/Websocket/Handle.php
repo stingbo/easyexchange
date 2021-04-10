@@ -2,7 +2,13 @@
 
 namespace EasyExchange\Kernel\Websocket;
 
-interface DataHandle
+interface Handle
 {
-    public function handle($connection, $data);
+    public function onConnect($connection, $params);
+
+    public function onMessage($connection, $data);
+
+    public function onError($connection, $code, $message);
+
+    public function onClose($connection);
 }
