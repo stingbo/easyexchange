@@ -3,7 +3,7 @@
 namespace EasyExchange\Huobi\Websocket;
 
 use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\DataHandle;
+use EasyExchange\Kernel\Websocket\Handle;
 
 class Client extends BaseClient
 {
@@ -12,7 +12,7 @@ class Client extends BaseClient
      *
      * @param $params
      */
-    public function subscribe($params, DataHandle $handle)
+    public function subscribe($params, Handle $handle)
     {
         $this->request('/ws', $params, $handle);
     }
@@ -22,7 +22,7 @@ class Client extends BaseClient
      *
      * @param $params
      */
-    public function unsubscribe($params, DataHandle $handle)
+    public function unsubscribe($params, Handle $handle)
     {
         $this->request('/ws', $params, $handle);
     }
