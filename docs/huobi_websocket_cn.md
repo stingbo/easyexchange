@@ -2,7 +2,7 @@
 
 #### 说明
 
-见[币安 websocket 文档](docs/binance_websocket_cn.md)
+见[币安 websocket 文档](binance_websocket_cn.md)
 
 
 1. 示例
