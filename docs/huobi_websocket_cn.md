@@ -2,28 +2,42 @@
 
 #### 说明
 
-> DataTest 必须是实现了 EasyExchange\Kernel\Websocket\DataHandle 接口的对象
+见[币安 websocket 文档](binance_websocket_cn.md)
 
-> DataHandle 里的 handle 方法接收两个参数，一个是 workerman 的 connection 客户端连接对象，一个是服务端返回的数据
 
 1. 示例
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\DataHandle;
+use EasyExchange\Kernel\Websocket\Handle;
 
-class DataTest implements DataHandle
+class HuobiHandle implements Handle
 {
-    public function handle($connection, $data)
+    public function onConnect($connection, $params)
     {
-        // your logic ....
+        $connection->send(json_encode($params));
+    }
+
+    public function onMessage($connection, $data)
+    {
         $json_data = gzdecode($data);
         echo $json_data.PHP_EOL;
         $data = json_decode($json_data, true);
         if (isset($data['ping'])) {
             $connection->send(json_encode(['pong' => $data['ping']]));
         }
+        // your logic ....
+    }
+
+    public function onError($connection, $code, $message)
+    {
+        echo "error: $message\n";
+    }
+
+    public function onClose($connection)
+    {
+        echo "connection closed\n";
     }
 }
 
@@ -44,8 +58,7 @@ class Test
         $params = [
             "sub" => "market.btcusdt.kline.1min",
         ];
-        $handle = new DataTest();
-        $app->websocket->subscribe($params, $handle);
+        $app->websocket->subscribe($params, new HuobiHandle());
     }
 }
 

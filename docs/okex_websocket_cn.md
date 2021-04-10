@@ -2,23 +2,25 @@
 
 #### 说明
 
-> DataTest 必须是实现了 EasyExchange\Kernel\Websocket\DataHandle 接口的对象
-
-> DataHandle 里的 handle 方法接收两个参数，一个是 workerman 的 connection 客户端连接对象，一个是服务端返回的数据
+见[币安 websocket 文档](binance_websocket_cn.md)
 
 1. 示例
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\DataHandle;
+use EasyExchange\Kernel\Websocket\Handle;
 use Workerman\Timer;
 
-class DataTest implements DataHandle
+class OkexHandle implements Handle
 {
-    public function handle($connection, $data)
+    public function onConnect($connection, $params)
     {
-        // your logic ....
+        $connection->send(json_encode($params));
+    }
+
+    public function onMessage($connection, $data)
+    {
         echo $data.PHP_EOL;
         $time_interval = 10;
         $connect_time = time();
@@ -31,6 +33,17 @@ class DataTest implements DataHandle
             // 删除定时器
             Timer::del($connection->timer_id);
         }
+        // your logic ....
+    }
+
+    public function onError($connection, $code, $message)
+    {
+        echo "error: $message\n";
+    }
+
+    public function onClose($connection)
+    {
+        echo "connection closed\n";
     }
 }
 
@@ -63,8 +76,7 @@ class Test
                 ],
             ],
         ];
-        $handle = new DataTest();
-        $app->websocket->subscribe($params, $handle);
+        $app->websocket->subscribe($params, new OkexHandle());
     }
 }
 
