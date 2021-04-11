@@ -248,6 +248,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 小额资产转换BNB历史(SAPI).
+     *
+     * @param array $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetDribblet($params = [])
+    {
+        return $this->httpGet('/sapi/v1/asset/dribblet', $params, 'SIGN');
+    }
+
+    /**
      * 小额资产转换.
      *
      * @param $asset
