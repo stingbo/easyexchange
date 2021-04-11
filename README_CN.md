@@ -141,6 +141,8 @@ $app->market->accountStatus();
 $app->market->apiTradingStatus();
 // 小额资产转换BNB历史
 $app->market->userAssetDribbletLog();
+// 小额资产转换BNB历史(SAPI)
+$app->market->assetDribblet();
 // 小额资产转换
 $asset = []; //币安文档上写的:ARRAY,正在转换的资产。例如：asset = BTC＆asset = USDT
 $app->market->assetDust($asset);
@@ -150,6 +152,8 @@ $app->market->assetDividend($params);
 $app->market->assetDetail();
 // 交易手续费率查询
 $app->market->tradeFee();
+// 交易手续费率查询(SAPI)
+$app->market->assetTradeFee();
 // 用户万向划转
 $app->market->transfer($params);
 // 查询用户万向划转历史
