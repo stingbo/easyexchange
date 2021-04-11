@@ -11,12 +11,13 @@ class ClientTest extends TestCase
     {
         $client = $this->mockApiClient(Client::class);
 
-        $client->expects()->httpGet('/market/depth', [
+        $params = [
             'symbol' => 'ETHBTC',
             'type' => 'step0',
             'depth' => 10,
-        ])->andReturn('mock-result');
+        ];
+        $client->expects()->httpGet('/market/depth', $params)->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->depth('ETHBTC', 'step0', 10));
+        $this->assertSame('mock-result', $client->depth($params));
     }
 }

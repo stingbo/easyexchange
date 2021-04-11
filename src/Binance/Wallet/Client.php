@@ -25,14 +25,16 @@ class Client extends BaseClient
      * 获取所有币信息.
      * No sapi/wapi in testnet; only api endpoints available.
      *
+     * @param int $recvWindow
+     *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getAll()
+    public function getAll($recvWindow = 60000)
     {
-        return $this->httpGet('/sapi/v1/capital/config/getall', [], 'SIGN');
+        return $this->httpGet('/sapi/v1/capital/config/getall', compact('recvWindow'), 'SIGN');
     }
 
     /**
@@ -246,6 +248,21 @@ class Client extends BaseClient
     }
 
     /**
+     * 小额资产转换BNB历史(SAPI).
+     *
+     * @param array $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetDribblet($params = [])
+    {
+        return $this->httpGet('/sapi/v1/asset/dribblet', $params, 'SIGN');
+    }
+
+    /**
      * 小额资产转换.
      *
      * @param $asset
@@ -313,6 +330,30 @@ class Client extends BaseClient
         }
 
         return $this->httpGet('/wapi/v3/tradeFee.html', $request, 'SIGN');
+    }
+
+    /**
+     * 交易手续费率查询(SAPI).
+     *
+     * @param string $symbol
+     * @param int    $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetTradeFee($symbol = '', $recvWindow = 60000)
+    {
+        $request = [];
+        if ($symbol) {
+            $request['symbol'] = $symbol;
+        }
+        if ($recvWindow) {
+            $request['recvWindow'] = $recvWindow;
+        }
+
+        return $this->httpGet('/sapi/v1/asset/tradeFee', $request, 'SIGN');
     }
 
     /**
