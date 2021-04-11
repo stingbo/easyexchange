@@ -1,4 +1,4 @@
-## Websocket Market Streams
+## Binance Websocket Documentation
 
 #### Introduction
 
