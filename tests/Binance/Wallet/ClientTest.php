@@ -75,22 +75,79 @@ class ClientTest extends TestCase
 
     public function testWithdrawApply()
     {
+        $client = $this->mockApiClient(Client::class);
+        $recvWindow = 50000;
+        $params = [
+            'coin' => 'BTC',
+            'amount' => 1,
+            'address' => 'xxxxx',
+            'recvWindow' => $recvWindow,
+        ];
+
+        $client->expects()->httpPost('/sapi/v1/capital/withdraw/apply', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->withdrawApply($params));
     }
 
     public function testWithdraw()
     {
+        $client = $this->mockApiClient(Client::class);
+        $recvWindow = 50000;
+        $params = [
+            'asset' => 'BTC',
+            'amount' => 1,
+            'address' => 'xxxxx',
+            'recvWindow' => $recvWindow,
+        ];
+
+        $client->expects()->httpPost('/wapi/v3/withdraw.html', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->withdraw($params));
     }
 
     public function testCapitalDepositHistory()
     {
+        $client = $this->mockApiClient(Client::class);
+        $recvWindow = 50000;
+        $params = [
+            'coin' => 'BTC',
+            'status' => 1,
+            'recvWindow' => $recvWindow,
+        ];
+
+        $client->expects()->httpGet('/sapi/v1/capital/deposit/hisrec', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->capitalDepositHistory($params));
     }
 
     public function testDepositHistory()
     {
+        $client = $this->mockApiClient(Client::class);
+        $recvWindow = 50000;
+        $params = [
+            'asset' => 'BTC',
+            'status' => 1,
+            'recvWindow' => $recvWindow,
+        ];
+
+        $client->expects()->httpGet('/wapi/v3/depositHistory.html', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->depositHistory($params));
     }
 
     public function testCapitalWithdrawHistory()
     {
+        $client = $this->mockApiClient(Client::class);
+        $recvWindow = 50000;
+        $params = [
+            'coin' => 'BTC',
+            'status' => 1,
+            'recvWindow' => $recvWindow,
+        ];
+
+        $client->expects()->httpGet('/sapi/v1/capital/withdraw/history', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->capitalWithdrawHistory($params));
     }
 
     public function testWithdrawHistory()
