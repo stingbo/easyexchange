@@ -143,6 +143,8 @@ $app->market->accountStatus();
 $app->market->apiTradingStatus();
 // DustLog-Fetch small amounts of assets exchanged BNB records
 $app->market->userAssetDribbletLog();
+// DustLog(SAPI)
+$app->market->assetDribblet();
 // Dust Transfer-Convert dust assets to BNB.
 //It is written on the Binance document:ARRAY,the asset being converted. For example：asset = BTC＆asset = USDT
 $asset = [];
@@ -153,6 +155,8 @@ $app->market->assetDividend($params);
 $app->market->assetDetail();
 // Trade Fee
 $app->market->tradeFee();
+// Trade Fee(SAPI)
+$app->market->assetTradeFee();
 // User Universal Transfer
 $app->market->transfer($params);
 // Query User Universal Transfer History
