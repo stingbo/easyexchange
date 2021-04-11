@@ -1,4 +1,4 @@
-## CoinBase Websocket
+## Coinbase Websocket
 
 #### Introduction
 
