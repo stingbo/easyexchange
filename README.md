@@ -26,7 +26,7 @@ $ composer require "stingbo/easyexchange" -vvv
 
 | platform | support |
 | :---: | :---: |
-| [Binance](docs/binance_websocket_cn.md) | :heavy_check_mark: |
+| [Binance](docs/binance_websocket.md) | :heavy_check_mark: |
 | [Huobi](docs/huobi_websocket_cn.md) | :heavy_check_mark: |
 | [OKEx](docs/okex_websocket_cn.md) | :heavy_check_mark: |
 | [Gate](docs/gate_websocket_cn.md) | :heavy_check_mark: |
