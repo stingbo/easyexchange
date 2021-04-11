@@ -1,5 +1,5 @@
 ## PHP Easy Exchange Api
-- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `CoinBase` etc
+- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `Coinbase` etc
 - If you don’t have what you want, please let me know, and I will fulfill your wish :smile:
 - [中文文档](README_CN.md)
 
@@ -26,11 +26,11 @@ $ composer require "stingbo/easyexchange" -vvv
 
 | platform | support |
 | :---: | :---: |
-| [Binance](docs/binance_websocket_cn.md) | :heavy_check_mark: |
-| [Huobi](docs/huobi_websocket_cn.md) | :heavy_check_mark: |
-| [OKEx](docs/okex_websocket_cn.md) | :heavy_check_mark: |
-| [Gate](docs/gate_websocket_cn.md) | :heavy_check_mark: |
-| [CoinBase](docs/coinbase_websocket_cn.md) | :heavy_check_mark: |
+| [Binance](docs/binance_websocket.md) | :heavy_check_mark: |
+| [Huobi](docs/huobi_websocket.md) | :heavy_check_mark: |
+| [OKEx](docs/okex_websocket.md) | :heavy_check_mark: |
+| [Gate](docs/gate_websocket.md) | :heavy_check_mark: |
+| [Coinbase](docs/coinbase_websocket.md) | :heavy_check_mark: |
 
 ## Usage
 
@@ -1064,7 +1064,7 @@ $app->delivery->getPriceOrder($settle, $order_id);
 $app->delivery->cancelPriceOrder($settle, $order_id);
 ```
 
-### CoinBase
+### Coinbase
 
 ```php
 <?php

@@ -1,11 +1,13 @@
-## 火币 Websocket 文档
+## Huobi Websocket
 
-#### 说明
+#### Introduction
 
-见[币安 websocket 文档](binance_websocket_cn.md)
+See [binance websocket documentation](binance_websocket.md) for details
 
+### Usage
 
-1. 示例
+1. Example
+
 ```php
 <?php
 
@@ -66,4 +68,4 @@ $tc = new Test();
 $tc->ws();
 ```
 
-2. 启动脚本监听:`php test.php start`
+2. Start script monitoring:`php test.php start`

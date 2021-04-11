@@ -1,18 +1,20 @@
-## 火币 Websocket 文档
+## Gate Websocket
 
-#### 说明
+#### Introduction
 
-见[币安 websocket 文档](binance_websocket_cn.md)
+See [binance websocket documentation](binance_websocket.md) for details
 
+### Usage
 
-1. 示例
+1. Example
+
 ```php
 <?php
 
 use EasyExchange\Factory;
 use EasyExchange\Kernel\Websocket\Handle;
 
-class HuobiHandle implements Handle
+class GateHandle implements Handle
 {
     public function onConnect($connection, $params)
     {
@@ -21,12 +23,7 @@ class HuobiHandle implements Handle
 
     public function onMessage($connection, $data)
     {
-        $json_data = gzdecode($data);
-        echo $json_data.PHP_EOL;
-        $data = json_decode($json_data, true);
-        if (isset($data['ping'])) {
-            $connection->send(json_encode(['pong' => $data['ping']]));
-        }
+        echo $data.PHP_EOL;
         // your logic ....
     }
 
@@ -46,19 +43,21 @@ class Test
     public function ws()
     {
         $config = [
-            'huobi' => [
+            'gate' => [
                 'response_type' => 'array',
-                'base_uri' => 'https://api.huobi.pro',
-                'ws_base_uri' => 'ws://api.huobi.pro',
+                'base_uri' => 'https://api.gateio.ws',
+                'ws_base_uri' => 'ws://api.gateio.ws',
                 'app_key' => 'your app key',
                 'secret' => 'your secret',
             ],
         ];
-        $app = Factory::huobi($config['huobi']);
+        $app = Factory::gate($config['gate']);
         $params = [
-            "sub" => "market.btcusdt.kline.1min",
+            'time' => time(),
+            'channel' => 'spot.tickers',
+            'payload' => ['BTC_USDT'],
         ];
-        $app->websocket->subscribe($params, new HuobiHandle());
+        $app->websocket->subscribe($params, new GateHandle());
     }
 }
 
@@ -66,4 +65,4 @@ $tc = new Test();
 $tc->ws();
 ```
 
-2. 启动脚本监听:`php test.php start`
+2. Start script monitoring:`php test.php start`
