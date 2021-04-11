@@ -1,4 +1,4 @@
-## CoinBase Websocket 文档
+## Coinbase Websocket 文档
 
 #### 说明
 
