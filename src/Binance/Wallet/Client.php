@@ -333,6 +333,30 @@ class Client extends BaseClient
     }
 
     /**
+     * 交易手续费率查询(SAPI).
+     *
+     * @param string $symbol
+     * @param int    $recvWindow
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function assetTradeFee($symbol = '', $recvWindow = 60000)
+    {
+        $request = [];
+        if ($symbol) {
+            $request['symbol'] = $symbol;
+        }
+        if ($recvWindow) {
+            $request['recvWindow'] = $recvWindow;
+        }
+
+        return $this->httpGet('/sapi/v1/asset/tradeFee', $request, 'SIGN');
+    }
+
+    /**
      * 用户万向划转.
      *
      * @param $params
