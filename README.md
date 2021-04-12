@@ -1,6 +1,7 @@
 ## PHP Easy Exchange Api
 - Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `Coinbase` etc
 - If you don’t have what you want, please let me know, and I will fulfill your wish :smile:
+- Pull requests are welcome.
 - [中文文档](README_CN.md)
 
 ## Requirement
