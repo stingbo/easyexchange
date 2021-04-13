@@ -1,6 +1,6 @@
 ## EasyExchange
 - 方便使用的数据货币交易所 SDK，包含币安(Binance)，欧易(OKEx)，火币(Huobi)，芝麻开门(Gate)，Coinbase
-- 如果没有你想要的交易所 SDK，你可以提 issue 告诉我，或者你开发好了提 merge request 给我都行，与君共勉 :laughing:
+- 如果没有你想要的交易所 SDK，你可以提 issue 告诉我，或者你开发好了提 pull request 给我都行，与君共勉 :laughing:
 - [English Doc](README.md)
 
 ## 依赖
