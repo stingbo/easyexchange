@@ -130,6 +130,7 @@ class Client extends BaseClient
 
     /**
      * 计算调整后的混合保证金质押率 v1 & v2.
+     * Calculate Rate After Adjust Cross-Collateral LTV V1 & V2.
      *
      * @param $params
      * @param string $version
@@ -141,7 +142,7 @@ class Client extends BaseClient
      */
     public function calcAdjustLevel($params, $version = 'v1')
     {
-        return $this->httpGet(sprintf('/sapi/%v/futures/loan/calcAdjustLevel', $version), $params, 'SIGN');
+        return $this->httpGet(sprintf('/sapi/%s/futures/loan/calcAdjustLevel', $version), $params, 'SIGN');
     }
 
     /**
