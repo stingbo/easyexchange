@@ -276,7 +276,8 @@ $app->margin->isolatedTransfer($params);
 // 获取杠杆逐仓划转历史
 $app->margin->isolatedTransferHistory($params);
 // 查询杠杆逐仓账户信息
-$app->margin->isolatedAccount($symbol);
+$symbols = 'BTCUSDT,BNBUSDT,ADAUSDT';
+$app->margin->isolatedAccount($symbols);
 // 查询逐仓杠杆交易对
 $app->margin->isolatedPair($symbol);
 // 获取所有逐仓杠杆交易对
