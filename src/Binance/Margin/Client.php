@@ -394,8 +394,9 @@ class Client extends BaseClient
 
     /**
      * 查询杠杆逐仓账户信息.
+     * Query Isolated Margin Account Info.
      *
-     * @param string $symbol
+     * @param string $symbols
      * @param int    $recvWindow
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
@@ -403,11 +404,11 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function isolatedAccount($symbol = '', $recvWindow = 60000)
+    public function isolatedAccount($symbols = '', $recvWindow = 60000)
     {
         $request = [];
-        if ($symbol) {
-            $request['symbol'] = $symbol;
+        if ($symbols) {
+            $request['symbols'] = $symbols;
         }
         if ($recvWindow) {
             $request['recvWindow'] = $recvWindow;
