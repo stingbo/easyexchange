@@ -275,7 +275,8 @@ $app->margin->isolatedTransfer($params);
 // Get Isolated Margin Transfer History
 $app->margin->isolatedTransferHistory($params);
 // Query Isolated Margin Account Info
-$app->margin->isolatedAccount($symbol);
+$symbols = 'BTCUSDT,BNBUSDT,ADAUSDT';
+$app->margin->isolatedAccount($symbols);
 // Query Isolated Margin Symbol
 $app->margin->isolatedPair($symbol);
 // Get All Isolated Margin Symbol
