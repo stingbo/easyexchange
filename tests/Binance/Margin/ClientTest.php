@@ -398,7 +398,7 @@ class ClientTest extends TestCase
     public function testIsolatedPair()
     {
         $client = $this->mockApiClient(Client::class);
-        $symbol = 'BTCUSDT,BNBUSDT,ADAUSDT';
+        $symbol = 'BTCUSDT';
         $recvWindow = 50000;
         $params = [
             'symbol' => $symbol,
