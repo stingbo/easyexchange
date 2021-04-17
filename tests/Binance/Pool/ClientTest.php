@@ -28,9 +28,9 @@ class ClientTest extends TestCase
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/pub/coinList', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->coinList($recvWindow));
     }
 
     public function testWorkerDetail()
@@ -38,12 +38,15 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'algo' => 'sha256',
+            'userName' => 'test',
+            'workerName' => 'bhdc1.16A10404B',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/worker/detail', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->workerDetail($params));
     }
 
     public function testWorkerList()
@@ -51,12 +54,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'algo' => 'sha256',
+            'userName' => 'test',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/worker/list', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->workerList($params));
     }
 
     public function testPaymentList()
@@ -64,12 +69,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'algo' => 'sha256',
+            'userName' => 'test',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/payment/list', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->paymentList($params));
     }
 
     public function testPaymentOther()
@@ -77,12 +84,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'algo' => 'sha256',
+            'userName' => 'test',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/payment/other', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->paymentOther($params));
     }
 
     public function testHashTransferConfigDetails()
@@ -90,12 +99,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'pageIndex' => 1,
+            'pageSize' => 5,
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/hash-transfer/config/details', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->hashTransferConfigDetails($params));
     }
 
     public function testHashTransferConfigDetailsList()
@@ -103,12 +114,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'pageIndex' => 1,
+            'pageSize' => 5,
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/hash-transfer/config/details/list', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->hashTransferConfigDetailsList($params));
     }
 
     public function testHashTransferProfitDetails()
@@ -116,12 +129,15 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'configId' => '168',
+            'pageIndex' => 1,
+            'pageSize' => 5,
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/hash-transfer/profit/details', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->hashTransferProfitDetails($params));
     }
 
     public function testHashTransferConfig()
@@ -129,9 +145,12 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
-            'asset' => 'BTC',
-            'amount' => 10,
-            'type' => 1,
+            'userName' => 'test',
+            'algo' => 'sha256',
+            'startDate' => 1617659086000,
+            'endDate' => 1607659086000,
+            'toPoolUser' => 'S19pro',
+            'hashRate' => '100000000',
             'recvWindow' => $recvWindow,
         ];
 
@@ -145,15 +164,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
-            'asset' => 'BTC',
-            'amount' => 10,
-            'type' => 1,
+            'configId' => 168,
+            'userName' => 'test',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpPost('/sapi/v1/mining/hash-transfer/config', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpPost('/sapi/v1/mining/hash-transfer/config/cancel', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->hashTransferConfig($params));
+        $this->assertSame('mock-result', $client->hashTransferConfigCancel($params));
     }
 
     public function testUserStatus()
@@ -161,12 +179,14 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'algo' => 'sha256',
+            'userName' => 'test',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/statistics/user/status', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->userStatus($params));
     }
 
     public function testUserList()
@@ -174,11 +194,13 @@ class ClientTest extends TestCase
         $client = $this->mockApiClient(Client::class);
         $recvWindow = 50000;
         $params = [
+            'algo' => 'sha256',
+            'userName' => 'test',
             'recvWindow' => $recvWindow,
         ];
 
-        $client->expects()->httpGet('/sapi/v1/mining/pub/algoList', $params, 'SIGN')->andReturn('mock-result');
+        $client->expects()->httpGet('/sapi/v1/mining/statistics/user/list', $params, 'SIGN')->andReturn('mock-result');
 
-        $this->assertSame('mock-result', $client->algoList($recvWindow));
+        $this->assertSame('mock-result', $client->userList($params));
     }
 }
