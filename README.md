@@ -596,7 +596,8 @@ $app->margin->getRepayment($params);
 </details>
 
 <details>
-7. Conditional Order
+<summary>7. Conditional Order</summary>
+
 ```php
 // Place a conditional order
 $app->algo->order($params);
