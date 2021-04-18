@@ -64,6 +64,7 @@ $app = Factory::binance($config['binance']);
     <summary>
         1. Basic Information
     </summary>
+    
 ```php
 // Test Connectivity
 $app->basic->ping();
