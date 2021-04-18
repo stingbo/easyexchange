@@ -59,7 +59,9 @@ $config = [
 $app = Factory::binance($config['binance']);
 ```
 
-1. 基础信息
+<details>
+<summary>1. 基础信息</summary>
+
 ```php
 // 测试服务器连通性
 $app->basic->ping();
@@ -70,16 +72,22 @@ $app->basic->exchangeInfo();
 // 系统状态
 $app->basic->systemStatus();
 ```
+</details>
 
-2. 账户信息
+<details>
+<summary>2. 账户信息</summary>
+
 ```php
 // 获取BNB抵扣开关状态
 $app->user->getBnbBurnStatus();
 // 现货交易和杠杆利息BNB抵扣开关
 $app->user->bnbBurn();
 ```
+</details>
 
-3. 市场行情相关
+<details>
+<summary>3. 市场行情相关</summary>
+
 ```php
 // 深度信息
 $app->market->depth('LTCBTC');
@@ -107,8 +115,11 @@ $app->market->price('ETHBTC');
 // 返回当前最优的挂单(最高买单，最低卖单)
 $app->market->bookTicker('ETHBTC');
 ```
+</details>
 
-4. 钱包相关
+<details>
+<summary>4. 钱包相关</summary>
+
 ```php
 // 获取所有币信息
 $app->market->getAll();
@@ -159,8 +170,11 @@ $app->market->transfer($params);
 // 查询用户万向划转历史
 $app->market->transferHistory($params);
 ```
+</details>
 
-5. 现货交易相关
+<details>
+<summary>5. 现货交易相关</summary>
+
 ```php
 // 测试下单
 $params = [
@@ -218,8 +232,11 @@ $app->spot->allOrderList($params);
 // 查询 OCO 挂单
 $app->spot->openOrderList($params);
 ```
+</details>
 
-6. 杠杆交易相关
+<details>
+<summary>6. 杠杆交易相关</summary>
+
 ```php
 // 全仓杠杆账户划转
 $app->margin->transfer($params);
@@ -283,8 +300,11 @@ $app->margin->isolatedPair($symbol);
 // 获取所有逐仓杠杆交易对
 $app->margin->isolatedAllPairs();
 ```
+</details>
 
-7. 合约交易相关
+<details>
+<summary>7. 合约交易相关</summary>
+
 ```php
 // 合约资金划转
 $app->future->transfer($params);
@@ -325,8 +345,11 @@ $app->future->collateralRepayResult($quoteId);
 // 混合保证金利息收取历史
 $app->future->interestHistory($params);
 ```
+</details>
 
-8. 矿池相关
+<details>
+<summary>8. 矿池相关</summary>
+
 ```php
 // 获取算法
 $app->pool->algoList();
@@ -355,6 +378,7 @@ $app->pool->userStatus($params);
 // 账号列表
 $app->pool->userList($params);
 ```
+</details>
 
 ### 火币
 ```php
@@ -380,7 +404,9 @@ $config = [
 $app = Factory::houbi($config['houbi']);
 ```
 
-1. 基础信息
+<details>
+<summary>1. 基础信息</summary>
+
 ```php
 // 系统状态
 $app->basic->systemStatus();
@@ -395,8 +421,11 @@ $app->basic->currencies();
 // 获取当前系统时间戳
 $app->basic->systemTime();
 ```
+</details>
 
-2. 账户信息
+<details>
+<summary>2. 账户信息</summary>
+
 ```php
 // 账户信息
 $app->user->accounts();
@@ -419,8 +448,11 @@ $app->user->point($subUid = '');
 // 点卡划转
 $app->user->pointTransfer($params);
 ```
+</details>
 
-3. 市场行情相关
+<details>
+<summary>3. 市场行情相关</summary>
+
 ```php
 // K 线数据（蜡烛图）
 $params = [
@@ -443,8 +475,11 @@ $app->market->hr24($symbol);
 // 获取杠杆ETP实时净值
 $app->market->etp($symbol);
 ```
+</details>
 
-4. 钱包相关
+<details>
+<summary>4. 钱包相关</summary>
+
 ```php
 // 充币地址查询
 $currency = 'btc';
@@ -463,8 +498,11 @@ $app->wallet->cancelWithdraw($params);
 // 充提记录
 $app->wallet->depositHistory($params);
 ```
+</details>
 
-5. 现货/杠杆交易相关
+<details>
+<summary>5. 现货/杠杆交易相关</summary>
+
 ```php
 // 下单
 $params = [
@@ -515,8 +553,11 @@ $app->trade->matchResults($params);
 $symbols = 'btcusdt,ethusdt,ltcusdt';
 $app->trade->transactFeeRate($symbols);
 ```
+</details>
 
-6. 借币（逐仓/全仓杠杆）
+<details>
+<summary>6. 借币（逐仓/全仓杠杆）</summary>
+
 ```php
 // 归还借币（全仓逐仓通用）
 $app->margin->repayment($params);
@@ -551,8 +592,11 @@ $app->margin->crossBalance($sub_uid = '');
 // 还币交易记录查询（全仓）.
 $app->margin->getRepayment($params);
 ```
+</details>
 
-7. 策略委托
+<details>
+<summary>7. 策略委托</summary>
+
 ```php
 // 策略委托下单
 $app->algo->order($params);
@@ -565,8 +609,11 @@ $app->algo->orderHistory($params);
 // 查询特定策略委托.
 $app->algo->specific($clientOrderId);
 ```
+</details>
 
-8. 借币（C2C）
+<details>
+<summary>8. 借币（C2C）</summary>
+
 ```php
 // 借入借出下单
 $app->c2c->order($params);
@@ -589,6 +636,7 @@ $app->c2c->transfer($params);
 // 查询账户余额
 $app->c2c->balance($accountId, $currency = '');
 ```
+</details>
 
 ### 欧易 V5 版本
 ```php
@@ -616,7 +664,9 @@ $config = [
 $app = Factory::okex($config['okex']);
 ```
 
-1. 基础信息
+<details>
+<summary>1. 基础信息</summary>
+
 ```php
 $params = [
     'instType' => 'SPOT',
@@ -646,8 +696,11 @@ $app->basic->liquidationOrders($params);
 // 获取标记价格
 $app->basic->markPrice($params);
 ```
+</details>
 
-2. 账户信息
+<details>
+<summary>2. 账户信息</summary>
+
 ```php
 // 查看账户余额
 $app->user->balance($ccy = '');
@@ -682,8 +735,11 @@ $app->user->setGreeks($greeksType);
 // 查看账户最大可转余额
 $app->user->maxWithdrawal($ccy = '');
 ```
+</details>
 
-3. 市场行情相关
+<details>
+<summary>3. 市场行情相关</summary>
+
 ```php
 // 获取所有产品行情信息
 $app->market->tickers($instType, $uly = '');
@@ -706,8 +762,11 @@ $app->market->markPriceKline($params);
 // 获取交易产品公共成交数据
 $app->market->trades($instId, $limit = 100);
 ```
+</details>
 
-4. 资金相关
+<details>
+<summary>4. 资金相关</summary>
+
 ```php
 // 获取充值地址信息
 $app->wallet->depositAddress($ccy);
@@ -728,8 +787,11 @@ $app->wallet->purchaseRedempt($params);
 // 资金流水查询.
 $app->wallet->bills($params);
 ```
+</details>
 
-5. 交易相关
+<details>
+<summary>5. 交易相关</summary>
+
 ```php
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
@@ -768,8 +830,11 @@ $app->trade->orderHistoryArchive($params);
 // 获取成交明细.
 $app->trade->fills($params);
 ```
+</details>
 
-6. 策略委托
+<details>
+<summary>6. 策略委托</summary>
+
 ```php
 // 策略委托下单
 $app->algo->order($params);
@@ -780,6 +845,7 @@ $app->algo->openOrders($params);
 // 获取历史策略委托单列表.
 $app->algo->orderHistory($params);
 ```
+</details>
 
 ### 芝麻开门 V4 版本
 
@@ -805,7 +871,9 @@ $config = [
 $app = Factory::gate($config['gate']);
 ```
 
-1. 钱包相关
+<details>
+<summary>1. 钱包相关</summary>
+
 ```php
 // 获取币种充值地址.
 $currency = 'USDT';
@@ -828,8 +896,11 @@ $app->wallet->subAccountBalance($sub_uid = '');
 // 查询个人交易费率.
 $app->wallet->fee();
 ```
+</details>
 
-2.  现货交易
+<details>
+<summary>2. 现货交易</summary>
+
 ```php
 // 查询所有币种信息.
 $app->spot->currencies();
@@ -889,8 +960,11 @@ $app->spot->getPriceOrder($order_id)
 // 撤销单个订单.
 $app->spot->cancelPriceOrder($order_id)
 ```
+</details>
 
-3. 杠杆借贷
+<details>
+<summary>3. 杠杆借贷</summary>
+
 ```php
 // 查询支持杠杆交易的所有交易对.
 $app->margin->currencyPairs();
@@ -931,8 +1005,10 @@ $app->margin->autoRepay($status);
 // 查询用户自动还款设置.
 $app->margin->getAutoRepayStatus();
 ```
+</details>
 
-4.  永续合约
+<details>
+<summary>4.  永续合约</summary>
 
 ```php
 // 查询所有的合约信息.
@@ -1006,8 +1082,11 @@ $app->future->getPriceOrder($settle, $order_id);
 // 撤销单个订单.
 $app->future->cancelPriceOrder($settle, $order_id);
 ```
+</details>
 
-5. 交割合约
+<details>
+<summary>5. 交割合约</summary>
+
 ```php
 // 查询所有的合约信息.
 $app->delivery->contracts($settle);
@@ -1066,6 +1145,7 @@ $app->delivery->getPriceOrder($settle, $order_id);
 // 撤销单个订单.
 $app->delivery->cancelPriceOrder($settle, $order_id);
 ```
+</details>
 
 ### Coinbase
 
@@ -1092,7 +1172,9 @@ $config = [
 $app = Factory::coinbase($config['coinbase']);
 ```
 
-1. 账户信息
+<details>
+<summary>1. 账户信息</summary>
+
 ```php
 // 账户列表.
 $app->user->accounts();
@@ -1113,3 +1195,4 @@ $app->user->profile($profile_id);
 // 站内转账.
 $app->user->transfer($params);
 ```
+</details>
