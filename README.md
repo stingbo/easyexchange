@@ -619,7 +619,8 @@ $app->algo->specific($clientOrderId);
 // Place a lending/borrowing offer
 $app->c2c->order($params);
 // Cancel a lending/borrowing offer.
-$app->c2c->cancelOrder($params);
+$offerId = 14411;
+$app->c2c->cancelOrder($offerId);
 // Cancel all lending/borrowing offers.
 $app->c2c->cancelAll($params);
 // Query lending/borrow offers.
