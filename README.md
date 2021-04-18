@@ -60,7 +60,9 @@ $config = [
 $app = Factory::binance($config['binance']);
 ```
 
-1. Basic Information
+<details>
+    <summary> 1. Basic Information </summary>
+
 ```php
 // Test Connectivity
 $app->basic->ping();
@@ -71,8 +73,11 @@ $app->basic->exchangeInfo();
 // System Status
 $app->basic->systemStatus();
 ```
+</details>
 
-2. Account Information
+<details>
+<summary>2. Account Information</summary>
+
 ```php
 // Get BNB Burn Status
 $app->user->getBnbBurnStatus();
@@ -80,8 +85,11 @@ $app->user->getBnbBurnStatus();
 $params = []; // For specific values, see the corresponding api document, the same below
 $app->user->bnbBurn($params);
 ```
+</details>
 
-3. Market Data
+<details>
+<summary>3. Market Data</summary>
+
 ```php
 // Order Book
 $symbol = 'ETHBTC';
@@ -110,8 +118,11 @@ $app->market->price($symbol);
 // Symbol Order Book Ticker
 $app->market->bookTicker($symbol);
 ```
+</details>
 
-4. Wallet
+<details>
+<summary>4. Wallet</summary>
+
 ```php
 // All Coins' Information
 $app->market->getAll();
@@ -163,8 +174,11 @@ $app->market->transfer($params);
 // Query User Universal Transfer History
 $app->market->transferHistory($params);
 ```
+</details>
 
-5. Spot Trade
+<details>
+<summary>5. Spot Trade</summary>
+
 ```php
 // Test New Order
 $params = [
@@ -217,8 +231,11 @@ $app->spot->openOrderList($params);
 // Account Trade List
 $app->spot->myTrades($params);
 ```
+</details>
 
-6. Cross Margin Account Transfer
+<details>
+<summary>6. Cross Margin Account Transfer</summary>
+
 ```php
 // Cross Margin Account Transfer
 $app->margin->transfer($params);
@@ -284,8 +301,11 @@ $app->margin->isolatedAllPairs();
 // Query Margin Interest Rate History
 $app->margin->interestRateHistory($params);
 ```
+</details>
 
-7. Futures
+<details>
+<summary>7. Futures</summary>
+
 ```php
 // New Future Account Transfer
 $app->future->transfer($params);
@@ -326,8 +346,11 @@ $app->future->collateralRepayResult($quoteId);
 // Cross-Collateral Interest History
 $app->future->interestHistory($params);
 ```
+</details>
 
-8. Mining
+<details>
+<summary>8. Mining</summary>
+
 ```php
 // Acquiring Algorithm
 $app->pool->algoList();
@@ -356,6 +379,7 @@ $app->pool->userStatus($params);
 // Account List
 $app->pool->userList($params);
 ```
+</details>
 
 ### Huobi
 ```php
@@ -381,7 +405,9 @@ $config = [
 $app = Factory::houbi($config['houbi']);
 ```
 
-1. Basic Information
+<details>
+<summary>1. Basic Information</summary>
+
 ```php
 // Get system status
 $app->basic->systemStatus();
@@ -396,8 +422,11 @@ $app->basic->currencies();
 // Get Current Timestamp
 $app->basic->systemTime();
 ```
+</details>
 
-2. Account Information
+<details>
+<summary>2. Account Information</summary>
+
 ```php
 // Get all Accounts of the Current User
 $app->user->accounts();
@@ -420,8 +449,11 @@ $app->user->point($subUid = '');
 // Point Transfer
 $app->user->pointTransfer($params);
 ```
+</details>
 
-3. Market Data
+<details>
+<summary>3. Market Data</summary>
+
 ```php
 // Get Klines(Candles)
 $params = [
@@ -444,8 +476,11 @@ $app->market->hr24($symbol);
 // Get real time NAV
 $app->market->etp($symbol);
 ```
+</details>
 
-4. Wallet
+<details>
+<summary>4. Wallet</summary>
+
 ```php
 // Query Deposit Address
 $currency = 'btc';
@@ -464,8 +499,11 @@ $app->wallet->cancelWithdraw($params);
 // Search for Existed Withdraws and Deposits
 $app->wallet->depositHistory($params);
 ```
+</details>
 
-5. Trading
+<details>
+<summary>5. Trading</summary>
+
 ```php
 // Place a New Order
 $params = [
@@ -516,8 +554,11 @@ $app->trade->matchResults($params);
 $symbols = 'btcusdt,ethusdt,ltcusdt';
 $app->trade->transactFeeRate($symbols);
 ```
+</details>
 
-6. Margin Loan（Cross/Isolated）
+<details>
+<summary>6. Margin Loan（Cross/Isolated）</summary>
+
 ```php
 // Repay Margin Loan（Cross/Isolated ）
 $app->margin->repayment($params);
@@ -552,8 +593,11 @@ $app->margin->crossBalance($sub_uid = '');
 // Repayment Record Reference（Cross）.
 $app->margin->getRepayment($params);
 ```
+</details>
 
-7. Conditional Order
+<details>
+<summary>7. Conditional Order</summary>
+
 ```php
 // Place a conditional order
 $app->algo->order($params);
@@ -566,8 +610,11 @@ $app->algo->orderHistory($params);
 // Query a specific conditional order.
 $app->algo->specific($clientOrderId);
 ```
+</details>
 
-8. Margin Loan（C2C）
+<details>
+<summary>8. Margin Loan（C2C）</summary>
+
 ```php
 // Place a lending/borrowing offer
 $app->c2c->order($params);
@@ -590,6 +637,7 @@ $app->c2c->transfer($params);
 // Query C2C account balance.
 $app->c2c->balance($accountId, $currency = '');
 ```
+</details>
 
 ### OKEx Version V5
 ```php
@@ -616,7 +664,9 @@ $config = [
 $app = Factory::okex($config['okex']);
 ```
 
-1. Basic Information
+<details>
+<summary>1. Basic Information</summary>
+
 ```php
 $params = [
     'instType' => 'SPOT',
@@ -646,8 +696,11 @@ $app->basic->liquidationOrders($params);
 // Get Mark Price
 $app->basic->markPrice($params);
 ```
+</details>
 
-2. Account Information
+<details>
+<summary>2. Account Information</summary>
+
 ```php
 // Get Balance
 $app->user->balance($ccy = '');
@@ -682,8 +735,11 @@ $app->user->setGreeks($greeksType);
 // Get Maximum Withdrawals
 $app->user->maxWithdrawal($ccy = '');
 ```
+</details>
 
-3. Market Data
+<details>
+<summary>3. Market Data</summary>
+
 ```php
 // Get Tickers - Retrieve the latest price snapshot, best bid/ask price, and trading volume in the last 24 hours
 $app->market->tickers($instType, $uly = '');
@@ -706,8 +762,11 @@ $app->market->markPriceKline($params);
 // Get Trades
 $app->market->trades($instId, $limit = 100);
 ```
+</details>
 
-4. Funding
+<details>
+<summary>4. Funding</summary>
+
 ```php
 // Get Deposit Address
 $app->wallet->depositAddress($ccy);
@@ -728,8 +787,11 @@ $app->wallet->purchaseRedempt($params);
 // Asset Bills Details.
 $app->wallet->bills($params);
 ```
+</details>
 
-5. Trade
+<details>
+<summary>5. Trade</summary>
+
 ```php
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
@@ -768,8 +830,11 @@ $app->trade->orderHistoryArchive($params);
 // Get Transaction Details.
 $app->trade->fills($params);
 ```
+</details>
 
-6. Conditional Order(Algo Order)
+<details>
+<summary>6. Conditional Order(Algo Order)</summary>
+
 ```php
 // Place Algo Order
 $app->algo->order($params);
@@ -780,6 +845,7 @@ $app->algo->openOrders($params);
 // Get Algo Order History.
 $app->algo->orderHistory($params);
 ```
+</details>
 
 ### Gate Version V4
 
@@ -805,7 +871,9 @@ $config = [
 $app = Factory::gate($config['gate']);
 ```
 
-1. Wallet
+<details>
+<summary>1. Wallet</summary>
+
 ```php
 // Generate currency deposit address.
 $currency = 'USDT';
@@ -828,8 +896,11 @@ $app->wallet->subAccountBalance($sub_uid = '');
 // Retrieve personal trading fee.
 $app->wallet->fee();
 ```
+</details>
 
-2. Spot Trade
+<details>
+<summary>2. Spot Trade</summary>
+
 ```php
 // List all currencies' detail.
 $app->spot->currencies();
@@ -889,8 +960,11 @@ $app->spot->getPriceOrder($order_id)
 // Cancel a single order.
 $app->spot->cancelPriceOrder($order_id)
 ```
+</details>
 
-3. Margin
+<details>
+<summary>3. Margin</summary>
+
 ```php
 // List all supported currency pairs supported in margin trading.
 $app->margin->currencyPairs();
@@ -931,8 +1005,11 @@ $app->margin->autoRepay($status);
 // Retrieve user auto repayment setting.
 $app->margin->getAutoRepayStatus();
 ```
+</details>
 
-4. Future
+<details>
+<summary>4. Future</summary>
+
 ```php
 // List all futures contracts.
 $app->future->contracts($settle);
@@ -1005,8 +1082,11 @@ $app->future->getPriceOrder($settle, $order_id);
 // Cancel a single order.
 $app->future->cancelPriceOrder($settle, $order_id);
 ```
+</details>
 
-5. Delivery
+<details>
+<summary>5. Delivery</summary>
+
 ```php
 // List all futures contracts.
 $app->delivery->contracts($settle);
@@ -1065,6 +1145,7 @@ $app->delivery->getPriceOrder($settle, $order_id);
 // Cancel a single order.
 $app->delivery->cancelPriceOrder($settle, $order_id);
 ```
+</details>
 
 ### Coinbase
 
@@ -1091,7 +1172,9 @@ $config = [
 $app = Factory::coinbase($config['coinbase']);
 ```
 
-1. Account Information
+<details>
+<summary>1. Account Information</summary>
+
 ```php
 // List Accounts - Get a list of trading accounts from the profile of the API key.
 $app->user->accounts()
@@ -1112,8 +1195,11 @@ $app->user->profile($profile_id)
 // Create profile transfer - Transfer funds from API key's profile to another user owned profile.
 $app->user->transfer($params)
 ```
+</details>
 
-2. Market Data
+<details>
+<summary>2. Market Data</summary>
+
 ```php
 // Get Products - Get a list of available currency pairs for trading.
 $app->market->products();
@@ -1140,8 +1226,11 @@ $app->market->currency($id);
 // Get the API server time.
 $app->market->time();
 ```
+</details>
 
-3. Wallet
+<details>
+<summary>3. Wallet</summary>
+
 ```php
 // Get Current Exchange Limits.
 $app->wallet->exchangeLimits();
@@ -1170,8 +1259,11 @@ $app->wallet->feeEstimate($currency, $crypto_address);
 // Create Conversion - eg:Convert $10,000.00 to 10,000.00 USDC.
 $app->wallet->conversion($params);
 ```
+</details>
 
-4. Trade
+<details>
+<summary>4. Trade</summary>
+
 ```php
 // Place a New Order.
 $app->trade->order($params)
@@ -1186,8 +1278,11 @@ $app->trade->get($id = '', $client_oid = '')
 // List Fills - Get a list of recent fills of the API key's profile.
 $app->trade->fills($params)
 ```
+</details>
 
-5. Margin
+<details>
+<summary>5. Margin</summary>
+
 ```php
 // Get margin profile information.
 $app->margin->profileInformation($product_id)
@@ -1206,3 +1301,4 @@ $app->margin->positionRefreshAmounts()
 // Get margin status - Returns whether margin is currently enabled.
 $app->margin->status()
 ```
+</details>
