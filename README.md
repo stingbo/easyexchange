@@ -60,7 +60,10 @@ $config = [
 $app = Factory::binance($config['binance']);
 ```
 
-1. Basic Information
+<details>
+    <summary>
+        1. Basic Information
+    </summary>
 ```php
 // Test Connectivity
 $app->basic->ping();
@@ -71,6 +74,7 @@ $app->basic->exchangeInfo();
 // System Status
 $app->basic->systemStatus();
 ```
+</details>
 
 2. Account Information
 ```php
