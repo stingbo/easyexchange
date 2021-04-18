@@ -618,7 +618,8 @@ $app->algo->specific($clientOrderId);
 // 借入借出下单
 $app->c2c->order($params);
 // 借入借出撤单.
-$app->c2c->cancelOrder($params);
+$offerId = 14411;
+$app->c2c->cancelOrder($offerId);
 // 撤销所有借入借出订单.
 $app->c2c->cancelAll($params);
 // 查询借入借出订单.
