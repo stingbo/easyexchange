@@ -61,10 +61,8 @@ $app = Factory::binance($config['binance']);
 ```
 
 <details>
-    <summary>
-        1. Basic Information
-    </summary>
-    
+    <summary> 1. Basic Information </summary>
+
 ```php
 // Test Connectivity
 $app->basic->ping();
@@ -77,7 +75,9 @@ $app->basic->systemStatus();
 ```
 </details>
 
-2. Account Information
+<details>
+<summary>2. Account Information</summary>
+
 ```php
 // Get BNB Burn Status
 $app->user->getBnbBurnStatus();
@@ -85,8 +85,11 @@ $app->user->getBnbBurnStatus();
 $params = []; // For specific values, see the corresponding api document, the same below
 $app->user->bnbBurn($params);
 ```
+</details>
 
-3. Market Data
+<details>
+<summary>3. Market Data</summary>
+
 ```php
 // Order Book
 $symbol = 'ETHBTC';
@@ -115,6 +118,7 @@ $app->market->price($symbol);
 // Symbol Order Book Ticker
 $app->market->bookTicker($symbol);
 ```
+</details>
 
 4. Wallet
 ```php
