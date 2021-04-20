@@ -1304,5 +1304,9 @@ $app->margin->status()
 ```
 </details>
 
-## Summary
-* If you have any questions, please add qq group 871358160 or send me an email, the email is lianbo.wan@gmail.com/sting_bo@163.com.
+## API Support
+| contact us | detail |
+| :---: | :---: |
+| QQ Group | 871358160 |
+| Email | lianbo.wan@gmail.com |
+| Email | sting_bo@163.com |
