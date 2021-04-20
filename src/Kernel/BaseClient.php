@@ -163,4 +163,23 @@ class BaseClient
 
         return Middleware::log($this->app['logger'], $formatter, LogLevel::DEBUG);
     }
+
+    /**
+     * proxy request.
+     *
+     * @return \Closure
+     */
+    protected function proxyMiddleware()
+    {
+        return function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
+                $proxy_config = $this->app->config->get('proxy');
+                if ($proxy_config && is_array($proxy_config)) {
+                    $options['proxy'] = $proxy_config;
+                }
+
+                return $handler($request, $options);
+            };
+        };
+    }
 }
