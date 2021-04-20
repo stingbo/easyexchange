@@ -49,6 +49,9 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
 
         // log
         $this->pushMiddleware($this->logMiddleware(), 'log');
+
+        // proxy
+        $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
     }
 
     /**
