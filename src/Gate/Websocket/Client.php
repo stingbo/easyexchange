@@ -16,6 +16,6 @@ class Client extends BaseClient
     {
         $params['event'] = 'subscribe';
 
-        $this->request('/ws/v4/', $params, $handle);
+        $this->request($params, $handle);
     }
 }

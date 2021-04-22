@@ -2,37 +2,17 @@
 
 #### 说明
 
-见[币安 websocket 文档](binance_websocket_cn.md)
+详见[币安 websocket 文档](binance_websocket_cn.md)
 
 1. 示例
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Gate\Websocket\Handle;
 
-class GateHandle implements Handle
+class GateHandle extends Handle
 {
-    public function onConnect($connection, $params)
-    {
-        $connection->send(json_encode($params));
-    }
-
-    public function onMessage($connection, $data)
-    {
-        echo $data.PHP_EOL;
-        // your logic ....
-    }
-
-    public function onError($connection, $code, $message)
-    {
-        echo "error: $message\n";
-    }
-
-    public function onClose($connection)
-    {
-        echo "connection closed\n";
-    }
 }
 
 class Test

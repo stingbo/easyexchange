@@ -12,35 +12,10 @@ See [binance websocket documentation](binance_websocket.md) for details
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Huobi\Websocket\Handle;
 
-class HuobiHandle implements Handle
+class HuobiHandle extends Handle
 {
-    public function onConnect($connection, $params)
-    {
-        $connection->send(json_encode($params));
-    }
-
-    public function onMessage($connection, $data)
-    {
-        $json_data = gzdecode($data);
-        echo $json_data.PHP_EOL;
-        $data = json_decode($json_data, true);
-        if (isset($data['ping'])) {
-            $connection->send(json_encode(['pong' => $data['ping']]));
-        }
-        // your logic ....
-    }
-
-    public function onError($connection, $code, $message)
-    {
-        echo "error: $message\n";
-    }
-
-    public function onClose($connection)
-    {
-        echo "connection closed\n";
-    }
 }
 
 class Test

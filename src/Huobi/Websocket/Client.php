@@ -14,7 +14,7 @@ class Client extends BaseClient
      */
     public function subscribe($params, Handle $handle)
     {
-        $this->request('/ws', $params, $handle);
+        $this->request($params, $handle);
     }
 
     /**
@@ -24,6 +24,6 @@ class Client extends BaseClient
      */
     public function unsubscribe($params, Handle $handle)
     {
-        $this->request('/ws', $params, $handle);
+        $this->request($params, $handle);
     }
 }

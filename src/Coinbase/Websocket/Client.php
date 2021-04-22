@@ -16,6 +16,6 @@ class Client extends BaseClient
     {
         $params['type'] = 'subscribe';
 
-        $this->request('', $params, $handle);
+        $this->request($params, $handle);
     }
 }

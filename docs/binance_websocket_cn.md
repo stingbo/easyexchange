@@ -2,31 +2,36 @@
 
 #### 说明
 
-* BinanceHandle 必须是实现了 `EasyExchange\Kernel\Websocket\Handle` 接口的对象
+* BinanceHandle 必须实现 `EasyExchange\Kernel\Websocket\Handle` 接口
+或者 继承系统内置 `EasyExchange\Binance\Websocket\Handle` 对象
 
 * 这样设计是为了让开发更灵活，更加方便用户定制自己的逻辑
 
 * Handle 定义：
 
-    > 1. onConnect 连接时触发
+    > 1. getConnection 获取连接对象
+                
+    > 2. onConnect 连接时触发
 
-    > 2. onMessage 通讯时触发
+    > 3. onMessage 通讯时触发
 
-    > 3. onError 连接上发生错误时触发
+    > 4. onError 连接上发生错误时触发
 
-    > 4. onClose 服务器的连接断开时触发
+    > 5. onClose 服务器的连接断开时触发
 
 * 参数定义：
 
-    > 1. connection Workerman 客户端连接对象
+    > 1. config 配置参数
+           
+    > 2. connection Workerman 客户端连接对象
 
-    > 2. params 客户端请求参数
+    > 3. params 客户端请求参数
 
-    > 3. data 服务端返回数据
+    > 4. data 服务端返回数据
 
-    > 4. code 服务端返回错误编码
+    > 5. code 服务端返回错误编码
 
-    > 5. message 服务端返回错误信息
+    > 6. message 服务端返回错误信息
 
 1. 示例
 
@@ -34,16 +39,27 @@
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Binance\Websocket\Handle;
+use Workerman\Connection\AsyncTcpConnection;
 
-class BinanceHandle implements Handle
+class BinanceHandle extends Handle
 {
+    public function getConnection($config, $params)
+    {
+        $ws_base_uri = $config['ws_base_uri'].'/ws';
+
+        $connection = new AsyncTcpConnection($ws_base_uri);
+        $connection->transport = 'ssl';
+
+        return $connection;
+    }
+
     public function onConnect($connection, $params)
     {
         $connection->send(json_encode($params));
     }
 
-    public function onMessage($connection, $data)
+    public function onMessage($connection, $params, $data)
     {
         echo $data.PHP_EOL;
         // your logic ....

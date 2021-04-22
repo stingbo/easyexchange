@@ -2,48 +2,33 @@
 
 #### 说明
 
-见[币安 websocket 文档](binance_websocket_cn.md)
+详见[币安 websocket 文档](binance_websocket_cn.md)
 
 1. 示例
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\Handle;
 use Workerman\Timer;
 
-class OkexHandle implements Handle
+class OkexHandle extends \EasyExchange\Okex\Websocket\Handle
 {
-    public function onConnect($connection, $params)
+    public function onMessage($connection, $params, $data)
     {
-        $connection->send(json_encode($params));
-    }
+        // 执行内置的login方法
+        parent::onMessage($connection, $params, $data);
 
-    public function onMessage($connection, $data)
-    {
+        // 处理你自己的逻辑
         echo $data.PHP_EOL;
-        $time_interval = 10;
-        $connect_time = time();
+        $time_interval = 20;
         if ('pong' != $data) {
-            $connection->timer_id = Timer::add($time_interval, function () use ($connection, $connect_time) {
-                echo $connect_time.PHP_EOL;
+            $connection->timer_id = Timer::add($time_interval, function () use ($connection) {
                 $connection->send('ping');
             });
         } else {
             // 删除定时器
             Timer::del($connection->timer_id);
         }
-        // your logic ....
-    }
-
-    public function onError($connection, $code, $message)
-    {
-        echo "error: $message\n";
-    }
-
-    public function onClose($connection)
-    {
-        echo "connection closed\n";
     }
 }
 
@@ -64,6 +49,7 @@ class Test
         ];
         $app = Factory::okex($config['okex']);
         $params = [
+            'op' => 'subscribe',
             'args' => [
 //                [
 //                    'channel' => 'instruments',
@@ -73,6 +59,21 @@ class Test
                 [
                     'channel' => 'tickers',
                     'instId' => 'BTT-BTC', // Required
+                ],
+            ],
+        ];
+        // 私有频道必须配置 auth 参数
+        $params = [
+            'auth' => true, // private channel
+            'op' => 'subscribe',
+            'args' => [
+                [
+                    'channel' => 'account',
+                    'ccy' => 'BTC',
+                ],
+                [
+                    'channel' => 'positions',
+                    'instType' => 'ANY',
                 ],
             ],
         ];

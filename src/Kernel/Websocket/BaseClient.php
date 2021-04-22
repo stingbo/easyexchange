@@ -3,7 +3,6 @@
 namespace EasyExchange\Kernel\Websocket;
 
 use EasyExchange\Kernel\ServiceContainer;
-use Workerman\Connection\AsyncTcpConnection;
 use Workerman\Worker;
 
 class BaseClient
@@ -19,18 +18,17 @@ class BaseClient
     /**
      * @param $params
      */
-    public function request(string $url, $params, Handle $handle)
+    public function request($params, Handle $handle)
     {
-        $ws_base_uri = $this->app->config->get('ws_base_uri').$url;
+        $config = $this->app->getConfig();
         $worker = new Worker();
-        $worker->onWorkerStart = function () use ($ws_base_uri, $params, $handle) {
-            $ws_connection = new AsyncTcpConnection($ws_base_uri);
-            $ws_connection->transport = 'ssl';
+        $worker->onWorkerStart = function () use ($config, $params, $handle) {
+            $ws_connection = $handle->getConnection($config, $params);
             $ws_connection->onConnect = function ($connection) use ($params, $handle) {
                 $handle->onConnect($connection, $params);
             };
-            $ws_connection->onMessage = function ($connection, $data) use ($handle) {
-                $handle->onMessage($connection, $data);
+            $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
+                $handle->onMessage($connection, $params, $data);
             };
             $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
                 $handle->onError($connection, $code, $msg);

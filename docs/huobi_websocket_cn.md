@@ -2,7 +2,7 @@
 
 #### 说明
 
-见[币安 websocket 文档](binance_websocket_cn.md)
+详见[币安 websocket 文档](binance_websocket_cn.md)
 
 
 1. 示例
@@ -10,35 +10,10 @@
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Huobi\Websocket\Handle;
 
-class HuobiHandle implements Handle
+class HuobiHandle extends Handle
 {
-    public function onConnect($connection, $params)
-    {
-        $connection->send(json_encode($params));
-    }
-
-    public function onMessage($connection, $data)
-    {
-        $json_data = gzdecode($data);
-        echo $json_data.PHP_EOL;
-        $data = json_decode($json_data, true);
-        if (isset($data['ping'])) {
-            $connection->send(json_encode(['pong' => $data['ping']]));
-        }
-        // your logic ....
-    }
-
-    public function onError($connection, $code, $message)
-    {
-        echo "error: $message\n";
-    }
-
-    public function onClose($connection)
-    {
-        echo "connection closed\n";
-    }
 }
 
 class Test
