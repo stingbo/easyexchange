@@ -12,30 +12,10 @@ See [binance websocket documentation](binance_websocket.md) for details
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Coinbase\Websocket\Handle;
 
-class CoinbaseHandle implements Handle
+class CoinbaseHandle extends Handle
 {
-    public function onConnect($connection, $params)
-    {
-        $connection->send(json_encode($params));
-    }
-
-    public function onMessage($connection, $data)
-    {
-        echo $data.PHP_EOL;
-        // your logic ....
-    }
-
-    public function onError($connection, $code, $message)
-    {
-        echo "error: $message\n";
-    }
-
-    public function onClose($connection)
-    {
-        echo "connection closed\n";
-    }
 }
 
 class Test
