@@ -16,7 +16,7 @@ class Client extends BaseClient
     {
         $params['method'] = 'SUBSCRIBE';
 
-        $this->request('/ws', $params, $handle);
+        $this->request($params, $handle);
     }
 
     /**
@@ -28,6 +28,6 @@ class Client extends BaseClient
     {
         $params['method'] = 'UNSUBSCRIBE';
 
-        $this->request('/ws', $params, $handle);
+        $this->request($params, $handle);
     }
 }
