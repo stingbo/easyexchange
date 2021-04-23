@@ -35,6 +35,21 @@ class ClientTest extends TestCase
         $this->assertSame('mock-result', $client->ticker($instId));
     }
 
+    public function testIndexTickers()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $quoteCcy = 'BTC';
+        $instId = 'BTC-USD-SWAP';
+        $params = [
+            'quoteCcy' => $quoteCcy,
+            'instId' => $instId,
+        ];
+
+        $client->expects()->httpGet('/api/v5/market/index-tickers', $params)->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->indexTickers($quoteCcy, $instId));
+    }
+
     public function testDepth()
     {
         $client = $this->mockApiClient(Client::class);

@@ -38,19 +38,16 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
         if ('SIGN' == $this->sign_type) {
-            // signature
-            $this->timestamp = $this->getRequestDateTime();
             $this->pushMiddleware($this->addHeaderMiddleware('CB-ACCESS-KEY', $this->app->config->get('app_key')), 'add_header_appkey');
-            $this->pushMiddleware($this->addHeaderMiddleware('CB-ACCESS-TIMESTAMP', $this->timestamp), 'add_header_timestamp');
             $this->pushMiddleware($this->addHeaderMiddleware('CB-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header_passphrase');
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
         }
 
-        // log
-        $this->pushMiddleware($this->logMiddleware(), 'log');
-
         // proxy
         $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
+
+        // log
+        $this->pushMiddleware($this->logMiddleware(), 'log');
     }
 
     /**
@@ -62,6 +59,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                $this->timestamp = $this->getRequestDateTime();
                 $method = $request->getMethod();
                 $uri_path = $request->getUri()->getPath();
                 if ('POST' == $method) { // POST
@@ -73,6 +71,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
                     $signature = $this->getSignature($this->timestamp, $method, $uri_path, $query);
                 }
                 $request = $request->withHeader('CB-ACCESS-SIGN', $signature);
+                $request = $request->withHeader('CB-ACCESS-TIMESTAMP', $this->timestamp);
 
                 return $handler($request, $options);
             };
@@ -82,7 +81,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     /**
      * A timestamp for your request.
      *
-     * @return float
+     * @return int
      */
     public function getRequestDateTime()
     {
