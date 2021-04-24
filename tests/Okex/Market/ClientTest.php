@@ -61,4 +61,18 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->depth('ETHBTC', 10));
     }
+
+    public function testKline()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $instId = 'BTC-USD-190927-5000-C';
+        $params = [
+            'instId' => $instId,
+            'limit' => 20,
+        ];
+
+        $client->expects()->httpGet('/api/v5/market/candles', $params)->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->kline($params));
+    }
 }
