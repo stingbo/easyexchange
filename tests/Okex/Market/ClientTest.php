@@ -75,4 +75,32 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->kline($params));
     }
+
+    public function testKlineHistory()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $instId = 'BTC-USD-190927-5000-C';
+        $params = [
+            'instId' => $instId,
+            'limit' => 20,
+        ];
+
+        $client->expects()->httpGet('/api/v5/market/history-candles', $params)->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->klineHistory($params));
+    }
+
+    public function testIndexKline()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $instId = 'BTC-USD';
+        $params = [
+            'instId' => $instId,
+            'limit' => 20,
+        ];
+
+        $client->expects()->httpGet('/api/v5/market/index-candles', $params)->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->indexKline($params));
+    }
 }
