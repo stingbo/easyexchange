@@ -20,7 +20,8 @@
         "guzzlehttp/guzzle": "^6.2 || ^7.0",
         "monolog/monolog": "^1.22 || ^2.0",
         "pimple/pimple": "^3.0",
-        "workerman/workerman": "^4.0"
+        "workerman/workerman": "^4.0",
+        "workerman/globaldata": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.2.3",

@@ -18,6 +18,8 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
         } else {
             $ws_base_uri = $config['ws_base_uri'].'/ws/v5/public';
         }
+        $ws_base_uri = $config['ws_base_uri'].'/ws/v5/public';
+        echo $ws_base_uri.PHP_EOL;
 
         $connection = new AsyncTcpConnection($ws_base_uri);
         $connection->transport = 'ssl';
@@ -37,6 +39,7 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
 
     public function onMessage($connection, $params, $data)
     {
+        echo $data.PHP_EOL;
         $auth = $params['auth'] ?? false;
         unset($params['auth']);
         $result = json_decode($data, true);

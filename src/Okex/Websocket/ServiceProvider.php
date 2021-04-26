@@ -13,11 +13,11 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['websocket'] = function ($app) {
-            return new Client($app);
+            return new WebsocketClient($app);
         };
 
         $app['websocket_server'] = function ($app) {
-            return new Server($app);
+            return new WebsocketServer($app);
         };
     }
 }

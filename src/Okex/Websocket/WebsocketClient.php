@@ -4,9 +4,15 @@ namespace EasyExchange\Okex\Websocket;
 
 use EasyExchange\Kernel\Websocket\BaseClient;
 use EasyExchange\Kernel\Websocket\Handle;
+use GlobalData\Client;
 
-class Client extends BaseClient
+class WebsocketClient extends BaseClient
 {
+//    public function client()
+//    {
+//        $client = new Client('127.0.0.1:2207');
+//    }
+
     /**
      * Subscribe to a stream.
      *
@@ -14,9 +20,43 @@ class Client extends BaseClient
      */
     public function subscribe($params, Handle $handle)
     {
-        $params['op'] = 'subscribe';
+        echo 'aaaa'.PHP_EOL;
+//        $params['op'] = 'subscribe';
 
-        $this->request($params, $handle);
+//        $this->request($params, $handle);
+    }
+
+    public function save($key, $value)
+    {
+        if (!isset($this->client->$key)) {
+            $this->add($key, $value);
+        } else {
+            $this->client->$key = $value;
+        }
+    }
+
+    protected function add($key, $value)
+    {
+        $this->client->add($key, $value);
+
+        $this->saveGlobalKey($key);
+    }
+
+    public function get($key)
+    {
+        if (!isset($this->client->{$key}) || empty($this->client->{$key})) {
+            return [];
+        }
+
+        return $this->client->{$key};
+    }
+
+    protected function saveGlobalKey($key)
+    {
+        do {
+            $old_value = $new_value = $this->client->global_key;
+            $new_value[$key] = $key;
+        } while (!$this->client->cas('global_key', $old_value, $new_value));
     }
 
     /**

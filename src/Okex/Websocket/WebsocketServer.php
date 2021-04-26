@@ -2,16 +2,17 @@
 
 namespace EasyExchange\Okex\Websocket;
 
-use EasyExchange\Kernel\Websocket\BaseClient;
-use GlobalData\Server;
+use EasyExchange\Kernel\Websocket\BaseServer;
 
-class Servera extends BaseClient
+class WebsocketServer extends BaseServer
 {
-    public function server()
+    public function start()
     {
-        // 监听端口
-        $worker = new Server('127.0.0.1', 2207);
+        $this->server([], new Handle());
+    }
 
-        Worker::runAll();
+    public function action($con, $global)
+    {
+        $time = 2;
     }
 }
