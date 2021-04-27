@@ -3,60 +3,19 @@
 namespace EasyExchange\Okex\Websocket;
 
 use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\Handle;
 use GlobalData\Client;
+use Workerman\Timer;
 
 class WebsocketClient extends BaseClient
 {
-//    public function client()
-//    {
-//        $client = new Client('127.0.0.1:2207');
-//    }
-
     /**
      * Subscribe to a stream.
      *
      * @param $params
      */
-    public function subscribe($params, Handle $handle)
+    public function subscribe($params)
     {
-        echo 'aaaa'.PHP_EOL;
-//        $params['op'] = 'subscribe';
-
-//        $this->request($params, $handle);
-    }
-
-    public function save($key, $value)
-    {
-        if (!isset($this->client->$key)) {
-            $this->add($key, $value);
-        } else {
-            $this->client->$key = $value;
-        }
-    }
-
-    protected function add($key, $value)
-    {
-        $this->client->add($key, $value);
-
-        $this->saveGlobalKey($key);
-    }
-
-    public function get($key)
-    {
-        if (!isset($this->client->{$key}) || empty($this->client->{$key})) {
-            return [];
-        }
-
-        return $this->client->{$key};
-    }
-
-    protected function saveGlobalKey($key)
-    {
-        do {
-            $old_value = $new_value = $this->client->global_key;
-            $new_value[$key] = $key;
-        } while (!$this->client->cas('global_key', $old_value, $new_value));
+        $this->updateOrCreate('okex', $params);
     }
 
     /**
@@ -64,10 +23,51 @@ class WebsocketClient extends BaseClient
      *
      * @param $params
      */
-    public function unsubscribe($params, Handle $handle)
+    public function unsubscribe($params)
     {
-        $params['op'] = 'unsubscribe';
+        $this->updateOrCreate('okex', $params);
+    }
 
-        $this->request($params, $handle);
+    public function ping($connection)
+    {
+        Timer::add(20, function () use ($connection) {
+            $connection->send('ping');
+        });
+    }
+
+    public function connect($connection, $client, $time = 3)
+    {
+        $connection->timer_id = Timer::add($time, function () use ($connection, $client) {
+            // subscribe
+            $this->sub($connection, $client);
+
+            // unsubscribe
+            $this->unSub($connection, $client);
+        });
+    }
+
+    public function sub($connection, $client)
+    {
+        echo '----------'.PHP_EOL;
+        print_r($client);
+        $client = new Client('127.0.0.1:2207');
+        print_r($client);
+        $channel = $client->add('aaaa', 'bbb');
+//        $channel = $this->get('okex');
+//        var_dump($channel);
+//        if (!$channel) {
+//            return true;
+//        } else {
+        $connection->send(json_encode([]));
+//            $this->move('okex', 'okex_old');
+//            $this->delete('okex');
+//        }
+
+        return true;
+    }
+
+    public function unSub($connection, $client)
+    {
+//        $this->delete('');
     }
 }

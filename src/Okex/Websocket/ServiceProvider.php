@@ -15,9 +15,5 @@ class ServiceProvider implements ServiceProviderInterface
         $app['websocket'] = function ($app) {
             return new WebsocketClient($app);
         };
-
-        $app['websocket_server'] = function ($app) {
-            return new WebsocketServer($app);
-        };
     }
 }
