@@ -15,6 +15,8 @@ class WebsocketClient extends BaseClient
      */
     public function subscribe($params)
     {
+//        $val = $this->client->okex_old;
+//        print_r($val);
         $this->updateOrCreate('okex', $params);
     }
 
@@ -35,39 +37,36 @@ class WebsocketClient extends BaseClient
         });
     }
 
-    public function connect($connection, $client, $time = 3)
+    public function connect($connection, $time = 3)
     {
-        $connection->timer_id = Timer::add($time, function () use ($connection, $client) {
+        $connection->timer_id = Timer::add($time, function () use ($connection) {
             // subscribe
-            $this->sub($connection, $client);
+            $this->sub($connection);
 
             // unsubscribe
-            $this->unSub($connection, $client);
+            $this->unSub($connection);
         });
     }
 
-    public function sub($connection, $client)
+    public function sub($connection)
     {
         echo '----------'.PHP_EOL;
-        print_r($client);
-        $client = new Client('127.0.0.1:2207');
-        print_r($client);
-        $channel = $client->add('aaaa', 'bbb');
-//        $channel = $this->get('okex');
-//        var_dump($channel);
-//        if (!$channel) {
-//            return true;
-//        } else {
-        $connection->send(json_encode([]));
-//            $this->move('okex', 'okex_old');
-//            $this->delete('okex');
-//        }
+        $channel = $this->get('okex');
+        print_r($channel);
+        if (!$channel) {
+            return true;
+        } else {
+            echo 'sub:------------'.PHP_EOL;
+            $connection->send(json_encode($channel));
+            $this->move('okex', 'okex_old');
+            $this->delete('okex');
+        }
 
         return true;
     }
 
-    public function unSub($connection, $client)
+    public function unSub($connection)
     {
-//        $this->delete('');
+        $this->delete('');
     }
 }

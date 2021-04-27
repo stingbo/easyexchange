@@ -11,15 +11,13 @@ class BaseClient
 {
     public $client;
 
-    public $index = 0;
-
     /**
      * BaseClient constructor.
      */
     public function __construct(ServiceContainer $app)
     {
         $this->app = $app;
-//        $this->client = new Client('127.0.0.1:2207');
+        $this->client = new Client('127.0.0.1:2207');
     }
 
     /**
@@ -30,31 +28,29 @@ class BaseClient
         $config = $this->app->getConfig();
         $worker = new Worker();
         // GlobalData Server
-        $global_worker = new Server('0.0.0.0', 2207);
+        new Server('127.0.0.1', 2207);
         $worker->onWorkerStart = function () use ($config, $params, $handle) {
-            $client = new Client('127.0.0.1:2207');
-            $ws_connection[$this->index] = $handle->getConnection($config, $params);
-            $ws_connection[$this->index]->onConnect = function ($connection) use ($params, $handle) {
+            $this->client = new Client('127.0.0.1:2207');
+            $ws_connection = $handle->getConnection($config, $params);
+            $ws_connection->onConnect = function ($connection) use ($params, $handle) {
                 $handle->onConnect($connection, $params);
             };
-            $ws_connection[$this->index]->onMessage = function ($connection, $data) use ($params, $handle) {
+            $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
                 $handle->onMessage($connection, $params, $data);
             };
-            $ws_connection[$this->index]->onError = function ($connection, $code, $msg) use ($handle) {
+            $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
                 $handle->onError($connection, $code, $msg);
             };
-            $ws_connection[$this->index]->onClose = function ($connection) use ($handle) {
+            $ws_connection->onClose = function ($connection) use ($handle) {
                 $handle->onClose($connection);
             };
-            $ws_connection[$this->index]->connect();
+            $ws_connection->connect();
 
             // heartbeat
-            $this->ping($ws_connection[$this->index]);
+            $this->ping($ws_connection);
 
             // timer action
-            $this->connect($ws_connection[$this->index], $client, 2);
-
-            ++$this->index;
+            $this->connect($ws_connection, 2);
         };
         Worker::runAll();
     }
@@ -122,13 +118,13 @@ class BaseClient
 
     public function move($key, $new_key)
     {
-//        $data = $this->get($key);
-//        $this->updateOrCreate($new_key, $data);
-//        $this->updateOrCreate($key, []);
+        $data = $this->get($key);
+        $this->updateOrCreate($new_key, $data);
+        $this->updateOrCreate($key, []);
     }
 
     public function delete($key)
     {
-//        $this->updateOrCreate($key, []);
+        $this->updateOrCreate($key, []);
     }
 }
