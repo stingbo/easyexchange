@@ -19,4 +19,17 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->depositAddress($ccy));
     }
+
+    public function testBalance()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $ccy = 'BTC,ETH';
+        $params = [
+            'ccy' => $ccy,
+        ];
+
+        $client->expects()->httpGet('/api/v5/asset/balances', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->balance($ccy));
+    }
 }
