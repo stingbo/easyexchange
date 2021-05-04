@@ -25,12 +25,12 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
         return $connection;
     }
 
-    public function onConnect($connection, $params)
+    public function onConnect($connection, $client, $params)
     {
         $connection->send(json_encode($params));
     }
 
-    public function onMessage($connection, $params, $data)
+    public function onMessage($connection, $client, $params, $data)
     {
         $json_data = gzdecode($data);
         echo $json_data.PHP_EOL;
@@ -40,12 +40,12 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
         }
     }
 
-    public function onError($connection, $code, $message)
+    public function onError($connection, $client, $code, $message)
     {
         echo "error: $message\n";
     }
 
-    public function onClose($connection)
+    public function onClose($connection, $client)
     {
         echo "connection closed\n";
     }
