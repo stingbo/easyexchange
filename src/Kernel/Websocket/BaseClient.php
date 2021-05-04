@@ -3,6 +3,7 @@
 namespace EasyExchange\Kernel\Websocket;
 
 use EasyExchange\Kernel\ServiceContainer;
+use EasyExchange\Kernel\Support\Arr;
 use GlobalData\Client;
 use GlobalData\Server;
 use Workerman\Worker;
@@ -139,7 +140,9 @@ class BaseClient
     public function move($key, $new_key)
     {
         $data = $this->get($key);
-        $this->updateOrCreate($new_key, $data);
+        $new_data = $this->get($new_key);
+        $result = Arr::merge($data, $new_data);
+        $this->updateOrCreate($new_key, $result);
         $this->updateOrCreate($key, []);
     }
 
