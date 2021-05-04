@@ -451,4 +451,53 @@ class Arr
 
         return $results;
     }
+
+    /**
+     * recursive diff.
+     *
+     * @param array $a1
+     * @param array $a2
+     *
+     * @return array
+     */
+    public static function diff($a1, $a2)
+    {
+        $diff = [];
+        foreach ($a1 as $k => $v) {
+            $dv = [];
+            if (is_int($k)) {
+                // Compare values
+                if (false === array_search($v, $a2)) {
+                    $dv = $v;
+                } elseif (is_array($v)) {
+                    $contain = false;
+                    foreach ($a2 as $k2 => $v2) {
+                        if ($v == $v2) {
+                            $contain = true;
+                            unset($a1[$k]);
+                            break;
+                        }
+                    }
+                    if (!$contain) {
+                        $dv = self::diff($v, $a2[$k]);
+                    }
+                }
+                if ($dv) {
+                    $diff[] = $dv;
+                }
+            } else {
+                // Compare noninteger keys
+                if (!$a2[$k]) {
+                    $dv = $v;
+                } elseif (is_array($v)) {
+                    $dv = self::diff($v, $a2[$k]);
+                }
+                if ($dv) {
+                    $diff[$k] = $dv;
+                }
+            }
+        }
+
+        return $diff;
+    }
 }
