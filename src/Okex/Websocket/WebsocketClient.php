@@ -110,8 +110,6 @@ class WebsocketClient extends BaseClient
 
                     return true;
                 }
-            } else {
-                return true;
             }
             echo 'sub:------------'.PHP_EOL;
             $connection->send(json_encode($subs));
