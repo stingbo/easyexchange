@@ -427,4 +427,28 @@ class Arr
     {
         return !is_array($value) ? [$value] : $value;
     }
+
+    /**
+     * Merger of similar items.
+     *
+     * @param mixed ...$arrays
+     *
+     * @return array
+     */
+    public static function merge(...$arrays)
+    {
+        $results = [];
+
+        foreach ($arrays as $array) {
+            foreach ($array as $key => $item) {
+                if (isset($results[$key]) && is_array($results[$key])) {
+                    $results[$key] = array_merge($results[$key], $item);
+                } else {
+                    $results[$key] = $item;
+                }
+            }
+        }
+
+        return $results;
+    }
 }
