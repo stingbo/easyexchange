@@ -26,24 +26,24 @@ class BaseClient
      */
     public function server($params, Handle $handle)
     {
-        $config = $this->app->getConfig();
+        $config = $this->app->config->get('websocket');
         $worker = new Worker();
         // GlobalData Server
-        new Server($config['websocket']['ip'], $config['websocket']['port']);
+        new Server($config['ip'], $config['port']);
         $worker->onWorkerStart = function () use ($config, $params, $handle) {
-            $this->client = new Client($config['websocket']['ip'].':'.$config['websocket']['port']);
+            $this->client = new Client($config['ip'].':'.$config['port']);
             $ws_connection = $handle->getConnection($config, $params);
             $ws_connection->onConnect = function ($connection) use ($params, $handle) {
-                $handle->onConnect($connection, $params);
+                $handle->onConnect($connection, $this->client, $params);
             };
             $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
-                $handle->onMessage($connection, $params, $data);
+                $handle->onMessage($connection, $this->client, $params, $data);
             };
             $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
-                $handle->onError($connection, $code, $msg);
+                $handle->onError($connection, $this->client, $code, $msg);
             };
             $ws_connection->onClose = function ($connection) use ($handle) {
-                $handle->onClose($connection);
+                $handle->onClose($connection, $this->client);
             };
             $ws_connection->connect();
 
@@ -51,7 +51,7 @@ class BaseClient
             $this->ping($ws_connection);
 
             // timer action
-            $this->connect($ws_connection, 2);
+            $this->connect($ws_connection, $config['timer'] ?? 3);
         };
         Worker::runAll();
     }
