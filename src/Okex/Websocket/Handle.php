@@ -12,8 +12,8 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
     {
         $this->config = $config;
 
-        $ws_base_uri = $config['ws_base_uri'].'/ws/v5/public';
-        $ws_base_uri = 'ws://ws.okex.com:8443/ws/v5/public?brokerId=9999';
+        $ws_base_uri = $config['websocket']['base_uri'].'/ws/v5/public';
+//        $ws_base_uri = 'ws://ws.okex.com:8443/ws/v5/public?brokerId=9999';
         echo $ws_base_uri.PHP_EOL;
 
         $connection = new AsyncTcpConnection($ws_base_uri);
