@@ -17,7 +17,7 @@ class BaseClient
     public function __construct(ServiceContainer $app)
     {
         $this->app = $app;
-        $this->client = new Client('127.0.0.1:2207');
+        $this->client = new Client($this->app->config->get('websocket')['ip'].':'.$this->app->config->get('websocket')['port']);
     }
 
     /**
@@ -28,9 +28,9 @@ class BaseClient
         $config = $this->app->getConfig();
         $worker = new Worker();
         // GlobalData Server
-        new Server('127.0.0.1', 2207);
+        new Server($config['websocket']['ip'], $config['websocket']['port']);
         $worker->onWorkerStart = function () use ($config, $params, $handle) {
-            $this->client = new Client('127.0.0.1:2207');
+            $this->client = new Client($config['websocket']['ip'].':'.$config['websocket']['port']);
             $ws_connection = $handle->getConnection($config, $params);
             $ws_connection->onConnect = function ($connection) use ($params, $handle) {
                 $handle->onConnect($connection, $params);
@@ -66,7 +66,7 @@ class BaseClient
         if (!isset($this->client->$key)) {
             $this->create($key, $value);
         } else {
-            $this->client->$key = $value;
+            $this->update($key, $this->client->$key, $value);
         }
     }
 
@@ -81,6 +81,22 @@ class BaseClient
     public function create($key, $value)
     {
         $this->client->add($key, $value);
+
+        $this->cache($key);
+    }
+
+    /**
+     * update.
+     *
+     * @param $key
+     * @param $old_value
+     * @param $new_value
+     *
+     * @throws \Exception
+     */
+    public function update($key, $old_value, $new_value)
+    {
+        $this->client->cas($key, $old_value, $new_value);
 
         $this->cache($key);
     }
@@ -102,7 +118,7 @@ class BaseClient
     }
 
     /**
-     * 数据缓存.
+     * 全局数据缓存.
      *
      * @param $key
      *
@@ -116,6 +132,10 @@ class BaseClient
         } while (!$this->client->cas('global_key', $old_value, $new_value));
     }
 
+    /**
+     * @param $key
+     * @param $new_key
+     */
     public function move($key, $new_key)
     {
         $data = $this->get($key);
@@ -123,6 +143,9 @@ class BaseClient
         $this->updateOrCreate($key, []);
     }
 
+    /**
+     * @param $key
+     */
     public function delete($key)
     {
         $this->updateOrCreate($key, []);
