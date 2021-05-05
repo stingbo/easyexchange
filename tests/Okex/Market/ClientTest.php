@@ -103,4 +103,18 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->indexKline($params));
     }
+
+    public function testMarkPriceKline()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $instId = 'BTC-USD';
+        $params = [
+            'instId' => $instId,
+            'limit' => 20,
+        ];
+
+        $client->expects()->httpGet('/api/v5/market/mark-price-candles', $params)->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->markPriceKline($params));
+    }
 }
