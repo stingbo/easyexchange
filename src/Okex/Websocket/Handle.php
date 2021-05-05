@@ -12,8 +12,7 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
     {
         $this->config = $config;
 
-        $ws_base_uri = $config['base_uri'].'/ws/v5/public';
-//        $ws_base_uri = 'ws://ws.okex.com:8443/ws/v5/public?brokerId=9999';
+        $ws_base_uri = $config['websocket']['base_uri'].'/ws/v5/public';
         echo $ws_base_uri.PHP_EOL;
 
         $connection = new AsyncTcpConnection($ws_base_uri);
@@ -32,16 +31,29 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
     {
         echo 'msg:------------------';
         echo $data.PHP_EOL;
+        if ('pong' == $data) {
+            return true;
+        }
+
+        // save login result
+        $result = josn_decode($data, true) ?? [];
+        if (isset($result['event']) && 'login' == $result['event'] && 0 == $result['code']) {
+            $client->okex_is_auth = 1;
+        }
+
         $old_value = $client->okex_data ?? [];
         if (!$old_value) {
             $client->add('okex_data', [$data]);
         } else {
-            $max_size = $this->config['max_size'] ?? 100;
+            $max_size = $this->config['websocket']['max_size'] ?? 100;
+            $max_size = ($max_size > 1000 || $max_size <= 0) ? 100 : $max_size;
             do {
                 $new_value = $old_value;
-                array_unshift($new_value, $data);
-                if (count($new_value) > $max_size) {
-                    $new_value = array_slice($new_value, 0, $max_size);
+                if (count($new_value) >= $max_size) {
+                    array_unshift($new_value, $data);
+                    array_pop($new_value);
+                } else {
+                    array_unshift($new_value, $data);
                 }
             } while (!$client->cas('okex_data', $old_value, $new_value));
         }
@@ -49,7 +61,7 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
 
     public function onError($connection, $client, $code, $message)
     {
-        echo "error: $message\n";
+        echo 'error---------: code:'.$code.",message:$message\n";
     }
 
     public function onClose($connection, $client)
