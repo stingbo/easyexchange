@@ -12,13 +12,15 @@ class BaseClient
 {
     public $client;
 
+    public $config;
+
     /**
      * BaseClient constructor.
      */
     public function __construct(ServiceContainer $app)
     {
-        $this->app = $app;
-        $this->client = new Client($this->app->config->get('websocket')['ip'].':'.$this->app->config->get('websocket')['port']);
+        $this->config = $app->getConfig();
+        $this->client = new Client($this->config['websocket']['ip'].':'.$this->config['websocket']['port']);
     }
 
     /**
@@ -26,13 +28,14 @@ class BaseClient
      */
     public function server($params, Handle $handle)
     {
-        $config = $this->app->config->get('websocket');
         $worker = new Worker();
+
         // GlobalData Server
-        new Server($config['ip'], $config['port']);
-        $worker->onWorkerStart = function () use ($config, $params, $handle) {
-            $this->client = new Client($config['ip'].':'.$config['port']);
-            $ws_connection = $handle->getConnection($config, $params);
+        new Server($this->config['websocket']['ip'] ?? '127.0.0.1', $this->config['websocket']['port'] ?? 2207);
+
+        $worker->onWorkerStart = function () use ($params, $handle) {
+            $this->client = new Client(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
+            $ws_connection = $handle->getConnection($this->config, $params);
             $ws_connection->onConnect = function ($connection) use ($params, $handle) {
                 $handle->onConnect($connection, $this->client, $params);
             };
@@ -51,7 +54,7 @@ class BaseClient
             $this->ping($ws_connection);
 
             // timer action
-            $this->connect($ws_connection, $config['timer'] ?? 3);
+            $this->connect($ws_connection);
         };
         Worker::runAll();
     }
