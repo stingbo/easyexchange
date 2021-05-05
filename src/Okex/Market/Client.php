@@ -34,7 +34,7 @@ class Client extends BaseClient
      */
     public function ticker($instId)
     {
-        return $this->httpGet('/api/v5/market/tickers', compact('instId'));
+        return $this->httpGet('/api/v5/market/ticker', compact('instId'));
     }
 
     /**

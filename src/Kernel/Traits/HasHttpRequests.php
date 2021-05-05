@@ -54,7 +54,7 @@ trait HasHttpRequests
     }
 
     /**
-     * Set GuzzleHttp\Client.
+     * Set GuzzleHttp\WebsocketClient.
      *
      * @return $this
      */

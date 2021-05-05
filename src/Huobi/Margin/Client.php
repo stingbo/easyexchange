@@ -245,7 +245,7 @@ class Client extends BaseClient
             $request['sub-uid'] = $sub_uid;
         }
 
-        return $this->httpGet('v1/cross-margin/accounts/balance', $request, 'SIGN');
+        return $this->httpGet('/v1/cross-margin/accounts/balance', $request, 'SIGN');
     }
 
     /**

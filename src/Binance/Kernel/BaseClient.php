@@ -41,6 +41,12 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
                 $this->pushMiddleware($this->addHeaderMiddleware('X-MBX-APIKEY', $this->app->config->get('app_key')), 'add_header');
                 break;
         }
+
+        // proxy
+        $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
+
+        // log
+        $this->pushMiddleware($this->logMiddleware(), 'log');
     }
 
     /**

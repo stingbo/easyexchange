@@ -24,16 +24,16 @@ class Client extends BaseClient
     /**
      * 借入借出撤单.
      *
-     * @param $params
+     * @param $offerId
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function cancelOrder($params)
+    public function cancelOrder($offerId)
     {
-        return $this->httpPostJson('/v2/c2c/cancellation', $params, [], 'SIGN');
+        return $this->httpPostJson('/v2/c2c/cancellation', compact('offerId'), [], 'SIGN');
     }
 
     /**
@@ -69,7 +69,7 @@ class Client extends BaseClient
     /**
      * 查询特定借入借出订单及其交易记录.
      *
-     * @param $offerId 订单ID
+     * @param string $offerId 订单ID
      *
      * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
      *

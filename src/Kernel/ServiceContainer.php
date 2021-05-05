@@ -4,6 +4,7 @@ namespace EasyExchange\Kernel;
 
 use EasyExchange\Kernel\Providers\ConfigServiceProvider;
 use EasyExchange\Kernel\Providers\HttpClientServiceProvider;
+use EasyExchange\Kernel\Providers\LogServiceProvider;
 use Pimple\Container;
 
 /**
@@ -72,6 +73,16 @@ class ServiceContainer extends Container
         $this->offsetSet($id, $value);
     }
 
+    /**
+     * @param string $id
+     * @param mixed  $value
+     */
+    public function rebind($id, $value)
+    {
+        $this->offsetUnset($id);
+        $this->offsetSet($id, $value);
+    }
+
     public function getConfig(): array
     {
         $base = [
@@ -92,6 +103,7 @@ class ServiceContainer extends Container
         return array_merge([
             ConfigServiceProvider::class,
             HttpClientServiceProvider::class,
+            LogServiceProvider::class,
         ], $this->providers);
     }
 

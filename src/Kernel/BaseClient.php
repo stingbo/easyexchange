@@ -3,7 +3,10 @@
 namespace EasyExchange\Kernel;
 
 use EasyExchange\Kernel\Traits\HasHttpRequests;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\LogLevel;
 
 class BaseClient
 {
@@ -101,6 +104,21 @@ class BaseClient
     }
 
     /**
+     * Patch request.
+     *
+     * @return array|Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function httpPatch(string $url, array $data = [], array $query = [], string $sign_type = 'NONE')
+    {
+        $this->sign_type = $sign_type;
+
+        return $this->request($url, 'PATCH', ['query' => $query, 'json' => $data]);
+    }
+
+    /**
      * DELETE request.
      *
      * @return array|Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
@@ -128,6 +146,37 @@ class BaseClient
         return function (callable $handler) use ($header, $value) {
             return function (RequestInterface $request, array $options) use ($handler, $header, $value) {
                 $request = $request->withHeader($header, $value);
+
+                return $handler($request, $options);
+            };
+        };
+    }
+
+    /**
+     * Log the request.
+     *
+     * @return \Closure
+     */
+    protected function logMiddleware()
+    {
+        $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
+
+        return Middleware::log($this->app['logger'], $formatter, LogLevel::DEBUG);
+    }
+
+    /**
+     * proxy request.
+     *
+     * @return \Closure
+     */
+    protected function proxyMiddleware()
+    {
+        return function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
+                $proxy_config = $this->app->config->get('proxy');
+                if ($proxy_config && is_array($proxy_config)) {
+                    $options['proxy'] = $proxy_config;
+                }
 
                 return $handler($request, $options);
             };

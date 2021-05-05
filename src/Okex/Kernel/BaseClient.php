@@ -39,13 +39,16 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
         $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
         $this->pushMiddleware($this->addHeaderMiddleware('x-simulated-trading', $this->app->config->get('x-simulated-trading')), 'add_header_test');
         if ('SIGN' == $this->sign_type) {
-            // signature
-            $this->timestamp = $this->getRequestDateTime();
             $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-KEY', $this->app->config->get('app_key')), 'add_header_appkey');
-            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-TIMESTAMP', $this->timestamp), 'add_header_timestamp');
             $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header_passphrase');
             $this->pushMiddleware($this->signatureMiddleware(), 'signature');
         }
+
+        // proxy
+        $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
+
+        // log
+        $this->pushMiddleware($this->logMiddleware(), 'log');
     }
 
     /**
@@ -57,6 +60,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                $this->timestamp = $this->getRequestDateTime();
                 $method = $request->getMethod();
                 $uri_path = $request->getUri()->getPath();
                 if ('POST' == $method) { // POST
@@ -67,6 +71,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
                     parse_str($request->getUri()->getQuery(), $query);
                     $signature = $this->getSignature($this->timestamp, $method, $uri_path, $query);
                 }
+                $request = $request->withHeader('OK-ACCESS-TIMESTAMP', $this->timestamp);
                 $request = $request->withHeader('OK-ACCESS-SIGN', $signature);
 
                 return $handler($request, $options);
@@ -77,7 +82,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     /**
      * UTC ISO格式时间.
      *
-     * @return float
+     * @return string
      */
     public function getRequestDateTime()
     {

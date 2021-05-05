@@ -1,7 +1,7 @@
 ## EasyExchange
-- 方便使用的数据货币交易所SDK，包含币安(Binance)，火币(Huobi)，欧易(Okex)
+- 方便使用的数据货币交易所 SDK，包含币安(Binance)，欧易(OKEx)，火币(Huobi)，芝麻开门(Gate)，Coinbase
+- 如果没有你想要的交易所 SDK，你可以提 issue 告诉我，或者你开发好了提 pull request 给我都行，与君共勉 :laughing:
 - [English Doc](README.md)
-- [API List](api.md)
 
 ## 依赖
 
@@ -22,6 +22,16 @@ $ composer require "stingbo/easyexchange" -vvv
 4. 币安的 timestamp 参数已内置，不需要额外传入
 5. 火币的 AccessKeyId,SignatureMethod,SignatureVersion,Timestamp 已内置，不需要额外传入
 
+## Websocket
+
+| 平台 | 是否支持 |
+| :---: | :---: |
+| [币安](docs/binance_websocket_cn.md) | :heavy_check_mark: |
+| [火币](docs/huobi_websocket_cn.md) | :heavy_check_mark: |
+| [欧易](docs/okex_websocket_cn.md) | :heavy_check_mark: |
+| [芝麻开门](docs/gate_websocket_cn.md) | :heavy_check_mark: |
+| [coinbase](docs/coinbase_websocket_cn.md) | :heavy_check_mark: |
+
 ## 使用说明
 
 ### 币安
@@ -36,15 +46,27 @@ $config = [
         'response_type' => 'array',
         //'base_uri' => 'https://api.binance.com', // 正式网
         'base_uri' => 'https://testnet.binance.vision', // 测试网
+        'ws_base_uri' => 'ws://stream.binance.com:9443',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
 $app = Factory::binance($config['binance']);
 ```
 
-1. 基础信息
+<details>
+<summary>1. 基础信息</summary>
+
 ```php
 // 测试服务器连通性
 $app->basic->ping();
@@ -55,16 +77,22 @@ $app->basic->exchangeInfo();
 // 系统状态
 $app->basic->systemStatus();
 ```
+</details>
 
-2. 账户信息
+<details>
+<summary>2. 账户信息</summary>
+
 ```php
 // 获取BNB抵扣开关状态
 $app->user->getBnbBurnStatus();
 // 现货交易和杠杆利息BNB抵扣开关
 $app->user->bnbBurn();
 ```
+</details>
 
-3. 市场行情相关
+<details>
+<summary>3. 市场行情相关</summary>
+
 ```php
 // 深度信息
 $app->market->depth('LTCBTC');
@@ -92,8 +120,11 @@ $app->market->price('ETHBTC');
 // 返回当前最优的挂单(最高买单，最低卖单)
 $app->market->bookTicker('ETHBTC');
 ```
+</details>
 
-4. 钱包相关
+<details>
+<summary>4. 钱包相关</summary>
+
 ```php
 // 获取所有币信息
 $app->market->getAll();
@@ -126,6 +157,8 @@ $app->market->accountStatus();
 $app->market->apiTradingStatus();
 // 小额资产转换BNB历史
 $app->market->userAssetDribbletLog();
+// 小额资产转换BNB历史(SAPI)
+$app->market->assetDribblet();
 // 小额资产转换
 $asset = []; //币安文档上写的:ARRAY,正在转换的资产。例如：asset = BTC＆asset = USDT
 $app->market->assetDust($asset);
@@ -135,13 +168,18 @@ $app->market->assetDividend($params);
 $app->market->assetDetail();
 // 交易手续费率查询
 $app->market->tradeFee();
+// 交易手续费率查询(SAPI)
+$app->market->assetTradeFee();
 // 用户万向划转
 $app->market->transfer($params);
 // 查询用户万向划转历史
 $app->market->transferHistory($params);
 ```
+</details>
 
-5. 现货交易相关
+<details>
+<summary>5. 现货交易相关</summary>
+
 ```php
 // 测试下单
 $params = [
@@ -199,8 +237,11 @@ $app->spot->allOrderList($params);
 // 查询 OCO 挂单
 $app->spot->openOrderList($params);
 ```
+</details>
 
-6. 杠杆交易相关
+<details>
+<summary>6. 杠杆交易相关</summary>
+
 ```php
 // 全仓杠杆账户划转
 $app->margin->transfer($params);
@@ -257,14 +298,18 @@ $app->margin->isolatedTransfer($params);
 // 获取杠杆逐仓划转历史
 $app->margin->isolatedTransferHistory($params);
 // 查询杠杆逐仓账户信息
-$app->margin->isolatedAccount($symbol);
+$symbols = 'BTCUSDT,BNBUSDT,ADAUSDT';
+$app->margin->isolatedAccount($symbols);
 // 查询逐仓杠杆交易对
 $app->margin->isolatedPair($symbol);
 // 获取所有逐仓杠杆交易对
 $app->margin->isolatedAllPairs();
 ```
+</details>
 
-7. 合约交易相关
+<details>
+<summary>7. 合约交易相关</summary>
+
 ```php
 // 合约资金划转
 $app->future->transfer($params);
@@ -305,8 +350,11 @@ $app->future->collateralRepayResult($quoteId);
 // 混合保证金利息收取历史
 $app->future->interestHistory($params);
 ```
+</details>
 
-8. 矿池相关
+<details>
+<summary>8. 矿池相关</summary>
+
 ```php
 // 获取算法
 $app->pool->algoList();
@@ -335,6 +383,7 @@ $app->pool->userStatus($params);
 // 账号列表
 $app->pool->userList($params);
 ```
+</details>
 
 ### 火币
 ```php
@@ -347,15 +396,27 @@ $config = [
     'huobi' => [
         'response_type' => 'array',
         'base_uri' => 'https://api.huobi.pro',
+        'ws_base_uri' => 'ws://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
 $app = Factory::houbi($config['houbi']);
 ```
 
-1. 基础信息
+<details>
+<summary>1. 基础信息</summary>
+
 ```php
 // 系统状态
 $app->basic->systemStatus();
@@ -370,8 +431,11 @@ $app->basic->currencies();
 // 获取当前系统时间戳
 $app->basic->systemTime();
 ```
+</details>
 
-2. 账户信息
+<details>
+<summary>2. 账户信息</summary>
+
 ```php
 // 账户信息
 $app->user->accounts();
@@ -394,8 +458,11 @@ $app->user->point($subUid = '');
 // 点卡划转
 $app->user->pointTransfer($params);
 ```
+</details>
 
-3. 市场行情相关
+<details>
+<summary>3. 市场行情相关</summary>
+
 ```php
 // K 线数据（蜡烛图）
 $params = [
@@ -418,8 +485,11 @@ $app->market->hr24($symbol);
 // 获取杠杆ETP实时净值
 $app->market->etp($symbol);
 ```
+</details>
 
-4. 钱包相关
+<details>
+<summary>4. 钱包相关</summary>
+
 ```php
 // 充币地址查询
 $currency = 'btc';
@@ -438,8 +508,11 @@ $app->wallet->cancelWithdraw($params);
 // 充提记录
 $app->wallet->depositHistory($params);
 ```
+</details>
 
-5. 现货/杠杆交易相关
+<details>
+<summary>5. 现货/杠杆交易相关</summary>
+
 ```php
 // 下单
 $params = [
@@ -490,8 +563,11 @@ $app->trade->matchResults($params);
 $symbols = 'btcusdt,ethusdt,ltcusdt';
 $app->trade->transactFeeRate($symbols);
 ```
+</details>
 
-6. 借币（逐仓/全仓杠杆）
+<details>
+<summary>6. 借币（逐仓/全仓杠杆）</summary>
+
 ```php
 // 归还借币（全仓逐仓通用）
 $app->margin->repayment($params);
@@ -526,8 +602,11 @@ $app->margin->crossBalance($sub_uid = '');
 // 还币交易记录查询（全仓）.
 $app->margin->getRepayment($params);
 ```
+</details>
 
-7. 策略委托
+<details>
+<summary>7. 策略委托</summary>
+
 ```php
 // 策略委托下单
 $app->algo->order($params);
@@ -540,13 +619,17 @@ $app->algo->orderHistory($params);
 // 查询特定策略委托.
 $app->algo->specific($clientOrderId);
 ```
+</details>
 
-8. 借币（C2C）
+<details>
+<summary>8. 借币（C2C）</summary>
+
 ```php
 // 借入借出下单
 $app->c2c->order($params);
 // 借入借出撤单.
-$app->c2c->cancelOrder($params);
+$offerId = 14411;
+$app->c2c->cancelOrder($offerId);
 // 撤销所有借入借出订单.
 $app->c2c->cancelAll($params);
 // 查询借入借出订单.
@@ -564,6 +647,7 @@ $app->c2c->transfer($params);
 // 查询账户余额
 $app->c2c->balance($accountId, $currency = '');
 ```
+</details>
 
 ### 欧易 V5 版本
 ```php
@@ -576,17 +660,29 @@ $config = [
     'okex' => [
         'response_type' => 'array',
         'base_uri' => 'https://www.okex.com',
+        'ws_base_uri' => 'ws://ws.okex.com:8443',
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
         'x-simulated-trading' => 1,
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
     ],
 ];
 
 $app = Factory::okex($config['okex']);
 ```
 
-1. 基础信息
+<details>
+<summary>1. 基础信息</summary>
+
 ```php
 $params = [
     'instType' => 'SPOT',
@@ -616,8 +712,11 @@ $app->basic->liquidationOrders($params);
 // 获取标记价格
 $app->basic->markPrice($params);
 ```
+</details>
 
-2. 账户信息
+<details>
+<summary>2. 账户信息</summary>
+
 ```php
 // 查看账户余额
 $app->user->balance($ccy = '');
@@ -652,8 +751,11 @@ $app->user->setGreeks($greeksType);
 // 查看账户最大可转余额
 $app->user->maxWithdrawal($ccy = '');
 ```
+</details>
 
-3. 市场行情相关
+<details>
+<summary>3. 市场行情相关</summary>
+
 ```php
 // 获取所有产品行情信息
 $app->market->tickers($instType, $uly = '');
@@ -676,8 +778,11 @@ $app->market->markPriceKline($params);
 // 获取交易产品公共成交数据
 $app->market->trades($instId, $limit = 100);
 ```
+</details>
 
-4. 资金相关
+<details>
+<summary>4. 资金相关</summary>
+
 ```php
 // 获取充值地址信息
 $app->wallet->depositAddress($ccy);
@@ -698,8 +803,11 @@ $app->wallet->purchaseRedempt($params);
 // 资金流水查询.
 $app->wallet->bills($params);
 ```
+</details>
 
-5. 交易相关
+<details>
+<summary>5. 交易相关</summary>
+
 ```php
 $params = [
     'instId' => 'BTC-USD-190927-5000-C',
@@ -738,8 +846,11 @@ $app->trade->orderHistoryArchive($params);
 // 获取成交明细.
 $app->trade->fills($params);
 ```
+</details>
 
-6. 策略委托
+<details>
+<summary>6. 策略委托</summary>
+
 ```php
 // 策略委托下单
 $app->algo->order($params);
@@ -750,3 +861,371 @@ $app->algo->openOrders($params);
 // 获取历史策略委托单列表.
 $app->algo->orderHistory($params);
 ```
+</details>
+
+### 芝麻开门 V4 版本
+
+```php
+<?php
+
+use EasyExchange\Factory;
+
+$config = [
+    'gate' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://api.gateio.ws',
+        'ws_base_uri' => 'ws://api.gateio.ws',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
+    ],
+];
+
+$app = Factory::gate($config['gate']);
+```
+
+<details>
+<summary>1. 钱包相关</summary>
+
+```php
+// 获取币种充值地址.
+$currency = 'USDT';
+$app->wallet->depositAddress($currency);
+// 获取提现记录.
+$params = [];
+$app->wallet->withdrawHistory($params);
+// 获取充值记录.
+$app->wallet->depositHistory($params);
+// 交易账户互转.
+$app->wallet->transfer($params);
+// 主子账号互转.
+$app->wallet->subAccountTransfer($params);
+// 主子账号划转记录.
+$app->wallet->subAccountTransferHistory($params);
+// 查询提现状态.
+$app->wallet->withdrawStatus($currency);
+// 查询子账号余额信息.
+$app->wallet->subAccountBalance($sub_uid = '');
+// 查询个人交易费率.
+$app->wallet->fee();
+```
+</details>
+
+<details>
+<summary>2. 现货交易</summary>
+
+```php
+// 查询所有币种信息.
+$app->spot->currencies();
+// 查询单个币种信息.
+$currency = 'GT';
+$app->spot->currency($currency);
+// 查询支持的所有交易对.
+$app->spot->currencyPairs();
+// 查询单个交易对详情.
+$currency_pair = 'ETH_USDT';
+$app->spot->currencyPair($currency_pair);
+// 获取交易对 ticker 信息.
+$app->spot->tickers($currency_pair);
+// 获取市场深度信息.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+];
+$app->spot->depth($params);
+// 查询市场成交记录.
+$app->spot->trades($params);
+// 市场 K 线图.
+$app->spot->kline($params);
+// 获取现货交易账户列表.
+$app->spot->accounts($currency);
+// 下单.
+$params = [
+    'currency_pair' => 'ETH_USDT',
+    'side' => 'buy',
+    'amount' => '0.1',
+    'price' => '10',
+];
+$app->spot->order($params);
+// 批量下单.
+$app->spot->batchOrders($params);
+// 查询所有挂单.
+$app->spot->openOrders($page = '', $limit = '');
+// 查询订单列表.
+$app->spot->orders($params);
+// 批量取消一个交易对里状态为 open 的订单.
+$app->spot->cancelOrders($params);
+// 批量撤销指定 ID 的订单列表.
+$app->spot->cancelBatchOrders($params);
+// 查询单个订单详情.
+$app->spot->get($order_id, $currency_pair);
+// 撤销单个订单.
+$app->spot->cancelOrder($order_id, $currency_pair);
+// 查询个人成交记录.
+$app->spot->myTrades($params);
+// 创建价格触发订单.
+$app->spot->priceOrder($params)
+// 查询进行中自动订单列表.
+$app->spot->priceOrders($params)
+// 批量取消自动订单.
+$app->spot->cancelPriceOrders($market = '', $account = '')
+// 查询单个订单详情.
+$app->spot->getPriceOrder($order_id)
+// 撤销单个订单.
+$app->spot->cancelPriceOrder($order_id)
+```
+</details>
+
+<details>
+<summary>3. 杠杆借贷</summary>
+
+```php
+// 查询支持杠杆交易的所有交易对.
+$app->margin->currencyPairs();
+// 查询单个杠杆交易对.
+$app->margin->currencyPair($currency_pair);
+// 借出市场的深度.
+$app->margin->depth($currency);
+// 杠杆账户列表.
+$app->margin->accounts($currency_pair = '');
+// 查询杠杆账户变动历史.
+$app->margin->accountHistory($params);
+// 理财账户列表.
+$app->margin->fundingAccounts($currency = '');
+// 借入或借出.
+$app->margin->loan($params);
+// 查询借贷订单列表.
+$app->margin->loanHistory($params);
+// 合并多个借贷订单.
+$app->margin->mergeLoan($currency, $ids);
+// 查询借贷订单详情.
+$app->margin->get($loan_id, $side);
+// 修改借贷订单.
+$app->margin->modifyLoan($loan_id, $params);
+// 撤销借出贷款订单.
+$app->margin->cancelLoan($loan_id, $currency);
+// 归还借贷.
+$app->margin->repayment($loan_id, $params);
+// 查询借贷归还记录.
+$app->margin->getRepayment($loan_id);
+// 查看某个借贷订单的借出记录.
+$app->margin->loanRecords($params);
+// 查看单个借出记录.
+$app->margin->loanRecord($loan_id, $loan_record_id);
+// 修改单个借出记录.
+$app->margin->modifyLoanRecord($loan_record_id, $params);
+// 修改用户自动还款设置.
+$app->margin->autoRepay($status);
+// 查询用户自动还款设置.
+$app->margin->getAutoRepayStatus();
+```
+</details>
+
+<details>
+<summary>4.  永续合约</summary>
+
+```php
+// 查询所有的合约信息.
+$app->future->contracts($settle);
+// 查询单个合约信息.
+$app->future->contract($settle, $contract);
+// 查询合约市场深度信息.
+$app->future->depth($settle, $params);
+// 合约市场成交记录.
+$app->future->trades($settle, $params);
+// 合约市场 K 线图.
+$app->future->kline($settle, $params);
+// 获取所有合约交易行情统计.
+$app->future->tickers($settle, $contract);
+// 合约市场历史资金费率.
+$app->future->fundingRateHistory($settle, $params);
+// 合约市场保险基金历史.
+$app->future->insuranceHistory($settle, $limit = '');
+// 合约统计信息.
+$app->future->contractStats($settle, $params);
+// 查询强平委托历史.
+$app->future->liquidationOrders($settle, $params = []);
+// 获取合约账号.
+$app->future->accounts($settle);
+// 查询合约账户变更历史.
+$app->future->accountHistory($settle, $params = []);
+// 获取用户头寸列表.
+$app->future->positions($settle);
+// 获取单个头寸信息.
+$app->future->position($settle, $contract);
+// 更新头寸保证金.
+$app->future->modifyPositionMargin($settle, $contract, $change);
+// 更新头寸杠杆.
+$app->future->modifyPositionLeverage($settle, $contract, $leverage);
+// 更新头寸风险限额.
+$app->future->modifyPositionRiskLimit($settle, $contract, $risk_limit);
+// 设置持仓模式.
+$app->future->setDualMode($settle, $dual_mode);
+// 获取双仓模式下的持仓信息.
+$app->future->dualCompPosition($settle, $contract);
+// 更新双仓模式下的保证金.
+$app->future->modifyDualCompPositionMargin($settle, $contract, $change);
+// 更新双仓模式下的杠杆.
+$app->future->modifyDualCompPositionLeverage($settle, $contract, $leverage);
+// 更新双仓模式下的风险限额.
+$app->future->modifyDualCompPositionRiskLimit($settle, $contract, $risk_limit);
+// 合约交易下单.
+$app->future->order($settle, $params);
+// 查询合约订单列表.
+$app->future->orders($settle, $params);
+// 批量取消状态为 open 的订单.
+$app->future->cancelOrders($settle, $params);
+// 撤销单个订单.
+$app->future->cancelOrder($settle, $order_id);
+// 查询单个订单详情.
+$app->future->get($settle, $order_id);
+// 查询个人成交记录.
+$app->future->myTrades($settle, $params);
+// 查询平仓历史.
+$app->future->positionClose($settle, $params);
+// 查询强制平仓历史.
+$app->future->forceLiquidationRec($settle, $params);
+// 创建价格触发订单.
+$app->future->priceOrder($settle, $params);
+// 查询自动订单列表.
+$app->future->priceOrders($settle, $params);
+// 批量取消自动订单.
+$app->future->cancelPriceOrders($settle, $contract);
+// 查询单个订单详情.
+$app->future->getPriceOrder($settle, $order_id);
+// 撤销单个订单.
+$app->future->cancelPriceOrder($settle, $order_id);
+```
+</details>
+
+<details>
+<summary>5. 交割合约</summary>
+
+```php
+// 查询所有的合约信息.
+$app->delivery->contracts($settle);
+// 查询单个合约信息.
+$app->delivery->contract($settle, $contract);
+// 查询合约市场深度信息.
+$app->delivery->depth($settle, $params);
+// 合约市场成交记录.
+$app->delivery->trades($settle, $params);
+// 合约市场 K 线图.
+$app->delivery->kline($settle, $params);
+// 获取所有合约交易行情统计.
+$app->delivery->tickers($settle, $contract);
+// 合约市场保险基金历史.
+$app->delivery->insuranceHistory($settle, $limit = '');
+// 获取合约账号.
+$app->delivery->accounts($settle);
+// 查询合约账户变更历史.
+$app->delivery->accountHistory($settle, $params = []);
+// 获取用户头寸列表.
+$app->delivery->positions($settle);
+// 获取单个头寸信息.
+$app->delivery->position($settle, $contract);
+// 更新头寸保证金.
+$app->delivery->modifyPositionMargin($settle, $contract, $change);
+// 更新头寸杠杆.
+$app->delivery->modifyPositionLeverage($settle, $contract, $leverage);
+// 更新头寸风险限额.
+$app->delivery->modifyPositionRiskLimit($settle, $contract, $risk_limit);
+// 合约交易下单.
+$app->delivery->order($settle, $params);
+// 查询合约订单列表.
+$app->delivery->orders($settle, $params);
+// 批量取消状态为 open 的订单.
+$app->delivery->cancelOrders($settle, $params);
+// 撤销单个订单.
+$app->delivery->cancelOrder($settle, $order_id);
+// 查询单个订单详情.
+$app->delivery->get($settle, $order_id);
+// 查询个人成交记录.
+$app->delivery->myTrades($settle, $params);
+// 查询平仓历史.
+$app->delivery->positionClose($settle, $params);
+// 查询强制平仓历史.
+$app->delivery->forceLiquidationRec($settle, $params);
+// 查询结算记录.
+$app->delivery->settlements($settle, $params = []);
+// 创建价格触发订单.
+$app->delivery->priceOrder($settle, $params);
+// 查询自动订单列表.
+$app->delivery->priceOrders($settle, $params);
+// 批量取消自动订单.
+$app->delivery->cancelPriceOrders($settle, $contract);
+// 查询单个订单详情.
+$app->delivery->getPriceOrder($settle, $order_id);
+// 撤销单个订单.
+$app->delivery->cancelPriceOrder($settle, $order_id);
+```
+</details>
+
+### Coinbase
+
+```php
+<?php
+
+use EasyExchange\Factory;
+
+$config = [
+    'coinbase' => [
+        'response_type' => 'array',
+        'base_uri' => 'https://api.pro.coinbase.com',
+        'ws_base_uri' => 'ws://ws-feed.pro.coinbase.com',
+        'app_key' => 'your app key',
+        'secret' => 'your secret',
+        'passphrase' => 'your passphrase',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
+        'log' => [
+            'level' => 'debug',
+            'file'  => '/tmp/exchange.log',
+        ],
+    ],
+];
+
+$app = Factory::coinbase($config['coinbase']);
+```
+
+<details>
+<summary>1. 账户信息</summary>
+
+```php
+// 账户列表.
+$app->user->accounts();
+// 获取单个账号信息.
+$app->user->account($account_id);
+// 账号余额变动记录.
+$app->user->history($account_id, $params = []);
+// 账号的保留记录.
+$app->user->holds($account_id, $params = []);
+// 获取 Coinbase 帐户列表.
+$app->user->coinbaseAccounts();
+// 获取当前费率.
+$app->user->fees();
+// 个人信息列表.
+$app->user->profiles();
+// 通过 profile_id 获取个人信息.
+$app->user->profile($profile_id);
+// 站内转账.
+$app->user->transfer($params);
+```
+</details>
+
+## API 支持
+| 联系方式 | 联系我 |
+| :---: | :---: |
+| QQ群 | 871358160 |
+| 邮箱 | lianbo.wan@gmail.com |
+| 邮箱 | sting_bo@163.com |
