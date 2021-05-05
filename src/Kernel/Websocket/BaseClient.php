@@ -20,7 +20,7 @@ class BaseClient
     public function __construct(ServiceContainer $app)
     {
         $this->config = $app->getConfig();
-        $this->client = new Client($this->config['websocket']['ip'].':'.$this->config['websocket']['port']);
+        $this->client = new Client($this->config['websocket']['listen_ip'].':'.$this->config['websocket']['listen_port']);
     }
 
     /**
@@ -31,10 +31,10 @@ class BaseClient
         $worker = new Worker();
 
         // GlobalData Server
-        new Server($this->config['websocket']['ip'] ?? '127.0.0.1', $this->config['websocket']['port'] ?? 2207);
+        new Server($this->config['websocket']['listen_ip'] ?? '127.0.0.1', $this->config['websocket']['listen_port'] ?? 2207);
 
         $worker->onWorkerStart = function () use ($params, $handle) {
-            $this->client = new Client(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
+            $this->client = new Client(($this->config['websocket']['listen_ip'] ?? '127.0.0.1').':'.($this->config['websocket']['listen_port'] ?? 2207));
             $ws_connection = $handle->getConnection($this->config, $params);
             $ws_connection->onConnect = function ($connection) use ($params, $handle) {
                 $handle->onConnect($connection, $this->client, $params);
@@ -56,6 +56,7 @@ class BaseClient
             // timer action
             $this->connect($ws_connection);
         };
+
         Worker::runAll();
     }
 
@@ -67,10 +68,10 @@ class BaseClient
      */
     public function updateOrCreate($key, $value)
     {
-        if (!isset($this->client->$key)) {
+        if (!isset($this->client->{$key})) {
             $this->create($key, $value);
         } else {
-            $this->update($key, $this->client->$key, $value);
+            $this->update($key, $value);
         }
     }
 
@@ -85,24 +86,21 @@ class BaseClient
     public function create($key, $value)
     {
         $this->client->add($key, $value);
-
-        $this->cache($key);
     }
 
     /**
      * update.
      *
      * @param $key
-     * @param $old_value
      * @param $new_value
      *
      * @throws \Exception
      */
-    public function update($key, $old_value, $new_value)
+    public function update($key, $new_value)
     {
-        $this->client->cas($key, $old_value, $new_value);
-
-        $this->cache($key);
+        do {
+            $old_value = $this->client->{$key};
+        } while (!$this->client->cas($key, $old_value, $new_value));
     }
 
     /**
@@ -119,21 +117,6 @@ class BaseClient
         }
 
         return $this->client->{$key};
-    }
-
-    /**
-     * 全局数据缓存.
-     *
-     * @param $key
-     *
-     * @throws \Exception
-     */
-    protected function cache($key)
-    {
-        do {
-            $old_value = $new_value = $this->client->global_key;
-            $new_value[$key] = $key;
-        } while (!$this->client->cas('global_key', $old_value, $new_value));
     }
 
     /**
