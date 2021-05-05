@@ -11,6 +11,12 @@ class WebsocketClient extends BaseClient
 {
     public $client_type = 'okex';
 
+    public $auth_channel = [
+        'account', 'positions', 'balance_and_position', // account
+        'orders', 'orders-algo', 'order', 'batch-orders', // order & algo order
+        'cancel-order', 'batch-cancel-orders', 'amend-order', 'batch-amend-orders', // trade
+    ];
+
     public function getClientType()
     {
         return $this->client_type;
@@ -26,7 +32,7 @@ class WebsocketClient extends BaseClient
     public function subscribe($params)
     {
         if ('subscribe' != $params['op']) {
-            throw new InvalidArgumentException('Invalid argument about op');
+            throw new InvalidArgumentException('Invalid argument about op type');
         }
 
         $this->updateOrCreate('okex_sub', $params);
@@ -42,7 +48,7 @@ class WebsocketClient extends BaseClient
     public function unsubscribe($params)
     {
         if ('unsubscribe' != $params['op']) {
-            throw new InvalidArgumentException('Invalid argument about op');
+            throw new InvalidArgumentException('Invalid argument about op type');
         }
 
         $this->updateOrCreate('okex_unsub', $params);
@@ -55,23 +61,41 @@ class WebsocketClient extends BaseClient
      */
     public function getSubChannel()
     {
-        $sub_data = $this->get('okex_sub_old');
-        print_r($sub_data);
-        die;
-
-        return $sub_data;
+        return $this->get('okex_sub_old');
     }
 
+    /**
+     * Get Data.
+     *
+     * @return array|mixed
+     */
+    public function getData()
+    {
+        return $this->get('okex_data');
+    }
+
+    /**
+     * Heartbeat.
+     *
+     * @param $connection
+     */
     public function ping($connection)
     {
-        Timer::add(20, function () use ($connection) {
+        $interval = $this->config['websocket']['heartbeat_time'] ?? 20;
+        Timer::add($interval, function () use ($connection) {
             $connection->send('ping');
         });
     }
 
-    public function connect($connection, $time = 3)
+    /**
+     * Communicate with the server.
+     *
+     * @param $connection
+     */
+    public function connect($connection)
     {
-        $connection->timer_id = Timer::add($time, function () use ($connection) {
+        $interval = $this->config['websocket']['timer_time'] ?? 3;
+        $connection->timer_id = Timer::add($interval, function () use ($connection) {
             // subscribe
             $this->sub($connection);
 
@@ -89,15 +113,17 @@ class WebsocketClient extends BaseClient
      */
     public function sub($connection)
     {
-        echo 'sub:----------'.PHP_EOL;
         $subs = $this->get('okex_sub');
-        print_r($subs);
         if (!$subs) {
             return true;
         } else {
-            $old_subs = $this->get('okex_sub_old');
+            if (!isset($subs['args']) || !$subs['args']) {
+                return true;
+            }
+
             // check if this channel is subscribed
-            if (isset($subs['args']) && isset($old_subs['args'])) {
+            $old_subs = $this->get('okex_sub_old');
+            if (isset($old_subs['args'])) {
                 foreach ($subs['args'] as $key => $channel) {
                     foreach ($old_subs['args'] as $subed_channel) {
                         if ($channel == $subed_channel) {
@@ -111,7 +137,12 @@ class WebsocketClient extends BaseClient
                     return true;
                 }
             }
-            echo 'sub:------------'.PHP_EOL;
+
+            // need login
+            if (array_intersect(array_column($subs['args'], 'channel'), $this->auth_channel) && !$this->isAuth()) {
+                $this->auth($connection);
+            }
+
             $connection->send(json_encode($subs));
 
             // update
@@ -133,13 +164,10 @@ class WebsocketClient extends BaseClient
      */
     public function unSub($connection)
     {
-        echo 'unsub:----------'.PHP_EOL;
         $unsubs = $this->get('okex_unsub');
-        print_r($unsubs);
         if (!$unsubs) {
             return true;
         } else {
-            echo 'unsub:------------'.PHP_EOL;
             $old_subs = $this->get('okex_sub_old');
             if (!$old_subs) {
                 return true;
@@ -148,10 +176,8 @@ class WebsocketClient extends BaseClient
             $connection->send(json_encode($unsubs));
             $this->delete('okex_unsub');
 
-            print_r($old_subs);
             if (isset($old_subs['args']) && $unsubs['args']) {
                 $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
-                print_r($old_subs);
 
                 // update sub channel data
                 if ($old_subs['args']) {
@@ -163,5 +189,55 @@ class WebsocketClient extends BaseClient
         }
 
         return true;
+    }
+
+    /**
+     * Has it been verified.
+     *
+     * @return array|mixed
+     */
+    public function isAuth()
+    {
+        return $this->get('okex_is_auth');
+    }
+
+    /**
+     * login.
+     *
+     * @param $connection
+     */
+    public function auth($connection)
+    {
+        $timestamp = time();
+        $sign = $this->getSignature($timestamp);
+        $params = [
+            'op' => 'login',
+            'args' => [
+                [
+                    'apiKey' => $this->config['app_key'],
+                    'passphrase' => $this->config['passphrase'],
+                    'timestamp' => $timestamp,
+                    'sign' => $sign,
+                ],
+            ],
+        ];
+        $connection->send(json_encode($params));
+    }
+
+    /**
+     * get sign.
+     *
+     * @param $timestamp
+     * @param string $method
+     * @param string $uri_path
+     *
+     * @return string
+     */
+    public function getSignature($timestamp, $method = 'GET', $uri_path = '/users/self/verify')
+    {
+        $message = (string) $timestamp.$method.$uri_path;
+        $secret = $this->config['secret'];
+
+        return base64_encode(hash_hmac('sha256', $message, $secret, true));
     }
 }
