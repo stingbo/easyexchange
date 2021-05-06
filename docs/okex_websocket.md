@@ -12,7 +12,7 @@ See [binance websocket documentation](binance_websocket.md) for details
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Okex\Websocket\Handle;
+use EasyExchange\Okex\Socket\Handle;
 
 class Server
 {

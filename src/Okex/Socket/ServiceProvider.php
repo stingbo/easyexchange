@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Binance\Websocket;
+namespace EasyExchange\Okex\Socket;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -13,7 +13,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['websocket'] = function ($app) {
-            return new WebsocketClient($app);
+            return new Client($app);
         };
     }
 }

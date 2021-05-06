@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Gate\Websocket;
+namespace EasyExchange\Huobi\Socket;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

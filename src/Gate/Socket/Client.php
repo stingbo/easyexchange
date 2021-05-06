@@ -1,9 +1,9 @@
 <?php
 
-namespace EasyExchange\Gate\Websocket;
+namespace EasyExchange\Gate\Socket;
 
-use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Kernel\Socket\BaseClient;
+use EasyExchange\Kernel\Socket\Handle;
 
 class Client extends BaseClient
 {

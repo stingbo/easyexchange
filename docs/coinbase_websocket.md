@@ -12,7 +12,7 @@ See [binance websocket documentation](binance_websocket.md) for details
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Coinbase\Websocket\Handle;
+use EasyExchange\Coinbase\Socket\Handle;
 
 class CoinbaseHandle extends Handle
 {

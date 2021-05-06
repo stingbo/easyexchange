@@ -6,11 +6,12 @@
 
 
 1. 示例
+
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Huobi\Websocket\Handle;
+use EasyExchange\Huobi\Socket\Handle;
 
 class HuobiHandle extends Handle
 {

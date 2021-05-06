@@ -5,11 +5,12 @@
 详见[币安 websocket 文档](binance_websocket_cn.md)
 
 1. 启动本地服务，server.php 示例:
+
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Okex\Websocket\Handle;
+use EasyExchange\Okex\Socket\Handle;
 
 class Server
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace EasyExchange\Coinbase\Websocket;
+namespace EasyExchange\Coinbase\Socket;
 
-use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Kernel\Socket\BaseClient;
+use EasyExchange\Kernel\Socket\Handle;
 
 class Client extends BaseClient
 {

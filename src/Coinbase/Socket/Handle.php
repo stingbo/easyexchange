@@ -1,10 +1,10 @@
 <?php
 
-namespace EasyExchange\Binance\Websocket;
+namespace EasyExchange\Coinbase\Socket;
 
 use Workerman\Connection\AsyncTcpConnection;
 
-class Handle implements \EasyExchange\Kernel\Websocket\Handle
+class Handle implements \EasyExchange\Kernel\Socket\Handle
 {
     private $config;
 
@@ -14,9 +14,9 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
 
         $auth = $params['auth'] ?? false;
         if ($auth) {
-            $ws_base_uri = $config['ws_base_uri'].'/ws';
+            $ws_base_uri = $config['ws_base_uri'];
         } else {
-            $ws_base_uri = $config['ws_base_uri'].'/ws';
+            $ws_base_uri = $config['ws_base_uri'];
         }
 
         $connection = new AsyncTcpConnection($ws_base_uri);

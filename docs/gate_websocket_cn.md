@@ -5,11 +5,12 @@
 详见[币安 websocket 文档](binance_websocket_cn.md)
 
 1. 示例
+
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Gate\Websocket\Handle;
+use EasyExchange\Gate\Socket\Handle;
 
 class GateHandle extends Handle
 {

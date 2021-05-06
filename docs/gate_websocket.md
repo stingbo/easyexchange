@@ -12,7 +12,7 @@ See [binance websocket documentation](binance_websocket.md) for details
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Huobi\Websocket\Handle;
+use EasyExchange\Huobi\Socket\Handle;
 
 class GateHandle extends Handle
 {

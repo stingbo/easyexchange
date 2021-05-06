@@ -1,10 +1,10 @@
 <?php
 
-namespace EasyExchange\Huobi\Websocket;
+namespace EasyExchange\Huobi\Socket;
 
 use Workerman\Connection\AsyncTcpConnection;
 
-class Handle implements \EasyExchange\Kernel\Websocket\Handle
+class Handle implements \EasyExchange\Kernel\Socket\Handle
 {
     private $config;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Huobi\Websocket;
+namespace EasyExchange\Coinbase\Socket;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
