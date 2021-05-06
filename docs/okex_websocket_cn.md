@@ -4,35 +4,14 @@
 
 详见[币安 websocket 文档](binance_websocket_cn.md)
 
-1. 示例
+1. 启动本地服务，server.php 示例:
 ```php
 <?php
 
 use EasyExchange\Factory;
-use Workerman\Timer;
+use EasyExchange\Okex\Websocket\Handle;
 
-class OkexHandle extends \EasyExchange\Okex\Websocket\Handle
-{
-    public function onMessage($connection, $params, $data)
-    {
-        // 执行内置的login方法
-        parent::onMessage($connection, $params, $data);
-
-        // 处理你自己的逻辑
-        echo $data.PHP_EOL;
-        $time_interval = 20;
-        if ('pong' != $data) {
-            $connection->timer_id = Timer::add($time_interval, function () use ($connection) {
-                $connection->send('ping');
-            });
-        } else {
-            // 删除定时器
-            Timer::del($connection->timer_id);
-        }
-    }
-}
-
-class Test
+class Server
 {
     public function ws()
     {
@@ -40,49 +19,144 @@ class Test
             'okex' => [
                 'response_type' => 'array',
                 'base_uri' => 'https://www.okex.com',
-                'ws_base_uri' => 'ws://ws.okex.com:8443',
                 'app_key' => 'your app key',
                 'secret' => 'your secret',
                 'passphrase' => 'your passphrase',
                 'x-simulated-trading' => 1,
+                'websocket' => [
+                    'base_uri' => 'ws://ws.okex.com:8443',
+                    'listen_ip' => '127.0.0.1', // 监听的本机ip地址
+                    'listen_port' => 2207, // 监听的端口
+                    'heartbeat_time' => 20, // 心跳检测时间，单位秒
+                    'timer_time' => 3, // 定时任务间隔时间，秒
+                    'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
+                    'data_time' => 1, // 获取数据的时间间隔，秒
+                ],
+            ],
+        ];
+        $app = Factory::okex($config['okex']);
+        $app->websocket->server([], new Handle());
+    }
+}
+
+$tc = new Server();
+$tc->ws();
+```
+
+2. 启动脚本:`php server.php start`
+
+3. 本地客户端示例
+```php
+<?php
+
+use EasyExchange\Factory;
+
+class Test
+{
+    public function t()
+    {
+        $config = [
+            'okex' => [
+                'response_type' => 'array',
+                'base_uri' => 'https://www.okex.com',
+                'app_key' => 'your app key',
+                'secret' => 'your secret',
+                'passphrase' => 'your passphrase',
+                'x-simulated-trading' => 1,
+                'websocket' => [
+                    'base_uri' => 'ws://ws.okex.com:8443',
+                    'listen_ip' => '127.0.0.1', // 监听的本机ip地址
+                    'listen_port' => 2207, // 监听的端口
+                    'heartbeat_time' => 20, // 心跳检测时间，单位秒
+                    'timer_time' => 3, // 定时任务间隔时间，秒
+                    'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
+                    'data_time' => 1, // 获取数据的时间间隔，秒
+                ],
             ],
         ];
         $app = Factory::okex($config['okex']);
         $params = [
             'op' => 'subscribe',
             'args' => [
+                [
+                    'channel' => 'tickers',
+//                    'instId' => 'BTC-USDT', // Required
+                    'instId' => 'LTC-USDT', // Required
+                ],
+                [
+                    'channel' => 'tickers',
+                    'instId' => 'ETH-USDT', // Required
+                ],
 //                [
 //                    'channel' => 'instruments',
-//                    'instType' => 'FUTURES', // Required
 //                    'instType' => 'SPOT', // Required
 //                ],
                 [
-                    'channel' => 'tickers',
-                    'instId' => 'BTT-BTC', // Required
+                    'channel' => 'account',
+                    'ccy' => 'LTC', // Required
+//                    'ccy' => 'BTC', // Required
                 ],
-            ],
-        ];
-        // 私有频道必须配置 auth 参数
-        $params = [
-            'auth' => true, // private channel
-            'op' => 'subscribe',
-            'args' => [
                 [
                     'channel' => 'account',
-                    'ccy' => 'BTC',
-                ],
-                [
-                    'channel' => 'positions',
-                    'instType' => 'ANY',
+                    'ccy' => 'USDT', // Required
                 ],
             ],
         ];
-        $app->websocket->subscribe($params, new OkexHandle());
+
+        // 订阅
+        $app->websocket->subscribe($params);
+
+        $params = [
+            'op' => 'unsubscribe',
+            'args' => [
+                [
+                    'channel' => 'tickers',
+//                    'instId' => 'BTC-USDT', // Required
+                    'instId' => 'LTC-USDT', // Required
+                ],
+                [
+                    'channel' => 'tickers',
+                    'instId' => 'ETH-USDT', // Required
+                ],
+//                [
+//                    'channel' => 'instruments',
+//                    'instType' => 'SPOT', // Required
+//                ],
+                [
+                    'channel' => 'account',
+                    'ccy' => 'LTC', // Required
+//                    'ccy' => 'BTC', // Required
+                ],
+                [
+                    'channel' => 'account',
+                    'ccy' => 'USDT', // Required
+                ],
+            ],
+        ];
+        // 取消订阅
+        $app->websocket->unsubscribe($params);
+
+        // 获取已订阅的频道
+        $channels = $app->websocket->getSubChannel();
+        print_r($channels);
+
+        // 根据频道获取数据，不传频道默认获取所有已订阅频道的数据
+        $channels = ['account', 'tickers'];
+        $data = $app->websocket->getChannelData($channels);
+        print_r($data);
+
+        // 使用函数处理数据
+        $app->websocket->getChannelData($channels, function ($data) {
+            print_r($data);
+        });
+
+        // 使用守护进程和函数处理数据
+        $app->websocket->getChannelData($channels, function ($data) {
+            print_r($data);
+        }, true);
     }
 }
 
 $tc = new Test();
-$tc->ws();
+$tc->t();
 ```
-
-2. 启动脚本监听:`php test.php start`
