@@ -12,14 +12,10 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
     {
         $this->config = $config;
 
-        $auth = $params['auth'] ?? false;
-        if ($auth) {
-            $ws_base_uri = $config['ws_base_uri'].'/ws';
-        } else {
-            $ws_base_uri = $config['ws_base_uri'].'/ws';
-        }
+        $base_uri = $config['websocket']['base_uri'].'/ws';
+        echo $base_uri.PHP_EOL;
 
-        $connection = new AsyncTcpConnection($ws_base_uri);
+        $connection = new AsyncTcpConnection($base_uri);
         $connection->transport = 'ssl';
 
         return $connection;
@@ -27,21 +23,29 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
 
     public function onConnect($connection, $client, $params)
     {
+        echo 'connect:-----------------'.PHP_EOL;
         $connection->send(json_encode($params));
     }
 
     public function onMessage($connection, $client, $params, $data)
     {
+        echo 'msg:--------------------------------'.PHP_EOL;
         echo $data.PHP_EOL;
+
+        return true;
     }
 
     public function onError($connection, $client, $code, $message)
     {
-        echo "error: $message\n";
+        echo 'error---------: code:'.$code.",message:$message\n";
     }
 
     public function onClose($connection, $client)
     {
-        echo "connection closed\n";
+        echo "connection closed，now reconnect\n";
+        $connection->reConnect(1);
+
+        $client->binance_sub = $client->binance_sub_old;
+        $client->binance_sub_old = [];
     }
 }
