@@ -4,7 +4,7 @@ namespace EasyExchange\Gate\Websocket;
 
 use Workerman\Connection\AsyncTcpConnection;
 
-class Handle implements \EasyExchange\Kernel\Websocket\Handle
+class Handle implements \EasyExchange\Kernel\Socket\Handle
 {
     private $config;
 

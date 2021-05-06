@@ -5,11 +5,12 @@
 见[币安 websocket 文档](binance_websocket_cn.md)
 
 1. 示例
+
 ```php
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Coinbase\Websocket\Handle;
+use EasyExchange\Coinbase\Socket\Handle;
 
 class CoinbaseHandle extends Handle
 {

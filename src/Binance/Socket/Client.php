@@ -1,93 +1,18 @@
 <?php
 
-namespace EasyExchange\Okex\Websocket;
+namespace EasyExchange\Okex\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
+use EasyExchange\Kernel\Socket\BaseClient;
 use EasyExchange\Kernel\Support\Arr;
-use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\Handle;
-use GlobalData\Client;
-use GlobalData\Server;
 use Workerman\Timer;
 use Workerman\Worker;
 
-class WebsocketClient extends BaseClient
+class Client extends BaseClient
 {
-    public $client_type = 'okex';
+    public $client_type = 'binance';
 
-    public $auth_channel = [
-        'account', 'positions', 'balance_and_position', // account
-        'orders', 'orders-algo', 'order', 'batch-orders', // order & algo order
-        'cancel-order', 'batch-cancel-orders', 'amend-order', 'batch-amend-orders', // trade
-    ];
-
-    /**
-     * Override the parent method.
-     *
-     * @param $params
-     */
-    public function server($params, Handle $handle)
-    {
-        $worker = new Worker();
-        $private_worker = new Worker();
-        $this->config['auth_channel'] = $this->auth_channel;
-
-        // GlobalData Server
-        new Server($this->config['websocket']['ip'] ?? '127.0.0.1', $this->config['websocket']['port'] ?? 2207);
-
-        $worker->onWorkerStart = function () use ($params, $handle) {
-            $this->client = new Client(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
-            $ws_connection = $handle->getConnection($this->config, $params);
-            $ws_connection->onConnect = function ($connection) use ($params, $handle) {
-                $handle->onConnect($connection, $this->client, $params);
-            };
-            $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
-                $handle->onMessage($connection, $this->client, $params, $data);
-            };
-            $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
-                $handle->onError($connection, $this->client, $code, $msg);
-            };
-            $ws_connection->onClose = function ($connection) use ($handle) {
-                $handle->onClose($connection, $this->client);
-            };
-            $ws_connection->connect();
-
-            // heartbeat
-            $this->ping($ws_connection);
-
-            // timer action
-            $this->connectPublic($ws_connection);
-        };
-
-        $params['private'] = 1;
-        $private_worker->onWorkerStart = function () use ($params, $handle) {
-            $client = new Client(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
-            $ws_connection = $handle->getConnection($this->config, $params);
-            $ws_connection->onConnect = function ($connection) use ($params, $handle, $client) {
-                $handle->onConnect($connection, $client, $params);
-            };
-            $ws_connection->onMessage = function ($connection, $data) use ($params, $handle, $client) {
-                $handle->onMessage($connection, $client, $params, $data);
-            };
-            $ws_connection->onError = function ($connection, $code, $msg) use ($handle, $client) {
-                $handle->onError($connection, $client, $code, $msg);
-            };
-            $ws_connection->onClose = function ($connection) use ($handle, $client) {
-                $handle->onClose($connection, $client);
-            };
-            $ws_connection->connect();
-
-            // heartbeat
-            $this->ping($ws_connection);
-
-            // timer action
-            $this->connectPrivate($ws_connection);
-        };
-
-        Worker::runAll();
-    }
-
-    public function getClientType()
+    public function getClientType(): string
     {
         return $this->client_type;
     }

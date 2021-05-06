@@ -1,9 +1,9 @@
 <?php
 
-namespace EasyExchange\Huobi\Websocket;
+namespace EasyExchange\Huobi\Socket;
 
-use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Kernel\Socket\BaseClient;
+use EasyExchange\Kernel\Socket\Handle;
 
 class Client extends BaseClient
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Kernel\Websocket;
+namespace EasyExchange\Kernel\Socket;
 
 use EasyExchange\Kernel\ServiceContainer;
 use EasyExchange\Kernel\Support\Arr;

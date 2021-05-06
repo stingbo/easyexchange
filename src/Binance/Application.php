@@ -21,6 +21,6 @@ class Application extends ServiceContainer
         Spot\ServiceProvider::class,
         User\ServiceProvider::class,
         Wallet\ServiceProvider::class,
-        Websocket\ServiceProvider::class,
+        Socket\ServiceProvider::class,
     ];
 }

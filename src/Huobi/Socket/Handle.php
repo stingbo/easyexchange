@@ -1,10 +1,10 @@
 <?php
 
-namespace EasyExchange\Coinbase\Websocket;
+namespace EasyExchange\Huobi\Socket;
 
 use Workerman\Connection\AsyncTcpConnection;
 
-class Handle implements \EasyExchange\Kernel\Websocket\Handle
+class Handle implements \EasyExchange\Kernel\Socket\Handle
 {
     private $config;
 
@@ -14,9 +14,9 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
 
         $auth = $params['auth'] ?? false;
         if ($auth) {
-            $ws_base_uri = $config['ws_base_uri'];
+            $ws_base_uri = $config['ws_base_uri'].'/ws';
         } else {
-            $ws_base_uri = $config['ws_base_uri'];
+            $ws_base_uri = $config['ws_base_uri'].'/ws';
         }
 
         $connection = new AsyncTcpConnection($ws_base_uri);
@@ -32,7 +32,12 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
 
     public function onMessage($connection, $client, $params, $data)
     {
-        echo $data.PHP_EOL;
+        $json_data = gzdecode($data);
+        echo $json_data.PHP_EOL;
+        $data = json_decode($json_data, true);
+        if (isset($data['ping'])) {
+            $connection->send(json_encode(['pong' => $data['ping']]));
+        }
     }
 
     public function onError($connection, $client, $code, $message)

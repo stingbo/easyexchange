@@ -2,8 +2,8 @@
 
 namespace EasyExchange\Gate\Websocket;
 
-use EasyExchange\Kernel\Websocket\BaseClient;
-use EasyExchange\Kernel\Websocket\Handle;
+use EasyExchange\Kernel\Socket\BaseClient;
+use EasyExchange\Kernel\Socket\Handle;
 
 class Client extends BaseClient
 {

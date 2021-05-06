@@ -39,7 +39,7 @@
 <?php
 
 use EasyExchange\Factory;
-use EasyExchange\Binance\Websocket\Handle;
+use EasyExchange\Binance\Socket\Handle;
 use Workerman\Connection\AsyncTcpConnection;
 
 class BinanceHandle extends Handle

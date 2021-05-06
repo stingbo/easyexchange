@@ -1,10 +1,10 @@
 <?php
 
-namespace EasyExchange\Huobi\Websocket;
+namespace EasyExchange\Binance\Socket;
 
 use Workerman\Connection\AsyncTcpConnection;
 
-class Handle implements \EasyExchange\Kernel\Websocket\Handle
+class Handle implements \EasyExchange\Kernel\Socket\Handle
 {
     private $config;
 
@@ -32,12 +32,7 @@ class Handle implements \EasyExchange\Kernel\Websocket\Handle
 
     public function onMessage($connection, $client, $params, $data)
     {
-        $json_data = gzdecode($data);
-        echo $json_data.PHP_EOL;
-        $data = json_decode($json_data, true);
-        if (isset($data['ping'])) {
-            $connection->send(json_encode(['pong' => $data['ping']]));
-        }
+        echo $data.PHP_EOL;
     }
 
     public function onError($connection, $client, $code, $message)
