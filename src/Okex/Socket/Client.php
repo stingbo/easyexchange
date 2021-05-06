@@ -3,9 +3,9 @@
 namespace EasyExchange\Okex\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
-use EasyExchange\Kernel\Support\Arr;
 use EasyExchange\Kernel\Socket\BaseClient;
 use EasyExchange\Kernel\Socket\Handle;
+use EasyExchange\Kernel\Support\Arr;
 use GlobalData\Client as GlobalClient;
 use GlobalData\Server;
 use Workerman\Timer;
@@ -20,6 +20,14 @@ class Client extends BaseClient
         'orders', 'orders-algo', 'order', 'batch-orders', // order & algo order
         'cancel-order', 'batch-cancel-orders', 'amend-order', 'batch-amend-orders', // trade
     ];
+
+    /**
+     * Get web socket client type.
+     */
+    public function getClientType(): string
+    {
+        return $this->client_type;
+    }
 
     /**
      * Override the parent method.
@@ -88,11 +96,6 @@ class Client extends BaseClient
         Worker::runAll();
     }
 
-    public function getClientType(): string
-    {
-        return $this->client_type;
-    }
-
     /**
      * Subscribe to a stream.
      *
@@ -116,10 +119,10 @@ class Client extends BaseClient
         }
 
         if ($public) {
-            $this->updateOrCreate('okex_sub', ['op' => 'subscribe', 'args' => $public]);
+            $this->updateOrCreate($this->client_type.'_sub', ['op' => 'subscribe', 'args' => $public]);
         }
         if ($private) {
-            $this->updateOrCreate('okex_sub_private', ['op' => 'subscribe', 'args' => $private]);
+            $this->updateOrCreate($this->client_type.'_sub_private', ['op' => 'subscribe', 'args' => $private]);
         }
     }
 
@@ -146,10 +149,10 @@ class Client extends BaseClient
             }
         }
         if ($public) {
-            $this->updateOrCreate('okex_unsub', ['op' => 'unsubscribe', 'args' => $public]);
+            $this->updateOrCreate($this->client_type.'_unsub', ['op' => 'unsubscribe', 'args' => $public]);
         }
         if ($private) {
-            $this->updateOrCreate('okex_unsub_private', ['op' => 'unsubscribe', 'args' => $private]);
+            $this->updateOrCreate($this->client_type.'_unsub_private', ['op' => 'unsubscribe', 'args' => $private]);
         }
     }
 
@@ -160,7 +163,7 @@ class Client extends BaseClient
      */
     public function getSubChannel()
     {
-        return $this->get('okex_sub_old');
+        return $this->get($this->client_type.'_sub_old');
     }
 
     /**
@@ -175,7 +178,7 @@ class Client extends BaseClient
     public function getChannelData($channels = [], $callback = null, $daemon = false)
     {
         if (!$channels) {
-            $subs = $this->get('okex_sub_old');
+            $subs = $this->get($this->client_type.'_sub_old');
             if ($subs) {
                 $channels = array_unique(array_column($subs['args'] ?? [], 'channel'));
             }
@@ -217,7 +220,7 @@ class Client extends BaseClient
     {
         $data = [];
         foreach ($channels as $channel) {
-            $key = 'okex_list_'.$channel;
+            $key = $this->client_type.'_list_'.$channel;
             $data[$channel] = $this->get($key);
 
             if (null !== $callback) {
@@ -281,7 +284,7 @@ class Client extends BaseClient
      */
     public function subPublic($connection)
     {
-        $subs = $this->get('okex_sub');
+        $subs = $this->get($this->client_type.'_sub');
         print_r($subs);
         if (!$subs) {
             return true;
@@ -291,7 +294,7 @@ class Client extends BaseClient
             }
 
             // check if this channel is subscribed
-            $old_subs = $this->get('okex_sub_old');
+            $old_subs = $this->get($this->client_type.'_sub_old');
             if (isset($old_subs['args'])) {
                 foreach ($subs['args'] as $key => $channel) {
                     foreach ($old_subs['args'] as $subed_channel) {
@@ -301,14 +304,14 @@ class Client extends BaseClient
                     }
                 }
                 if (!$subs['args']) {
-                    $this->delete('okex_sub');
+                    $this->delete($this->client_type.'_sub');
 
                     return true;
                 }
             }
 
             $connection->send(json_encode($subs));
-            $this->delete('okex_sub');
+            $this->delete($this->client_type.'_sub');
         }
 
         return true;
@@ -323,26 +326,26 @@ class Client extends BaseClient
      */
     public function unSubPublic($connection)
     {
-        $unsubs = $this->get('okex_unsub');
+        $unsubs = $this->get($this->client_type.'_unsub');
         if (!$unsubs) {
             return true;
         } else {
-            $old_subs = $this->get('okex_sub_old');
+            $old_subs = $this->get($this->client_type.'_sub_old');
             if (!$old_subs) {
                 return true;
             }
 
             $connection->send(json_encode($unsubs));
-            $this->delete('okex_unsub');
+            $this->delete($this->client_type.'_unsub');
 
             if (isset($old_subs['args']) && $unsubs['args']) {
                 $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
 
                 // update sub channel data
                 if ($old_subs['args']) {
-                    $this->updateOrCreate('okex_sub_old', $old_subs);
+                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
                 } else {
-                    $this->updateOrCreate('okex_sub_old', []);
+                    $this->updateOrCreate($this->client_type.'_sub_old', []);
                 }
             }
         }
@@ -359,7 +362,7 @@ class Client extends BaseClient
      */
     public function subPrivate($connection)
     {
-        $subs = $this->get('okex_sub_private');
+        $subs = $this->get($this->client_type.'_sub_private');
         print_r($subs);
         if (!$subs) {
             return true;
@@ -369,7 +372,7 @@ class Client extends BaseClient
             }
 
             // check if this channel is subscribed
-            $old_subs = $this->get('okex_sub_old');
+            $old_subs = $this->get($this->client_type.'_sub_old');
             if (isset($old_subs['args'])) {
                 foreach ($subs['args'] as $key => $channel) {
                     foreach ($old_subs['args'] as $subed_channel) {
@@ -379,7 +382,7 @@ class Client extends BaseClient
                     }
                 }
                 if (!$subs['args']) {
-                    $this->delete('okex_sub_private');
+                    $this->delete($this->client_type.'_sub_private');
 
                     return true;
                 }
@@ -393,7 +396,7 @@ class Client extends BaseClient
             }
 
             $connection->send(json_encode($subs));
-            $this->delete('okex_sub_private');
+            $this->delete($this->client_type.'_sub_private');
         }
 
         return true;
@@ -408,26 +411,26 @@ class Client extends BaseClient
      */
     public function unSubPrivate($connection)
     {
-        $unsubs = $this->get('okex_unsub_private');
+        $unsubs = $this->get($this->client_type.'_unsub_private');
         if (!$unsubs) {
             return true;
         } else {
-            $old_subs = $this->get('okex_sub_old');
+            $old_subs = $this->get($this->client_type.'_sub_old');
             if (!$old_subs) {
                 return true;
             }
 
             $connection->send(json_encode($unsubs));
-            $this->delete('okex_unsub_private');
+            $this->delete($this->client_type.'_unsub_private');
 
             if (isset($old_subs['args']) && $unsubs['args']) {
                 $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
 
                 // update sub channel data
                 if ($old_subs['args']) {
-                    $this->updateOrCreate('okex_sub_old', $old_subs);
+                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
                 } else {
-                    $this->updateOrCreate('okex_sub_old', []);
+                    $this->updateOrCreate($this->client_type.'_sub_old', []);
                 }
             }
         }
@@ -442,7 +445,7 @@ class Client extends BaseClient
      */
     public function isAuth()
     {
-        return $this->get('okex_is_auth');
+        return $this->get($this->client_type.'_is_auth');
     }
 
     /**
