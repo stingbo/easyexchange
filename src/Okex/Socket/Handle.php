@@ -13,13 +13,13 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
         $this->config = $config;
 
         if (isset($params['private']) && $params['private']) {
-            $ws_base_uri = $config['websocket']['base_uri'].'/ws/v5/private';
+            $base_uri = $config['websocket']['base_uri'].'/ws/v5/private';
         } else {
-            $ws_base_uri = $config['websocket']['base_uri'].'/ws/v5/public';
+            $base_uri = $config['websocket']['base_uri'].'/ws/v5/public';
         }
-        echo $ws_base_uri.PHP_EOL;
+        echo $base_uri.PHP_EOL;
 
-        $connection = new AsyncTcpConnection($ws_base_uri);
+        $connection = new AsyncTcpConnection($base_uri);
         $connection->transport = 'ssl';
 
         return $connection;
