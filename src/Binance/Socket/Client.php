@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Okex\Socket;
+namespace EasyExchange\Binance\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
@@ -26,25 +26,10 @@ class Client extends BaseClient
      */
     public function subscribe($params)
     {
-        if ('subscribe' != $params['op']) {
-            throw new InvalidArgumentException('Invalid argument about op type');
+        if ('SUBSCRIBE' != $params['method']) {
+            throw new InvalidArgumentException('Invalid argument about method type');
         }
-        $public = [];
-        $private = [];
-        foreach ($params['args'] as $arg) {
-            if (in_array($arg['channel'], $this->auth_channel)) {
-                $private[] = $arg;
-            } else {
-                $public[] = $arg;
-            }
-        }
-
-        if ($public) {
-            $this->updateOrCreate('okex_sub', ['op' => 'subscribe', 'args' => $public]);
-        }
-        if ($private) {
-            $this->updateOrCreate('okex_sub_private', ['op' => 'subscribe', 'args' => $private]);
-        }
+        $this->updateOrCreate($this->client_type.'_sub', $params);
     }
 
     /**
@@ -56,25 +41,11 @@ class Client extends BaseClient
      */
     public function unsubscribe($params)
     {
-        if ('unsubscribe' != $params['op']) {
-            throw new InvalidArgumentException('Invalid argument about op type');
+        if ('UNSUBSCRIBE' != $params['method']) {
+            throw new InvalidArgumentException('Invalid argument about method type');
         }
 
-        $public = [];
-        $private = [];
-        foreach ($params['args'] as $arg) {
-            if (in_array($arg['channel'], $this->auth_channel)) {
-                $private[] = $arg;
-            } else {
-                $public[] = $arg;
-            }
-        }
-        if ($public) {
-            $this->updateOrCreate('okex_unsub', ['op' => 'unsubscribe', 'args' => $public]);
-        }
-        if ($private) {
-            $this->updateOrCreate('okex_unsub_private', ['op' => 'unsubscribe', 'args' => $private]);
-        }
+        $this->updateOrCreate($this->client_type.'_unsub', $params);
     }
 
     /**
@@ -84,7 +55,7 @@ class Client extends BaseClient
      */
     public function getSubChannel()
     {
-        return $this->get('okex_sub_old');
+        return $this->get($this->client_type.'_sub_old');
     }
 
     /**
@@ -99,7 +70,7 @@ class Client extends BaseClient
     public function getChannelData($channels = [], $callback = null, $daemon = false)
     {
         if (!$channels) {
-            $subs = $this->get('okex_sub_old');
+            $subs = $this->get($this->client_type.'_sub_old');
             if ($subs) {
                 $channels = array_unique(array_column($subs['args'] ?? [], 'channel'));
             }
@@ -141,7 +112,7 @@ class Client extends BaseClient
     {
         $data = [];
         foreach ($channels as $channel) {
-            $key = 'okex_list_'.$channel;
+            $key = $this->client_type.'_list_'.$channel;
             $data[$channel] = $this->get($key);
 
             if (null !== $callback) {
@@ -161,7 +132,7 @@ class Client extends BaseClient
     {
         $interval = $this->config['websocket']['heartbeat_time'] ?? 20;
         Timer::add($interval, function () use ($connection) {
-            $connection->send('ping');
+            $connection->send('pong');
         });
     }
 
@@ -170,7 +141,7 @@ class Client extends BaseClient
      *
      * @param $connection
      */
-    public function connectPublic($connection)
+    public function connect($connection)
     {
         $interval = $this->config['websocket']['timer_time'] ?? 3;
         $connection->timer_id = Timer::add($interval, function () use ($connection) {
@@ -183,19 +154,6 @@ class Client extends BaseClient
         });
     }
 
-    public function connectPrivate($connection)
-    {
-        $interval = $this->config['websocket']['timer_time'] ?? 3;
-        $connection->timer_id = Timer::add($interval, function () use ($connection) {
-            echo 'private:-------------------'.PHP_EOL;
-            // subscribe
-            $this->subPrivate($connection);
-
-            // unsubscribe
-            $this->unSubPrivate($connection);
-        });
-    }
-
     /**
      * subscribe.
      *
@@ -205,7 +163,7 @@ class Client extends BaseClient
      */
     public function subPublic($connection)
     {
-        $subs = $this->get('okex_sub');
+        $subs = $this->get($this->client_type.'_sub');
         print_r($subs);
         if (!$subs) {
             return true;
@@ -215,7 +173,7 @@ class Client extends BaseClient
             }
 
             // check if this channel is subscribed
-            $old_subs = $this->get('okex_sub_old');
+            $old_subs = $this->get($this->client_type.'_sub_old');
             if (isset($old_subs['args'])) {
                 foreach ($subs['args'] as $key => $channel) {
                     foreach ($old_subs['args'] as $subed_channel) {
@@ -225,14 +183,14 @@ class Client extends BaseClient
                     }
                 }
                 if (!$subs['args']) {
-                    $this->delete('okex_sub');
+                    $this->delete($this->client_type.'_sub');
 
                     return true;
                 }
             }
 
             $connection->send(json_encode($subs));
-            $this->delete('okex_sub');
+            $this->delete($this->client_type.'_sub');
         }
 
         return true;
@@ -247,165 +205,30 @@ class Client extends BaseClient
      */
     public function unSubPublic($connection)
     {
-        $unsubs = $this->get('okex_unsub');
+        $unsubs = $this->get($this->client_type.'_unsub');
         if (!$unsubs) {
             return true;
         } else {
-            $old_subs = $this->get('okex_sub_old');
+            $old_subs = $this->get($this->client_type.'_sub_old');
             if (!$old_subs) {
                 return true;
             }
 
             $connection->send(json_encode($unsubs));
-            $this->delete('okex_unsub');
+            $this->delete($this->client_type.'_unsub');
 
             if (isset($old_subs['args']) && $unsubs['args']) {
                 $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
 
                 // update sub channel data
                 if ($old_subs['args']) {
-                    $this->updateOrCreate('okex_sub_old', $old_subs);
+                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
                 } else {
-                    $this->updateOrCreate('okex_sub_old', []);
+                    $this->updateOrCreate($this->client_type.'_sub_old', []);
                 }
             }
         }
 
         return true;
-    }
-
-    /**
-     * subscribe.
-     *
-     * @param $connection
-     *
-     * @return bool
-     */
-    public function subPrivate($connection)
-    {
-        $subs = $this->get('okex_sub_private');
-        print_r($subs);
-        if (!$subs) {
-            return true;
-        } else {
-            if (!isset($subs['args']) || !$subs['args']) {
-                return true;
-            }
-
-            // check if this channel is subscribed
-            $old_subs = $this->get('okex_sub_old');
-            if (isset($old_subs['args'])) {
-                foreach ($subs['args'] as $key => $channel) {
-                    foreach ($old_subs['args'] as $subed_channel) {
-                        if ($channel == $subed_channel) {
-                            unset($subs['args'][$key]);
-                        }
-                    }
-                }
-                if (!$subs['args']) {
-                    $this->delete('okex_sub_private');
-
-                    return true;
-                }
-            }
-
-            // need login
-            if (array_intersect(array_column($subs['args'], 'channel'), $this->auth_channel) && !$this->isAuth()) {
-                $this->auth($connection);
-
-                return true;
-            }
-
-            $connection->send(json_encode($subs));
-            $this->delete('okex_sub_private');
-        }
-
-        return true;
-    }
-
-    /**
-     * cancel subscribe.
-     *
-     * @param $connection
-     *
-     * @return bool
-     */
-    public function unSubPrivate($connection)
-    {
-        $unsubs = $this->get('okex_unsub_private');
-        if (!$unsubs) {
-            return true;
-        } else {
-            $old_subs = $this->get('okex_sub_old');
-            if (!$old_subs) {
-                return true;
-            }
-
-            $connection->send(json_encode($unsubs));
-            $this->delete('okex_unsub_private');
-
-            if (isset($old_subs['args']) && $unsubs['args']) {
-                $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
-
-                // update sub channel data
-                if ($old_subs['args']) {
-                    $this->updateOrCreate('okex_sub_old', $old_subs);
-                } else {
-                    $this->updateOrCreate('okex_sub_old', []);
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Has it been verified.
-     *
-     * @return array|mixed
-     */
-    public function isAuth()
-    {
-        return $this->get('okex_is_auth');
-    }
-
-    /**
-     * login.
-     *
-     * @param $connection
-     */
-    public function auth($connection)
-    {
-        $timestamp = time();
-        $sign = $this->getSignature($timestamp);
-        $params = [
-            'op' => 'login',
-            'args' => [
-                [
-                    'apiKey' => $this->config['app_key'],
-                    'passphrase' => $this->config['passphrase'],
-                    'timestamp' => $timestamp,
-                    'sign' => $sign,
-                ],
-            ],
-        ];
-        $connection->send(json_encode($params));
-    }
-
-    /**
-     * get sign.
-     *
-     * @param $timestamp
-     * @param string $method
-     * @param string $uri_path
-     *
-     * @return string
-     */
-    public function getSignature($timestamp, $method = 'GET', $uri_path = '/users/self/verify')
-    {
-        $message = (string) $timestamp.$method.$uri_path;
-        $secret = $this->config['secret'];
-
-        return base64_encode(hash_hmac('sha256', $message, $secret, true));
     }
 }
