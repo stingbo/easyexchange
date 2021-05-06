@@ -1,6 +1,6 @@
 <?php
 
-namespace EasyExchange\Gate\Websocket;
+namespace EasyExchange\Gate\Socket;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
