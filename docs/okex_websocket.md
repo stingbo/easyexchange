@@ -6,36 +6,15 @@ See [binance websocket documentation](binance_websocket.md) for details
 
 ### Usage
 
-1. Example
+1. Start the local service, server.php example:
 
 ```php
 <?php
 
 use EasyExchange\Factory;
-use Workerman\Timer;
+use EasyExchange\Okex\Websocket\Handle;
 
-class OkexHandle extends \EasyExchange\Okex\Websocket\Handle
-{
-    public function onMessage($connection, $params, $data)
-    {
-        // Execute the built-in login method
-        parent::onMessage($connection, $params, $data);
-
-        // your logic ....
-        echo $data.PHP_EOL;
-        $time_interval = 20;
-        if ('pong' != $data) {
-            $connection->timer_id = Timer::add($time_interval, function () use ($connection) {
-                $connection->send('ping');
-            });
-        } else {
-            // delete timer
-            Timer::del($connection->timer_id);
-        }
-    }
-}
-
-class Test
+class Server
 {
     public function ws()
     {
@@ -43,48 +22,144 @@ class Test
             'okex' => [
                 'response_type' => 'array',
                 'base_uri' => 'https://www.okex.com',
-                'ws_base_uri' => 'ws://ws.okex.com:8443',
                 'app_key' => 'your app key',
                 'secret' => 'your secret',
                 'passphrase' => 'your passphrase',
                 'x-simulated-trading' => 1,
+                'websocket' => [
+                    'base_uri' => 'ws://ws.okex.com:8443',
+                    'listen_ip' => '127.0.0.1', // listen ip
+                    'listen_port' => 2207, // listen port
+                    'heartbeat_time' => 20, // Heartbeat detection time, seconds
+                    'timer_time' => 3, // Scheduled task time，seconds
+                    'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
+                    'data_time' => 1, // Time interval for getting data，seconds
+                ],
+            ],
+        ];
+        $app = Factory::okex($config['okex']);
+        $app->websocket->server([], new Handle());
+    }
+}
+
+$tc = new Server();
+$tc->ws();
+```
+
+2. Start script:`php server.php start`
+
+3. Local client use example
+```php
+<?php
+
+use EasyExchange\Factory;
+
+class Test
+{
+    public function t()
+    {
+        $config = [
+            'okex' => [
+                'response_type' => 'array',
+                'base_uri' => 'https://www.okex.com',
+                'app_key' => 'your app key',
+                'secret' => 'your secret',
+                'passphrase' => 'your passphrase',
+                'x-simulated-trading' => 1,
+                'websocket' => [
+                    'base_uri' => 'ws://ws.okex.com:8443',
+                    'listen_ip' => '127.0.0.1', // listen ip
+                    'listen_port' => 2207, // listen port
+                    'heartbeat_time' => 20, // Heartbeat detection time, seconds
+                    'timer_time' => 3, // Scheduled task time，seconds
+                    'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
+                    'data_time' => 1, // Time interval for getting data，seconds
+                ],
             ],
         ];
         $app = Factory::okex($config['okex']);
         $params = [
             'op' => 'subscribe',
             'args' => [
+                [
+                    'channel' => 'tickers',
+//                    'instId' => 'BTC-USDT', // Required
+                    'instId' => 'LTC-USDT', // Required
+                ],
+                [
+                    'channel' => 'tickers',
+                    'instId' => 'ETH-USDT', // Required
+                ],
 //                [
 //                    'channel' => 'instruments',
-//                    'instType' => 'FUTURES', // Required
 //                    'instType' => 'SPOT', // Required
 //                ],
                 [
-                    'channel' => 'tickers',
-                    'instId' => 'BTT-BTC', // Required
+                    'channel' => 'account',
+                    'ccy' => 'LTC', // Required
+//                    'ccy' => 'BTC', // Required
                 ],
-            ],
-        ];
-        $params = [
-            'auth' => true, // private channel
-            'op' => 'subscribe',
-            'args' => [
                 [
                     'channel' => 'account',
-                    'ccy' => 'BTC',
-                ],
-                [
-                    'channel' => 'positions',
-                    'instType' => 'ANY',
+                    'ccy' => 'USDT', // Required
                 ],
             ],
         ];
-        $app->websocket->subscribe($params, new OkexHandle());
+
+        // subscribe
+        $app->websocket->subscribe($params);
+
+        $params = [
+            'op' => 'unsubscribe',
+            'args' => [
+                [
+                    'channel' => 'tickers',
+//                    'instId' => 'BTC-USDT', // Required
+                    'instId' => 'LTC-USDT', // Required
+                ],
+                [
+                    'channel' => 'tickers',
+                    'instId' => 'ETH-USDT', // Required
+                ],
+//                [
+//                    'channel' => 'instruments',
+//                    'instType' => 'SPOT', // Required
+//                ],
+                [
+                    'channel' => 'account',
+                    'ccy' => 'LTC', // Required
+//                    'ccy' => 'BTC', // Required
+                ],
+                [
+                    'channel' => 'account',
+                    'ccy' => 'USDT', // Required
+                ],
+            ],
+        ];
+        // unsubscribe
+        $app->websocket->unsubscribe($params);
+
+        // Get subscribed channels
+        $channels = $app->websocket->getSubChannel();
+        print_r($channels);
+
+        // 1. Obtain data according to the channel, if the channel is not transmitted, the data of all subscribed channels is obtained by default
+        $channels = ['account', 'tickers'];
+        $data = $app->websocket->getChannelData($channels);
+        print_r($data);
+
+        // 2. Use functions to process data
+        $app->websocket->getChannelData($channels, function ($data) {
+            print_r($data);
+        });
+
+        // 3. Use daemons and functions to process data
+        $app->websocket->getChannelData($channels, function ($data) {
+            print_r($data);
+        }, true);
     }
 }
 
 $tc = new Test();
-$tc->ws();
+$tc->t();
 ```
-
-2. Start script monitoring:`php test.php start`
