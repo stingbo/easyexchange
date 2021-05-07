@@ -72,7 +72,7 @@ class Client extends BaseClient
         if (!$channels) {
             $subs = $this->get($this->client_type.'_sub_old');
             if ($subs) {
-                $channels = array_unique(array_column($subs['args'] ?? [], 'channel'));
+                $channels = array_unique(array_column($subs['params'] ?? [], 'channel'));
             }
         }
 
@@ -168,21 +168,21 @@ class Client extends BaseClient
         if (!$subs) {
             return true;
         } else {
-            if (!isset($subs['args']) || !$subs['args']) {
+            if (!isset($subs['params']) || !$subs['params']) {
                 return true;
             }
 
             // check if this channel is subscribed
             $old_subs = $this->get($this->client_type.'_sub_old');
-            if (isset($old_subs['args'])) {
-                foreach ($subs['args'] as $key => $channel) {
-                    foreach ($old_subs['args'] as $subed_channel) {
+            if (isset($old_subs['params'])) {
+                foreach ($subs['params'] as $key => $channel) {
+                    foreach ($old_subs['params'] as $subed_channel) {
                         if ($channel == $subed_channel) {
-                            unset($subs['args'][$key]);
+                            unset($subs['params'][$key]);
                         }
                     }
                 }
-                if (!$subs['args']) {
+                if (!$subs['params']) {
                     $this->delete($this->client_type.'_sub');
 
                     return true;
@@ -217,11 +217,11 @@ class Client extends BaseClient
             $connection->send(json_encode($unsubs));
             $this->delete($this->client_type.'_unsub');
 
-            if (isset($old_subs['args']) && $unsubs['args']) {
-                $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
+            if (isset($old_subs['params']) && $unsubs['params']) {
+                $old_subs['params'] = Arr::diff($old_subs['params'], $unsubs['params']);
 
                 // update sub channel data
-                if ($old_subs['args']) {
+                if ($old_subs['params']) {
                     $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
                 } else {
                     $this->updateOrCreate($this->client_type.'_sub_old', []);
