@@ -4,7 +4,6 @@ namespace EasyExchange\Gate\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
-use EasyExchange\Kernel\Support\Arr;
 use Workerman\Timer;
 use Workerman\Worker;
 
@@ -72,7 +71,7 @@ class Client extends BaseClient
         if (!$channels) {
             $subs = $this->get($this->client_type.'_sub_old');
             if ($subs) {
-                $channels = array_unique(array_column($subs['params'] ?? [], 'channel'));
+                $channels = array_unique(array_column($subs, 'channel'));
             }
         }
 
@@ -157,6 +156,8 @@ class Client extends BaseClient
      * @param $connection
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function subPublic($connection)
     {
@@ -169,17 +170,38 @@ class Client extends BaseClient
                 return true;
             }
 
-            // check if this channel is subscribed
+            // check if this channel and payload is subscribed
             $old_subs = $this->get($this->client_type.'_sub_old');
-            $channels = array_column($old_subs, 'channel');
-            if (in_array($subs['channel'], $channels)) {
-                $this->delete($this->client_type.'_sub');
+            if ($old_subs && ($payloads = array_column($old_subs, 'payload', 'channel'))) {
+                foreach ($payloads as $channel => $payload) {
+                    if ($subs['channel'] == $channel && !($sub_payload = (array_diff($subs['payload'], $payload)))) {
+                        $this->delete($this->client_type.'_sub');
 
-                return true;
+                        return true;
+                    }
+                }
             }
 
             $connection->send(json_encode($subs));
             $this->delete($this->client_type.'_sub');
+
+            if (!$old_subs) {
+                $old_subs[] = $subs;
+            } else {
+                $is_channel_sub = false;
+                foreach ($old_subs as &$old_sub) {
+                    if ($subs['channel'] == $old_sub['channel']) {
+                        $is_channel_sub = true;
+                        $old_sub['payload'] = array_values(array_unique(array_merge($old_sub['payload'], $subs['payload'])));
+                    }
+                }
+                unset($old_sub);
+                if (!$is_channel_sub) {
+                    $old_subs[] = $subs;
+                }
+            }
+            print_r($old_subs);
+            $this->update($this->client_type.'_sub_old', $old_subs);
         }
 
         return true;
@@ -206,12 +228,20 @@ class Client extends BaseClient
             $connection->send(json_encode($unsubs));
             $this->delete($this->client_type.'_unsub');
 
-            $old_subs = Arr::diff($old_subs, $unsubs);
-            if ($old_subs) {
-                $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
-            } else {
-                $this->updateOrCreate($this->client_type.'_sub_old', []);
+            foreach ($old_subs as &$old_sub) {
+                if ($unsubs['channel'] == $old_sub['channel']) {
+                    $payload = array_diff($old_sub['payload'], $unsubs['payload']);
+                    if ($payload) {
+                        $old_sub['payload'] = $payload;
+                        break;
+                    } else {
+                        unset($old_sub);
+                        break;
+                    }
+                }
             }
+            unset($old_sub);
+            $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
         }
 
         return true;
