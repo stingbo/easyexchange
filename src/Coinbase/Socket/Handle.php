@@ -12,14 +12,10 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
     {
         $this->config = $config;
 
-        $auth = $params['auth'] ?? false;
-        if ($auth) {
-            $ws_base_uri = $config['ws_base_uri'];
-        } else {
-            $ws_base_uri = $config['ws_base_uri'];
-        }
+        $base_uri = $config['websocket']['base_uri'];
+        echo $base_uri.PHP_EOL;
 
-        $connection = new AsyncTcpConnection($ws_base_uri);
+        $connection = new AsyncTcpConnection($base_uri);
         $connection->transport = 'ssl';
 
         return $connection;
@@ -42,6 +38,10 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
 
     public function onClose($connection, $client)
     {
-        echo "connection closed\n";
+        echo "connection closed，now reconnect\n";
+        $connection->reConnect(1);
+
+        $client->coinbase_sub = $client->coinbase_sub_old;
+        $client->coinbase_sub_old = [];
     }
 }
