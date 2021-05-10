@@ -174,14 +174,17 @@ class Client extends BaseClient
 
             // check if this channel is subscribed
             $old_subs = $this->get($this->client_type.'_sub_old');
-            if (isset($old_subs['params'])) {
-                foreach ($subs['params'] as $key => $channel) {
-                    foreach ($old_subs['params'] as $subed_channel) {
-                        if ($channel == $subed_channel) {
-                            unset($subs['params'][$key]);
-                        }
+            $old_sub_channels = [];
+            foreach ($old_subs as $old_sub) {
+                $old_sub_channels = array_values(array_unique(array_merge($old_sub_channels, $old_sub['params'])));
+            }
+            if ($old_sub_channels) {
+                foreach ($subs['params'] as &$channel) {
+                    if (in_array($channel, $old_sub_channels)) {
+                        unset($channel);
                     }
                 }
+                unset($channel);
                 if (!$subs['params']) {
                     $this->delete($this->client_type.'_sub');
 
@@ -191,6 +194,8 @@ class Client extends BaseClient
 
             $connection->send(json_encode($subs));
             $this->delete($this->client_type.'_sub');
+
+            $this->updateOrCreate($this->client_type.'_id_'.$subs['id'], $subs);
         }
 
         return true;

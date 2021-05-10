@@ -31,6 +31,19 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
     {
         echo 'msg:--------------------------------'.PHP_EOL;
         echo $data.PHP_EOL;
+        $result = json_decode($data, true) ?? [];
+
+        // save subscribe data
+        if (isset($result['id']) && null == $result['result']) {
+            $key = 'binance_id_'.$result['id'];
+            $sub = $client->{$key};
+            do {
+                $new_subs = $old_subs = $client->binance_sub_old;
+                $new_subs[] = $sub;
+            } while (!$client->cas('binance_sub_old', $old_subs, $new_subs));
+        }
+
+        // save data,#TODO:
 
         return true;
     }

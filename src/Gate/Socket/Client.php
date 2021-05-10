@@ -11,6 +11,16 @@ class Client extends BaseClient
 {
     public $client_type = 'gate';
 
+    /**
+     * This channel requires authentication.
+     *
+     * @var string[]
+     */
+    public $auth_channel = [
+        'spot.orders', 'spot.usertrades', 'spot.balances',
+        'spot.margin_balances', 'spot.funding_balances',
+    ];
+
     public function getClientType(): string
     {
         return $this->client_type;
@@ -143,10 +153,10 @@ class Client extends BaseClient
         $connection->timer_id = Timer::add($interval, function () use ($connection) {
             echo 'public:-------------------'.PHP_EOL;
             // subscribe
-            $this->subPublic($connection);
+            $this->sub($connection);
 
             // unsubscribe
-            $this->unSubPublic($connection);
+            $this->unSub($connection);
         });
     }
 
@@ -159,7 +169,7 @@ class Client extends BaseClient
      *
      * @throws \Exception
      */
-    public function subPublic($connection)
+    public function sub($connection)
     {
         $subs = $this->get($this->client_type.'_sub');
         print_r($subs);
@@ -180,6 +190,14 @@ class Client extends BaseClient
                         return true;
                     }
                 }
+            }
+
+            if (in_array($subs['channel'], $this->auth_channel)) {
+                $subs['auth'] = [
+                    'method' => 'api_key',
+                    'KEY' => $this->config['app_key'],
+                    'SIGN' => $this->getSignature($subs['channel'], $subs['event'], $subs['time']),
+                ];
             }
 
             $connection->send(json_encode($subs));
@@ -214,7 +232,7 @@ class Client extends BaseClient
      *
      * @return bool
      */
-    public function unSubPublic($connection)
+    public function unSub($connection)
     {
         $unsubs = $this->get($this->client_type.'_unsub');
         if (!$unsubs) {
@@ -226,24 +244,40 @@ class Client extends BaseClient
             }
 
             $connection->send(json_encode($unsubs));
-            $this->delete($this->client_type.'_unsub');
 
-            foreach ($old_subs as &$old_sub) {
+            foreach ($old_subs as $key => &$old_sub) {
                 if ($unsubs['channel'] == $old_sub['channel']) {
                     $payload = array_diff($old_sub['payload'], $unsubs['payload']);
                     if ($payload) {
                         $old_sub['payload'] = $payload;
                         break;
                     } else {
-                        unset($old_sub);
+                        unset($old_subs[$key]);
                         break;
                     }
                 }
             }
             unset($old_sub);
             $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
+
+            $this->delete($this->client_type.'_unsub');
         }
 
         return true;
+    }
+
+    /**
+     * get sign.
+     *
+     * @param string $channel   channel
+     * @param string $event     event
+     * @param int    $timestamp timestamp
+     */
+    public function getSignature(string $channel, string $event, int $timestamp): string
+    {
+        $message = sprintf('channel=%s&event=%s&time=%d', $channel, $event, $timestamp);
+        $secret = $this->config['secret'];
+
+        return hash_hmac('sha512', $message, $secret);
     }
 }
