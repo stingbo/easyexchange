@@ -144,7 +144,6 @@ class Client extends BaseClient
     {
         $interval = $this->config['websocket']['timer_time'] ?? 3;
         $connection->timer_id = Timer::add($interval, function () use ($connection) {
-            echo 'public:-------------------'.PHP_EOL;
             // subscribe
             $this->subPublic($connection);
 
@@ -163,7 +162,9 @@ class Client extends BaseClient
     public function subPublic($connection)
     {
         $subs = $this->get($this->client_type.'_sub');
-        print_r($subs);
+        if ($this->debug) {
+            print_r($subs);
+        }
         if (!$subs) {
             return true;
         } else {
