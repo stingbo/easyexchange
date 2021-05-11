@@ -4,7 +4,6 @@ namespace EasyExchange\Binance\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
-use EasyExchange\Kernel\Support\Arr;
 use Workerman\Timer;
 use Workerman\Worker;
 
@@ -179,12 +178,11 @@ class Client extends BaseClient
                 $old_sub_channels = array_values(array_unique(array_merge($old_sub_channels, $old_sub['params'])));
             }
             if ($old_sub_channels) {
-                foreach ($subs['params'] as &$channel) {
+                foreach ($subs['params'] as $key => $channel) {
                     if (in_array($channel, $old_sub_channels)) {
-                        unset($channel);
+                        unset($subs['params'][$key]);
                     }
                 }
-                unset($channel);
                 if (!$subs['params']) {
                     $this->delete($this->client_type.'_sub');
 
@@ -222,15 +220,17 @@ class Client extends BaseClient
             $connection->send(json_encode($unsubs));
             $this->delete($this->client_type.'_unsub');
 
-            if (isset($old_subs['params']) && $unsubs['params']) {
-                $old_subs['params'] = Arr::diff($old_subs['params'], $unsubs['params']);
-
-                // update sub channel data
-                if ($old_subs['params']) {
-                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
-                } else {
-                    $this->updateOrCreate($this->client_type.'_sub_old', []);
+            foreach ($old_subs as $key => &$old_sub) {
+                $old_sub['params'] = array_values(array_unique(array_diff($old_sub['params'], $unsubs['params'])));
+                if (!$old_sub['params']) {
+                    unset($old_subs[$key]);
                 }
+            }
+            unset($old_sub);
+            if ($old_subs) {
+                $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
+            } else {
+                $this->updateOrCreate($this->client_type.'_sub_old', []);
             }
         }
 
