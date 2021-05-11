@@ -43,7 +43,30 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
             } while (!$client->cas('binance_sub_old', $old_subs, $new_subs));
         }
 
-        // save data,#TODO:
+        // save data
+        if ($result && is_array($result) && isset($result['e'])) {
+            $channel = $result['e'] ?? '';
+            if (!$channel) {
+                return true;
+            }
+            $key = 'gate_list_'.$channel;
+            $old_list = $client->{$key} ?? [];
+            if (!$old_list) {
+                $client->add($key, [$data]);
+            } else {
+                $max_size = $this->config['websocket']['max_size'] ?? 100;
+                $max_size = ($max_size > 1000 || $max_size <= 0) ? 100 : $max_size;
+                do {
+                    $new_list = $old_list = $client->{$key};
+                    if (count($new_list) >= $max_size) {
+                        array_unshift($new_list, $data);
+                        array_pop($new_list);
+                    } else {
+                        array_unshift($new_list, $data);
+                    }
+                } while (!$client->cas($key, $old_list, $new_list));
+            }
+        }
 
         return true;
     }
