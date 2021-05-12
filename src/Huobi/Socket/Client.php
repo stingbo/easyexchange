@@ -4,7 +4,6 @@ namespace EasyExchange\Huobi\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
-use EasyExchange\Kernel\Support\Arr;
 use Workerman\Timer;
 use Workerman\Worker;
 
@@ -161,7 +160,8 @@ class Client extends BaseClient
         } else {
             // check if this channel is subscribed
             $old_subs = $this->get($this->client_type.'_sub_old');
-            if ($old_subs && in_array($subs, $old_subs)) {
+            $channels = array_column($old_subs, 'sub');
+            if ($channels && in_array($subs['sub'], $channels)) {
                 $this->delete($this->client_type.'_sub');
 
                 return true;
@@ -195,15 +195,17 @@ class Client extends BaseClient
             $connection->send(json_encode($unsubs));
             $this->delete($this->client_type.'_unsub');
 
-            if (isset($old_subs['args']) && $unsubs['args']) {
-                $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
-
-                // update sub channel data
-                if ($old_subs['args']) {
-                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
-                } else {
-                    $this->updateOrCreate($this->client_type.'_sub_old', []);
+            $old_subs = $this->get($this->client_type.'_sub_old');
+            foreach ($old_subs as $key => $old_sub) {
+                if ($old_sub['sub'] == $unsubs['unsub']) {
+                    unset($old_subs[$key]);
                 }
+            }
+            // update sub channel data
+            if ($old_subs) {
+                $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
+            } else {
+                $this->updateOrCreate($this->client_type.'_sub_old', []);
             }
         }
 
