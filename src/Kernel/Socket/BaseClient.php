@@ -14,7 +14,7 @@ class BaseClient
 
     public $config;
 
-    public $debug = fasle;
+    public $debug = false;
 
     /**
      * BaseClient constructor.
@@ -22,7 +22,7 @@ class BaseClient
     public function __construct(ServiceContainer $app)
     {
         $this->config = $app->getConfig();
-        $this->debug = $this->config['debug'] ?? false;
+        $this->debug = $this->config['websocket']['debug'] ?? false;
         $this->client = new Client($this->config['websocket']['listen_ip'].':'.$this->config['websocket']['listen_port']);
     }
 
