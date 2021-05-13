@@ -86,7 +86,11 @@ class Client extends BaseClient
      */
     public function subscribe($params)
     {
-        $this->updateOrCreate($this->client_type.'_sub', $params);
+        if (isset($params['sub'])) {
+            $this->updateOrCreate($this->client_type.'_sub', $params);
+        } elseif (isset($params['action'])) {
+            $this->updateOrCreate($this->client_type.'_sub_private', $params);
+        }
     }
 
     /**
@@ -98,7 +102,11 @@ class Client extends BaseClient
      */
     public function unsubscribe($params)
     {
-        $this->updateOrCreate($this->client_type.'_unsub', $params);
+        if (isset($params['sub'])) {
+            $this->updateOrCreate($this->client_type.'_unsub', $params);
+        } elseif (isset($params['action'])) {
+            $this->updateOrCreate($this->client_type.'_unsub_private', $params);
+        }
     }
 
     /**
