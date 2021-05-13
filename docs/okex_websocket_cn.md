@@ -32,6 +32,7 @@ class Server
                     'timer_time' => 3, // 定时任务间隔时间，秒
                     'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
                     'data_time' => 1, // 获取数据的时间间隔，秒
+                    'debug' => true,
                 ],
             ],
         ];
@@ -72,6 +73,7 @@ class Test
                     'timer_time' => 3, // 定时任务间隔时间，秒
                     'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
                     'data_time' => 1, // 获取数据的时间间隔，秒
+                    'debug' => true,
                 ],
             ],
         ];

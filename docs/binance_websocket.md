@@ -98,6 +98,7 @@ class Server
                     'timer_time' => 3, // Scheduled task time，seconds
                     'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
                     'data_time' => 1, // Time interval for getting data，seconds
+                    'debug' => true,
                 ],
             ],
         ];
@@ -137,6 +138,7 @@ class Test
                     'timer_time' => 3, // Scheduled task time，seconds
                     'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
                     'data_time' => 1, // Time interval for getting data，seconds
+                    'debug' => true,
                 ],
             ],
         ];
