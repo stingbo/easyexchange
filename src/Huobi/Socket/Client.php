@@ -5,7 +5,6 @@ namespace EasyExchange\Huobi\Socket;
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
 use EasyExchange\Kernel\Socket\Handle;
-use EasyExchange\Kernel\Support\Arr;
 use GlobalData\Client as GlobalClient;
 use GlobalData\Server;
 use Workerman\Timer;
@@ -304,29 +303,17 @@ class Client extends BaseClient
         if (!$subs) {
             return true;
         } else {
-            if (!isset($subs['args']) || !$subs['args']) {
+            // check if this channel is subscribed
+            $old_subs = $this->get($this->client_type.'_sub_old');
+            $channels = array_column($old_subs, 'sub');
+            if ($channels && in_array($subs['sub'], $channels)) {
+                $this->delete($this->client_type.'_sub');
+
                 return true;
             }
 
-            // check if this channel is subscribed
-            $old_subs = $this->get($this->client_type.'_sub_old');
-            if (isset($old_subs['args'])) {
-                foreach ($subs['args'] as $key => $channel) {
-                    foreach ($old_subs['args'] as $subed_channel) {
-                        if ($channel == $subed_channel) {
-                            unset($subs['args'][$key]);
-                        }
-                    }
-                }
-                if (!$subs['args']) {
-                    $this->delete($this->client_type.'_sub_private');
-
-                    return true;
-                }
-            }
-
-            // need login
-            if (array_intersect(array_column($subs['args'], 'channel'), $this->auth_channel) && !$this->isAuth()) {
+            // need auth
+            if (!$this->isAuth()) {
                 $this->auth($connection);
 
                 return true;
@@ -360,15 +347,17 @@ class Client extends BaseClient
             $connection->send(json_encode($unsubs));
             $this->delete($this->client_type.'_unsub_private');
 
-            if (isset($old_subs['args']) && $unsubs['args']) {
-                $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
-
-                // update sub channel data
-                if ($old_subs['args']) {
-                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
-                } else {
-                    $this->updateOrCreate($this->client_type.'_sub_old', []);
+            $old_subs = $this->get($this->client_type.'_sub_old');
+            foreach ($old_subs as $key => $old_sub) {
+                if ($old_sub['sub'] == $unsubs['unsub']) {
+                    unset($old_subs[$key]);
                 }
+            }
+            // update sub channel data
+            if ($old_subs) {
+                $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
+            } else {
+                $this->updateOrCreate($this->client_type.'_sub_old', []);
             }
         }
 
@@ -392,19 +381,21 @@ class Client extends BaseClient
      */
     public function auth($connection)
     {
-        $timestamp = time();
-        $sign = $this->getSignature($timestamp);
+        date_default_timezone_set('UTC');
+        $timestamp = date('Y-m-d\TH:i:s');
+        $params = [
+            'accessKey' => $this->config['app_key'],
+            'signatureMethod' => 'HmacSHA256',
+            'signatureVersion' => '2.1',
+            'timestamp' => $timestamp,
+        ];
+        $sign = $this->getSignature($params);
+        $params['authType'] = 'api';
+        $params['signature'] = $sign;
         $params = [
             'action' => 'req',
             'ch' => 'auth',
-            'params' => [
-                'authType' => 'api',
-                'accessKey' => '',
-                'signatureMethod' => 'HmacSHA256',
-                'signatureVersion' => '2.1',
-                'timestamp' => '',
-                'signature' => $sign,
-            ],
+            'params' => $params,
         ];
         $connection->send(json_encode($params));
     }
@@ -412,17 +403,22 @@ class Client extends BaseClient
     /**
      * get sign.
      *
-     * @param $timestamp
+     * @param array  $params
      * @param string $method
+     * @param string $uri_host
      * @param string $uri_path
      *
      * @return string
      */
-    public function getSignature($timestamp, $method = 'GET', $uri_path = '/users/self/verify')
+    public function getSignature($params = [], $method = 'GET', $uri_host = 'api.huobi.pro', $uri_path = '/ws/v2')
     {
-        $message = (string) $timestamp.$method.$uri_path;
-        $secret = $this->config['secret'];
+        ksort($params);
+        $data = http_build_query($params);
 
-        return base64_encode(hash_hmac('sha256', $message, $secret, true));
+        $sign_param = $method."\n".$uri_host."\n".$uri_path."\n".$data;
+        $secret = $this->config['secret'];
+        $signature = hash_hmac('sha256', $sign_param, $secret, true);
+
+        return base64_encode($signature);
     }
 }
