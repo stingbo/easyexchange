@@ -61,6 +61,7 @@ $config = [
             'timer_time' => 3, // Scheduled task time，seconds
             'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
             'data_time' => 1, // Time interval for getting data，seconds
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -406,6 +407,11 @@ $config = [
         'base_uri' => 'https://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
+            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
+            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+        ],
         'websocket' => [
             'base_uri' => 'ws://api.huobi.pro',
             'listen_ip' => '127.0.0.1', // listen ip
@@ -414,11 +420,7 @@ $config = [
             'timer_time' => 3, // Scheduled task time，seconds
             'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
             'data_time' => 1, // Time interval for getting data，seconds
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
-            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
-            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -680,6 +682,11 @@ $config = [
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
         'x-simulated-trading' => 1,
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
+            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
+            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+        ],
         'websocket' => [
             'base_uri' => 'ws://ws.okex.com:8443',
             'listen_ip' => '127.0.0.1', // listen ip
@@ -688,11 +695,7 @@ $config = [
             'timer_time' => 3, // Scheduled task time，seconds
             'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
             'data_time' => 1, // Time interval for getting data，seconds
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
-            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
-            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -900,6 +903,11 @@ $config = [
         'base_uri' => 'https://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
+            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
+            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+        ],
         'websocket' => [
             'base_uri' => 'ws://api.gateio.ws',
             'listen_ip' => '127.0.0.1', // listen ip
@@ -908,11 +916,7 @@ $config = [
             'timer_time' => 3, // Scheduled task time，seconds
             'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
             'data_time' => 1, // Time interval for getting data，seconds
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
-            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
-            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -1214,6 +1218,11 @@ $config = [
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
+            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
+            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+        ],
         'websocket' => [
             'base_uri' => 'ws://ws-feed.pro.coinbase.com',
             'listen_ip' => '127.0.0.1', // listen ip
@@ -1222,11 +1231,7 @@ $config = [
             'timer_time' => 3, // Scheduled task time，seconds
             'max_size' => 100, // Data retention，1～1000，Data is stored by channel name
             'data_time' => 1, // Time interval for getting data，seconds
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // Use this proxy with "http"
-            'https' => 'socks5h://127.0.0.1:1080', // Use this proxy with "https"
-            'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
