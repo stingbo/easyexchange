@@ -4,6 +4,10 @@ namespace EasyExchange\Huobi\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
+use EasyExchange\Kernel\Socket\Handle;
+use EasyExchange\Kernel\Support\Arr;
+use GlobalData\Client as GlobalClient;
+use GlobalData\Server;
 use Workerman\Timer;
 use Workerman\Worker;
 
@@ -14,6 +18,64 @@ class Client extends BaseClient
     public function getClientType(): string
     {
         return $this->client_type;
+    }
+
+    public $auth_channel = [
+        'orders', 'trade.clearing', 'accounts.update',
+    ];
+
+    /**
+     * Override the parent method.
+     *
+     * @param $params
+     * @param Handle $handle handle
+     */
+    public function server($params, Handle $handle)
+    {
+        $this->config['auth_channel'] = $this->auth_channel;
+
+        // GlobalData Server
+        new Server($this->config['websocket']['ip'] ?? '127.0.0.1', $this->config['websocket']['port'] ?? 2207);
+
+        if (isset($this->config['websocket']['base_uri']) && is_array($this->config['websocket']['base_uri'])) {
+            foreach ($this->config['websocket']['base_uri'] as $link) {
+                $worker = new Worker();
+                $worker->onWorkerStart = function () use ($params, $link, $handle) {
+                    $this->client = new GlobalClient(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
+                    $ws_connection = $handle->getConnection($this->config, $link);
+                    $ws_connection->onConnect = function ($connection) use ($params, $handle) {
+                        $handle->onConnect($connection, $this->client, $params);
+                    };
+                    $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
+                        $handle->onMessage($connection, $this->client, $params, $data);
+                    };
+                    $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
+                        $handle->onError($connection, $this->client, $code, $msg);
+                    };
+                    $ws_connection->onClose = function ($connection) use ($handle) {
+                        $handle->onClose($connection, $this->client);
+                    };
+                    $ws_connection->connect();
+
+                    if ('public' == $link['type']) {
+                        // heartbeat
+                        $this->ping($ws_connection);
+
+                        // timer action
+                        $this->connectPublic($ws_connection);
+                    }
+                    if ('private' == $link['type']) {
+                        // heartbeat
+                        $this->ping($ws_connection);
+
+                        // timer action
+                        $this->connectPrivate($ws_connection);
+                    }
+                };
+            }
+        }
+
+        Worker::runAll();
     }
 
     /**
@@ -130,7 +192,7 @@ class Client extends BaseClient
      *
      * @param $connection
      */
-    public function connect($connection)
+    public function connectPublic($connection)
     {
         $interval = $this->config['websocket']['timer_time'] ?? 3;
         $connection->timer_id = Timer::add($interval, function () use ($connection) {
@@ -153,6 +215,7 @@ class Client extends BaseClient
     {
         $subs = $this->get($this->client_type.'_sub');
         if ($this->debug) {
+            echo 'public channel:--------------------'.PHP_EOL;
             print_r($subs);
         }
         if (!$subs) {
@@ -210,5 +273,156 @@ class Client extends BaseClient
         }
 
         return true;
+    }
+
+    public function connectPrivate($connection)
+    {
+        $interval = $this->config['websocket']['timer_time'] ?? 3;
+        $connection->timer_id = Timer::add($interval, function () use ($connection) {
+            // subscribe
+            $this->subPrivate($connection);
+
+            // unsubscribe
+            $this->unSubPrivate($connection);
+        });
+    }
+
+    /**
+     * subscribe.
+     *
+     * @param $connection
+     *
+     * @return bool
+     */
+    public function subPrivate($connection)
+    {
+        $subs = $this->get($this->client_type.'_sub_private');
+        if ($this->debug) {
+            echo 'private channel:--------------------'.PHP_EOL;
+            print_r($subs);
+        }
+        if (!$subs) {
+            return true;
+        } else {
+            if (!isset($subs['args']) || !$subs['args']) {
+                return true;
+            }
+
+            // check if this channel is subscribed
+            $old_subs = $this->get($this->client_type.'_sub_old');
+            if (isset($old_subs['args'])) {
+                foreach ($subs['args'] as $key => $channel) {
+                    foreach ($old_subs['args'] as $subed_channel) {
+                        if ($channel == $subed_channel) {
+                            unset($subs['args'][$key]);
+                        }
+                    }
+                }
+                if (!$subs['args']) {
+                    $this->delete($this->client_type.'_sub_private');
+
+                    return true;
+                }
+            }
+
+            // need login
+            if (array_intersect(array_column($subs['args'], 'channel'), $this->auth_channel) && !$this->isAuth()) {
+                $this->auth($connection);
+
+                return true;
+            }
+
+            $connection->send(json_encode($subs));
+            $this->delete($this->client_type.'_sub_private');
+        }
+
+        return true;
+    }
+
+    /**
+     * cancel subscribe.
+     *
+     * @param $connection
+     *
+     * @return bool
+     */
+    public function unSubPrivate($connection)
+    {
+        $unsubs = $this->get($this->client_type.'_unsub_private');
+        if (!$unsubs) {
+            return true;
+        } else {
+            $old_subs = $this->get($this->client_type.'_sub_old');
+            if (!$old_subs) {
+                return true;
+            }
+
+            $connection->send(json_encode($unsubs));
+            $this->delete($this->client_type.'_unsub_private');
+
+            if (isset($old_subs['args']) && $unsubs['args']) {
+                $old_subs['args'] = Arr::diff($old_subs['args'], $unsubs['args']);
+
+                // update sub channel data
+                if ($old_subs['args']) {
+                    $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
+                } else {
+                    $this->updateOrCreate($this->client_type.'_sub_old', []);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Has it been verified.
+     *
+     * @return array|mixed
+     */
+    public function isAuth()
+    {
+        return $this->get($this->client_type.'_is_auth');
+    }
+
+    /**
+     * auth.
+     *
+     * @param $connection
+     */
+    public function auth($connection)
+    {
+        $timestamp = time();
+        $sign = $this->getSignature($timestamp);
+        $params = [
+            'action' => 'req',
+            'ch' => 'auth',
+            'params' => [
+                'authType' => 'api',
+                'accessKey' => '',
+                'signatureMethod' => 'HmacSHA256',
+                'signatureVersion' => '2.1',
+                'timestamp' => '',
+                'signature' => $sign,
+            ],
+        ];
+        $connection->send(json_encode($params));
+    }
+
+    /**
+     * get sign.
+     *
+     * @param $timestamp
+     * @param string $method
+     * @param string $uri_path
+     *
+     * @return string
+     */
+    public function getSignature($timestamp, $method = 'GET', $uri_path = '/users/self/verify')
+    {
+        $message = (string) $timestamp.$method.$uri_path;
+        $secret = $this->config['secret'];
+
+        return base64_encode(hash_hmac('sha256', $message, $secret, true));
     }
 }

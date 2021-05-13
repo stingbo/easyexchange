@@ -12,7 +12,7 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
     {
         $this->config = $config;
 
-        $base_uri = $config['websocket']['base_uri'].'/ws';
+        $base_uri = $params['url'];
 
         $connection = new AsyncTcpConnection($base_uri);
         $connection->transport = 'ssl';
