@@ -125,7 +125,7 @@ class Client extends BaseClient
         if (!$channels) {
             $subs = $this->get($this->client_type.'_sub_old');
             if ($subs) {
-                $channels = array_unique(array_column($subs['args'] ?? [], 'channel'));
+                $channels = array_unique(array_column($subs, 'sub'));
             }
         }
 
