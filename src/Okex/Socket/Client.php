@@ -37,61 +37,48 @@ class Client extends BaseClient
      */
     public function server($params, Handle $handle)
     {
-        $worker = new Worker();
-        $private_worker = new Worker();
         $this->config['auth_channel'] = $this->auth_channel;
 
         // GlobalData Server
         new Server($this->config['websocket']['ip'] ?? '127.0.0.1', $this->config['websocket']['port'] ?? 2207);
 
-        $worker->onWorkerStart = function () use ($params, $handle) {
-            $this->client = new GlobalClient(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
-            $ws_connection = $handle->getConnection($this->config, $params);
-            $ws_connection->onConnect = function ($connection) use ($params, $handle) {
-                $handle->onConnect($connection, $this->client, $params);
-            };
-            $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
-                $handle->onMessage($connection, $this->client, $params, $data);
-            };
-            $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
-                $handle->onError($connection, $this->client, $code, $msg);
-            };
-            $ws_connection->onClose = function ($connection) use ($handle) {
-                $handle->onClose($connection, $this->client);
-            };
-            $ws_connection->connect();
+        if (isset($this->config['websocket']['base_uri']) && is_array($this->config['websocket']['base_uri'])) {
+            foreach ($this->config['websocket']['base_uri'] as $link) {
+                $worker = new Worker();
+                $worker->onWorkerStart = function () use ($params, $link, $handle) {
+                    $this->client = new GlobalClient(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
+                    $ws_connection = $handle->getConnection($this->config, $link);
+                    $ws_connection->onConnect = function ($connection) use ($params, $handle) {
+                        $handle->onConnect($connection, $this->client, $params);
+                    };
+                    $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
+                        $handle->onMessage($connection, $this->client, $params, $data);
+                    };
+                    $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
+                        $handle->onError($connection, $this->client, $code, $msg);
+                    };
+                    $ws_connection->onClose = function ($connection) use ($handle) {
+                        $handle->onClose($connection, $this->client);
+                    };
+                    $ws_connection->connect();
 
-            // heartbeat
-            $this->ping($ws_connection);
+                    if ('public' == $link['type']) {
+                        // heartbeat
+                        $this->ping($ws_connection);
 
-            // timer action
-            $this->connectPublic($ws_connection);
-        };
+                        // timer action
+                        $this->connectPublic($ws_connection);
+                    }
+                    if ('private' == $link['type']) {
+                        // heartbeat
+                        $this->ping($ws_connection);
 
-        $params['private'] = 1;
-        $private_worker->onWorkerStart = function () use ($params, $handle) {
-            $client = new GlobalClient(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
-            $ws_connection = $handle->getConnection($this->config, $params);
-            $ws_connection->onConnect = function ($connection) use ($params, $handle, $client) {
-                $handle->onConnect($connection, $client, $params);
-            };
-            $ws_connection->onMessage = function ($connection, $data) use ($params, $handle, $client) {
-                $handle->onMessage($connection, $client, $params, $data);
-            };
-            $ws_connection->onError = function ($connection, $code, $msg) use ($handle, $client) {
-                $handle->onError($connection, $client, $code, $msg);
-            };
-            $ws_connection->onClose = function ($connection) use ($handle, $client) {
-                $handle->onClose($connection, $client);
-            };
-            $ws_connection->connect();
-
-            // heartbeat
-            $this->ping($ws_connection);
-
-            // timer action
-            $this->connectPrivate($ws_connection);
-        };
+                        // timer action
+                        $this->connectPrivate($ws_connection);
+                    }
+                };
+            }
+        }
 
         Worker::runAll();
     }
