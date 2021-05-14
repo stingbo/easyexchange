@@ -413,7 +413,16 @@ $config = [
             'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
         ],
         'websocket' => [
-            'base_uri' => 'ws://api.huobi.pro',
+            'base_uri' => [
+                [
+                    'url' => 'ws://api.huobi.pro/ws',
+                    'type' => 'public',
+                ],
+                [
+                    'url' => 'ws://api.huobi.pro/ws/v2',
+                    'type' => 'private',
+                ]
+            ],
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
             'listen_port' => 2207, // 监听的端口
             'heartbeat_time' => 20, // 心跳检测时间，单位秒
@@ -688,7 +697,16 @@ $config = [
             'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
         ],
         'websocket' => [
-            'base_uri' => 'ws://ws.okex.com:8443',
+            'base_uri' => [
+                [
+                    'url' => 'ws://ws.okex.com:8443/ws/v5/public',
+                    'type' => 'public',
+                ],
+                [
+                    'url' => 'ws://ws.okex.com:8443/ws/v5/private',
+                    'type' => 'private',
+                ]
+            ],
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
             'listen_port' => 2207, // 监听的端口
             'heartbeat_time' => 20, // 心跳检测时间，单位秒

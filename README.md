@@ -413,7 +413,16 @@ $config = [
             'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
         ],
         'websocket' => [
-            'base_uri' => 'ws://api.huobi.pro',
+            'base_uri' => [
+                [
+                    'url' => 'ws://api.huobi.pro/ws',
+                    'type' => 'public',
+                ],
+                [
+                    'url' => 'ws://api.huobi.pro/ws/v2',
+                    'type' => 'private',
+                ]
+            ],
             'listen_ip' => '127.0.0.1', // listen ip
             'listen_port' => 2207, // listen port
             'heartbeat_time' => 20, // Heartbeat detection time, seconds
@@ -688,7 +697,16 @@ $config = [
             'no' => ['.mit.edu', 'foo.com'],   // Don't use a proxy with these
         ],
         'websocket' => [
-            'base_uri' => 'ws://ws.okex.com:8443',
+            'base_uri' => [
+                [
+                    'url' => 'ws://ws.okex.com:8443/ws/v5/public',
+                    'type' => 'public',
+                ],
+                [
+                    'url' => 'ws://ws.okex.com:8443/ws/v5/private',
+                    'type' => 'private',
+                ]
+            ],
             'listen_ip' => '127.0.0.1', // listen ip
             'listen_port' => 2207, // listen port
             'heartbeat_time' => 20, // Heartbeat detection time, seconds
