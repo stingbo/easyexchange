@@ -48,6 +48,11 @@ $config = [
         'base_uri' => 'https://testnet.binance.vision', // 测试网
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
         'websocket' => [
             'base_uri' => 'ws://stream.binance.com:9443',
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
@@ -56,11 +61,7 @@ $config = [
             'timer_time' => 3, // 定时任务间隔时间，秒
             'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
             'data_time' => 1, // 获取数据的时间间隔，秒
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
-            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
-            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -406,6 +407,11 @@ $config = [
         'base_uri' => 'https://api.huobi.pro',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
         'websocket' => [
             'base_uri' => 'ws://api.huobi.pro',
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
@@ -414,11 +420,7 @@ $config = [
             'timer_time' => 3, // 定时任务间隔时间，秒
             'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
             'data_time' => 1, // 获取数据的时间间隔，秒
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
-            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
-            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -680,6 +682,11 @@ $config = [
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
         'x-simulated-trading' => 1,
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
         'websocket' => [
             'base_uri' => 'ws://ws.okex.com:8443',
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
@@ -688,11 +695,7 @@ $config = [
             'timer_time' => 3, // 定时任务间隔时间，秒
             'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
             'data_time' => 1, // 获取数据的时间间隔，秒
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
-            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
-            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -900,6 +903,11 @@ $config = [
         'base_uri' => 'https://api.gateio.ws',
         'app_key' => 'your app key',
         'secret' => 'your secret',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
         'websocket' => [
             'base_uri' => 'ws://api.gateio.ws',
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
@@ -908,11 +916,7 @@ $config = [
             'timer_time' => 3, // 定时任务间隔时间，秒
             'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
             'data_time' => 1, // 获取数据的时间间隔，秒
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
-            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
-            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
@@ -1214,6 +1218,11 @@ $config = [
         'app_key' => 'your app key',
         'secret' => 'your secret',
         'passphrase' => 'your passphrase',
+        'proxy' => [
+            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
+            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
+            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+        ],
         'websocket' => [
             'base_uri' => 'ws://ws-feed.pro.coinbase.com',
             'listen_ip' => '127.0.0.1', // 监听的本机ip地址
@@ -1222,11 +1231,7 @@ $config = [
             'timer_time' => 3, // 定时任务间隔时间，秒
             'max_size' => 100, // 数据保留量，1～1000，数据按频道名称存储
             'data_time' => 1, // 获取数据的时间间隔，秒
-        ],
-        'proxy' => [
-            'http' => 'socks5h://127.0.0.1:1080', // 为 "http" 请求增加代理
-            'https' => 'socks5h://127.0.0.1:1080', // 为 "https" 请求增加代理
-            'no' => ['.mit.edu', 'foo.com'],   // 不需要使用代理的请求
+            'debug' => true,
         ],
         'log' => [
             'level' => 'debug',
