@@ -25,7 +25,16 @@ class Server
                 'passphrase' => 'your passphrase',
                 'x-simulated-trading' => 1,
                 'websocket' => [
-                    'base_uri' => 'ws://ws.okex.com:8443',
+                    'base_uri' => [
+                        [
+                            'url' => 'ws://ws.okex.com:8443/ws/v5/public',
+                            'type' => 'public',
+                        ],
+                        [
+                            'url' => 'ws://ws.okex.com:8443/ws/v5/private',
+                            'type' => 'private',
+                        ]
+                    ],
                     'listen_ip' => '127.0.0.1', // 监听的本机ip地址
                     'listen_port' => 2207, // 监听的端口
                     'heartbeat_time' => 20, // 心跳检测时间，单位秒
@@ -66,7 +75,16 @@ class Test
                 'passphrase' => 'your passphrase',
                 'x-simulated-trading' => 1,
                 'websocket' => [
-                    'base_uri' => 'ws://ws.okex.com:8443',
+                    'base_uri' => [
+                        [
+                            'url' => 'ws://ws.okex.com:8443/ws/v5/public',
+                            'type' => 'public',
+                        ],
+                        [
+                            'url' => 'ws://ws.okex.com:8443/ws/v5/private',
+                            'type' => 'private',
+                        ]
+                    ],
                     'listen_ip' => '127.0.0.1', // 监听的本机ip地址
                     'listen_port' => 2207, // 监听的端口
                     'heartbeat_time' => 20, // 心跳检测时间，单位秒

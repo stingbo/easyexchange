@@ -12,11 +12,7 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
     {
         $this->config = $config;
 
-        if (isset($params['private']) && $params['private']) {
-            $base_uri = $config['websocket']['base_uri'].'/ws/v5/private';
-        } else {
-            $base_uri = $config['websocket']['base_uri'].'/ws/v5/public';
-        }
+        $base_uri = $params['url'];
         echo $base_uri.PHP_EOL;
 
         $connection = new AsyncTcpConnection($base_uri);
@@ -100,20 +96,22 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
         $public = [];
         $private = [];
         $subs = $client->okex_sub_old;
-        foreach ($subs['args'] as $arg) {
-            if (in_array($arg['channel'], $this->config['auth_channel'])) {
-                $private[] = $arg;
-            } else {
-                $public[] = $arg;
+        if ($subs) {
+            foreach ($subs['args'] as $arg) {
+                if (in_array($arg['channel'], $this->config['auth_channel'])) {
+                    $private[] = $arg;
+                } else {
+                    $public[] = $arg;
+                }
             }
-        }
-        $client->okex_sub_old = [];
+            $client->okex_sub_old = [];
 
-        if ($public) {
-            $client->okex_sub = ['op' => 'subscribe', 'args' => $public];
-        }
-        if ($private) {
-            $client->okex_sub_private = ['op' => 'subscribe', 'args' => $private];
+            if ($public) {
+                $client->okex_sub = ['op' => 'subscribe', 'args' => $public];
+            }
+            if ($private) {
+                $client->okex_sub_private = ['op' => 'subscribe', 'args' => $private];
+            }
         }
     }
 }
