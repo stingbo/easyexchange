@@ -28,28 +28,60 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
 
     public function onMessage($connection, $client, $params, $data)
     {
-        $json_data = gzdecode($data);
-        echo $json_data.PHP_EOL;
-        $result = json_decode($json_data, true);
+        if (false !== json_encode($data)) { // is json format
+            echo $data.PHP_EOL;
+            $result = json_decode($data, true);
+        } else {
+            $json_data = gzdecode($data);
+            echo $json_data.PHP_EOL;
+            $result = json_decode($json_data, true);
+        }
+        // Heartbeat
         if (isset($result['ping'])) {
             $connection->send(json_encode(['pong' => $result['ping']]));
+
+            return true;
+        } elseif (isset($result['action']) && 'ping' == $result['action']) {
+            $result['action'] = 'pong';
+            $connection->send(json_encode($result));
+
+            return true;
         }
 
+        // save subscribe public channel
         if (isset($result['subbed']) && isset($result['status']) && 'ok' == $result['status']) {
+            $new_sub = ['id' => $result['id'], 'sub' => $result['subbed']];
             $old_subs = $client->huobi_sub_old ?? [];
             if (!$old_subs) {
-                $client->huobi_sub_old = ['id' => $result['id'], 'sub' => $result['subbed']];
+                $client->huobi_sub_old = $new_sub;
             } else {
                 $channels = array_column($old_subs, 'sub');
                 if (!in_array($result['subbed'], $channels)) {
                     do {
                         $new_subs = $old_subs = $client->huobi_sub_old;
-                        $new_subs[] = ['id' => $result['id'], 'sub' => $result['subbed']];
+                        $new_subs[] = $new_sub;
+                    } while (!$client->cas('huobi_sub_old', $old_subs, $new_subs));
+                }
+            }
+        }
+        // save subscribe private channel
+        if (isset($result['action']) && isset($result['code']) && 200 == $result['code']) {
+            $new_sub = ['id' => '', 'sub' => $result['ch']];
+            $old_subs = $client->huobi_sub_old ?? [];
+            if (!$old_subs) {
+                $client->huobi_sub_old = $new_sub;
+            } else {
+                $channels = array_column($old_subs, 'sub');
+                if (!in_array($result['subbed'], $channels)) {
+                    do {
+                        $new_subs = $old_subs = $client->huobi_sub_old;
+                        $new_subs[] = $new_sub;
                     } while (!$client->cas('huobi_sub_old', $old_subs, $new_subs));
                 }
             }
         }
 
+        // save data
         if (isset($result['ch'])) {
             $key = 'huobi_list_'.$result['ch'];
             $old_list = $client->{$key} ?? [];
