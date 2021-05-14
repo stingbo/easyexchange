@@ -113,7 +113,25 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
         echo "connection closed，now reconnect\n";
         $connection->reConnect(1);
 
-        $client->huobi_sub = $client->huobi_sub_old;
-        $client->huobi_sub_old = [];
+        $public = [];
+        $private = [];
+        $subs = $client->huobi_sub_old;
+        if ($subs) {
+            foreach ($subs as $sub) {
+                if (in_array($sub['sub'], $this->config['auth_channel'])) {
+                    $private[] = ['action' => 'sub', 'ch' => $sub['sub']];
+                } else {
+                    $public[] = $sub;
+                }
+            }
+            $client->huobi_sub_old = [];
+
+            if ($public) {
+                $client->huobi_sub = $public;
+            }
+            if ($private) {
+                $client->huobi_sub_private = $private;
+            }
+        }
     }
 }
