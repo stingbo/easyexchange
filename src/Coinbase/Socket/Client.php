@@ -170,10 +170,36 @@ class Client extends BaseClient
                 return true;
             }
 
+            $new_subs = [];
+            foreach ($subs['channels'] as $channel) {
+                $product_ids = $subs['product_ids'] ?? [];
+                if (is_string($channel)) {
+                    $new_subs[] = [
+                        'name' => $channel,
+                        'product_ids' => $product_ids,
+                    ];
+                } elseif (is_array($channel)) {
+                    $channel['product_ids'] = array_unique(array_merge($channel['product_ids'], $product_ids));
+                    $new_subs[] = $channel;
+                }
+            }
+
             // check if this channel is subscribed
             $old_subs = $this->get($this->client_type.'_sub_old');
-            $channels = array_column($old_subs, 'channels');
-            if (in_array($subs['channels'], $channels)) {
+            if ($old_subs && isset($old_subs['channels'])) {
+                foreach ($new_subs as $key => &$sub) {
+                    foreach ($old_subs['channels'] as $old_sub) {
+                        if ($sub['name'] == $old_sub['name']) {
+                            $sub['product_ids'] = array_unique(array_filter(array_diff($sub['product_ids'], $old_sub['product_ids'])));
+                            if (!$sub['product_ids']) {
+                                unset($new_subs[$key]);
+                                continue 2;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!$new_subs) {
                 $this->delete($this->client_type.'_sub');
 
                 return true;
