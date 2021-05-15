@@ -23,6 +23,7 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
 
     public function onConnect($connection, $client, $params)
     {
+        echo 'connect gate:-----------------'.PHP_EOL;
         $connection->send(json_encode($params));
     }
 
