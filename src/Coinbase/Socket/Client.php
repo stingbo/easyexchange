@@ -4,7 +4,6 @@ namespace EasyExchange\Coinbase\Socket;
 
 use EasyExchange\Kernel\Exceptions\InvalidArgumentException;
 use EasyExchange\Kernel\Socket\BaseClient;
-use EasyExchange\Kernel\Support\Arr;
 use Workerman\Timer;
 use Workerman\Worker;
 
@@ -232,13 +231,6 @@ class Client extends BaseClient
 
             $connection->send(json_encode($unsubs));
             $this->delete($this->client_type.'_unsub');
-
-            $old_subs = Arr::diff($old_subs, $unsubs);
-            if ($old_subs) {
-                $this->updateOrCreate($this->client_type.'_sub_old', $old_subs);
-            } else {
-                $this->updateOrCreate($this->client_type.'_sub_old', []);
-            }
         }
 
         return true;
