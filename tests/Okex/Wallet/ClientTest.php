@@ -32,4 +32,20 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->balance($ccy));
     }
+
+    public function testTransfer()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $ccy = 'USDT';
+        $params = [
+            'ccy' => $ccy,
+            'amt' => 1.5,
+            'from' => 6,
+            'to' => 18,
+        ];
+
+        $client->expects()->httpPostJson('/api/v5/asset/transfer', $params, [], 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->transfer($params));
+    }
 }
