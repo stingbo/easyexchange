@@ -48,4 +48,21 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->transfer($params));
     }
+
+    public function testWithdrawal()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $params = [
+            'amt' => '1',
+            'fee' => '0.0005',
+            'pwd' => '123456',
+            'dest' => '4',
+            'ccy' => 'BTC',
+            'toAddr' => '17DKe3kkkkiiiiTvAKKi2vMPbm1Bz3CMKw',
+        ];
+
+        $client->expects()->httpPostJson('/api/v5/asset/withdrawal', $params, [], 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->withdrawal($params));
+    }
 }
