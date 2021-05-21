@@ -65,4 +65,16 @@ class ClientTest extends TestCase
 
         $this->assertSame('mock-result', $client->withdrawal($params));
     }
+
+    public function testDepositHistory()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $params = [
+            'ccy' => 'BTC',
+        ];
+
+        $client->expects()->httpGet('/api/v5/asset/deposit-history', $params, 'SIGN')->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->depositHistory($params));
+    }
 }
