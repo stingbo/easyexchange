@@ -1025,15 +1025,15 @@ $app->spot->cancelOrder($order_id, $currency_pair);
 // List personal trading history.
 $app->spot->myTrades($params);
 // Create a price-triggered order.
-$app->spot->priceOrder($params)
+$app->spot->priceOrder($params);
 // Retrieve running auto order list.
-$app->spot->priceOrders($params)
+$app->spot->priceOrders($params);
 // Cancel all open orders.
-$app->spot->cancelPriceOrders($market = '', $account = '')
+$app->spot->cancelPriceOrders($market = '', $account = '');
 // Get a single order.
-$app->spot->getPriceOrder($order_id)
+$app->spot->getPriceOrder($order_id);
 // Cancel a single order.
-$app->spot->cancelPriceOrder($order_id)
+$app->spot->cancelPriceOrder($order_id);
 ```
 </details>
 
@@ -1266,23 +1266,23 @@ $app = Factory::coinbase($config['coinbase']);
 
 ```php
 // List Accounts - Get a list of trading accounts from the profile of the API key.
-$app->user->accounts()
+$app->user->accounts();
 // Get an Account - Information for a single account.
-$app->user->account($account_id)
+$app->user->account($account_id);
 // Get Account History - List account activity of the API key's profile.
-$app->user->history($account_id, $params = [])
+$app->user->history($account_id, $params = []);
 // Get Holds - List holds of an account that belong to the same profile as the API key.
-$app->user->holds($account_id, $params = [])
+$app->user->holds($account_id, $params = []);
 // List Accounts - Get a list of your coinbase accounts.
-$app->user->coinbaseAccounts()
+$app->user->coinbaseAccounts();
 // fees - Get Current Fees.
-$app->user->fees()
+$app->user->fees();
 // List Profiles.
-$app->user->profiles()
+$app->user->profiles();
 // Get a Profile.
-$app->user->profile($profile_id)
+$app->user->profile($profile_id);
 // Create profile transfer - Transfer funds from API key's profile to another user owned profile.
-$app->user->transfer($params)
+$app->user->transfer($params);
 ```
 </details>
 
@@ -1355,17 +1355,23 @@ $app->wallet->conversion($params);
 
 ```php
 // Place a New Order.
-$app->trade->order($params)
+$params = [
+    'size' => '0.01',
+    'price' => '0.100',
+    'side' => 'buy',
+    'product_id' => 'BTC-USD',
+];
+$app->trade->order($params);
 // Cancel an Order.
-$app->trade->cancelOrder($id = '', $client_oid = '', $product_id = '')
+$app->trade->cancelOrder($id = '', $client_oid = '', $product_id = '');
 // Cancel all.
-$app->trade->cancelOrders($product_id = '')
+$app->trade->cancelOrders($product_id = '');
 // List Orders.
-$app->trade->orders($params)
+$app->trade->orders($params);
 // Get an Order.
-$app->trade->get($id = '', $client_oid = '')
+$app->trade->get($id = '', $client_oid = '');
 // List Fills - Get a list of recent fills of the API key's profile.
-$app->trade->fills($params)
+$app->trade->fills($params);
 ```
 </details>
 
@@ -1374,21 +1380,21 @@ $app->trade->fills($params)
 
 ```php
 // Get margin profile information.
-$app->margin->profileInformation($product_id)
+$app->margin->profileInformation($product_id);
 // Get buying power or selling power.
-$app->margin->buyingPower($product_id)
+$app->margin->buyingPower($product_id);
 // Get withdrawal power.
-$app->margin->withdrawalPower($currency)
+$app->margin->withdrawalPower($currency);
 // Get all withdrawal powers.
-$app->margin->withdrawalPowers()
+$app->margin->withdrawalPowers();
 // Get exit plan.
-$app->margin->exitPlan()
+$app->margin->exitPlan();
 // List liquidation history.
-$app->margin->liquidationHistory($after = '')
+$app->margin->liquidationHistory($after = '');
 // Get position refresh amounts.
-$app->margin->positionRefreshAmounts()
+$app->margin->positionRefreshAmounts();
 // Get margin status - Returns whether margin is currently enabled.
-$app->margin->status()
+$app->margin->status();
 ```
 </details>
 
