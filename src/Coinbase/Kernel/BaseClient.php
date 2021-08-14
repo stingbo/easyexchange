@@ -28,7 +28,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
         $this->message = (string) $timestamp.$method.$uri_path.(string) $body;
         $secret = $this->app->config->get('secret');
 
-        return base64_encode(hash_hmac('sha256', $this->message, $secret, true));
+        return base64_encode(hash_hmac('sha256', $this->message, base64_decode($secret), true));
     }
 
     /**
