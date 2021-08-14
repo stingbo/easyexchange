@@ -1286,6 +1286,12 @@ $app->user->transfer($params);
 ```
 </details>
 
+## 捐赠地址：
+| 币种 | 地址 |
+| :---: | :---: |
+| BTC | 163guqWS4hcpPcfzaEUa1NypH3PLdEJ9TE |
+| ETH | 0xab6b060592bce331a1bb4e649016173274a99cb0 |
+
 ## API 支持
 | 联系方式 | 联系我 |
 | :---: | :---: |
