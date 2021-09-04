@@ -1401,6 +1401,8 @@ $app->margin->status();
 ## Donation Address：
 | Coin | Address |
 | :---: | :---: |
+| DOGE | D5QXoFYTAzs756SnP4gqiEePtrb5oQZRrW |
+| XRP | rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh // TAG:310515423 |
 | BTC | 163guqWS4hcpPcfzaEUa1NypH3PLdEJ9TE |
 | ETH | 0xab6b060592bce331a1bb4e649016173274a99cb0 |
 
