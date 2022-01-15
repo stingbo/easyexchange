@@ -6,3 +6,5 @@ tags
 .phpunit.result.cache
 tests/TC.php
 tests/TTC.php
+tests/Server.php
+tests/Client.php
