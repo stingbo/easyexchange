@@ -810,7 +810,7 @@ $app->market->ticker($instId);
 $app->market->indexTickers($quoteCcy = '', $instId = '');
 // Get Order Book
 $instId = 'BTC-USD-SWAP';
-$sz = 1
+$sz = 1;
 $app->market->depth($instId, $sz);
 // Get Candlesticks
 $app->market->kline($params);
@@ -822,6 +822,8 @@ $app->market->indexKline($params);
 $app->market->markPriceKline($params);
 // Get Trades
 $app->market->trades($instId, $limit = 100);
+// Get exchange rate - This interface provides the average exchange rate data for 2 weeks
+$app->market->exchangeRate();
 ```
 </details>
 
