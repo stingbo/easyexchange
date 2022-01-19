@@ -810,7 +810,7 @@ $app->market->ticker($instId);
 $app->market->indexTickers($quoteCcy = '', $instId = '');
 // 获取产品深度
 $instId = 'BTC-USD-SWAP';
-$sz = 1
+$sz = 1;
 $app->market->depth($instId, $sz);
 // 获取所有交易产品K线数据
 $app->market->kline($params);
@@ -822,6 +822,8 @@ $app->market->indexKline($params);
 $app->market->markPriceKline($params);
 // 获取交易产品公共成交数据
 $app->market->trades($instId, $limit = 100);
+// 获取法币汇率 - 该接口提供的是2周的平均汇率数据
+$app->market->exchangeRate();
 ```
 </details>
 
