@@ -824,6 +824,9 @@ $app->market->markPriceKline($params);
 $app->market->trades($instId, $limit = 100);
 // Get exchange rate - This interface provides the average exchange rate data for 2 weeks
 $app->market->exchangeRate();
+// Get index components - Get the index component information data on the market
+$index = 'BTC-USDT';
+$response = $app->market->indexComponents($index);
 ```
 </details>
 

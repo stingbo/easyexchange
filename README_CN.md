@@ -824,6 +824,9 @@ $app->market->markPriceKline($params);
 $app->market->trades($instId, $limit = 100);
 // 获取法币汇率 - 该接口提供的是2周的平均汇率数据
 $app->market->exchangeRate();
+// 获取指数成分数据 - 查询市场上的指数成分信息数据
+$index = 'BTC-USDT';
+$response = $app->market->indexComponents($index);
 ```
 </details>
 
