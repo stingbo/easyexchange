@@ -8,6 +8,7 @@ use EasyExchange\Kernel\Socket\Handle;
 use EasyExchange\Kernel\Support\Arr;
 use GlobalData\Client as GlobalClient;
 use GlobalData\Server;
+use Workerman\Connection\TcpConnection;
 use Workerman\Timer;
 use Workerman\Worker;
 
@@ -44,7 +45,12 @@ class Client extends BaseClient
 
         if (isset($this->config['websocket']['base_uri']) && is_array($this->config['websocket']['base_uri'])) {
             foreach ($this->config['websocket']['base_uri'] as $link) {
-                $worker = new Worker();
+                if ('public' == $link['type']) {
+                    $port = 4207;
+                } else {
+                    $port = 4208;
+                }
+                $worker = new Worker('websocket://127.0.0.1:'.$port);
                 $worker->onWorkerStart = function () use ($params, $link, $handle) {
                     $this->client = new GlobalClient(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
                     $ws_connection = $handle->getConnection($this->config, $link);
@@ -53,6 +59,7 @@ class Client extends BaseClient
                     };
                     $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
                         $handle->onMessage($connection, $this->client, $params, $data);
+                        $this->sendMessage($data);
                     };
                     $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
                         $handle->onError($connection, $this->client, $code, $msg);
@@ -77,10 +84,28 @@ class Client extends BaseClient
                         $this->connectPrivate($ws_connection);
                     }
                 };
+                $worker->con = '';
+                $worker->onMessage = function (TcpConnection $connection, $data) use ($worker) {
+                    global $worker;
+                    $worker->con = $connection;
+                    $this->sendMessage($data);
+                };
             }
         }
 
         Worker::runAll();
+    }
+
+    public function sendMessage($message)
+    {
+        global $worker;
+        if (isset($worker->con)) {
+            $worker->con->send($message);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
