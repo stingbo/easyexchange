@@ -155,4 +155,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/market/exchange-rate');
     }
+
+    /**
+     * Get the index component information data on the market.
+     *
+     * @param $index
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function indexComponents($index)
+    {
+        return $this->httpGet('/api/v5/market/index-components', compact('index'));
+    }
 }

@@ -10,7 +10,7 @@
 * Handle 定义：
 
     > 1. getConnection 获取连接对象
-                
+
     > 2. onConnect 连接时触发
 
     > 3. onMessage 通讯时触发
@@ -22,7 +22,7 @@
 * 参数定义：
 
     > 1. config 配置参数
-           
+
     > 2. connection Workerman 客户端连接对象
 
     > 3. params 客户端请求参数
@@ -32,7 +32,7 @@
     > 5. code 服务端返回错误编码
 
     > 6. message 服务端返回错误信息
-                                                                                                                                                            >
+
     > 7. client Workerman GlobalData\Client
 
 1. 启动本地服务，server.php 示例:
