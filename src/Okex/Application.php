@@ -17,6 +17,7 @@ class Application extends ServiceContainer
         Basic\ServiceProvider::class,
         Market\ServiceProvider::class,
         Trade\ServiceProvider::class,
+        Trading\ServiceProvider::class,
         User\ServiceProvider::class,
         Wallet\ServiceProvider::class,
         Socket\ServiceProvider::class,
