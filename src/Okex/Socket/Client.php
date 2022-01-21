@@ -87,6 +87,9 @@ class Client extends BaseClient
                 $worker->con = '';
                 $worker->onMessage = function (TcpConnection $connection, $data) use ($worker) {
                     global $worker;
+                    if (is_null($worker)) {
+                        $worker = (object) [];
+                    }
                     $worker->con = $connection;
                     $this->sendMessage($data);
                 };
