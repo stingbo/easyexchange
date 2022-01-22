@@ -105,7 +105,7 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function optionOpenInterestVolumeRatio($ccy, $period = '')
+    public function optionOpenInterestVolumeRatio($ccy, $period = '8H')
     {
         return $this->httpGet('/api/v5/rubik/stat/option/open-interest-volume-ratio', compact('ccy', 'period'));
     }
@@ -121,8 +121,25 @@ class Client extends BaseClient
      * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function optionOpenInterestVolumeExpiry($ccy, $period = '')
+    public function optionOpenInterestVolumeExpiry($ccy, $period = '8H')
     {
         return $this->httpGet('/api/v5/rubik/stat/option/open-interest-volume-expiry', compact('ccy', 'period'));
+    }
+
+    /**
+     * Get open interest and volume (strike).
+     *
+     * @param $ccy
+     * @param $expTime
+     * @param string $period
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function optionOpenInterestVolumeStrike($ccy, $expTime, $period = '8H')
+    {
+        return $this->httpGet('/api/v5/rubik/stat/option/open-interest-volume-strike', compact('ccy', 'expTime', 'period'));
     }
 }
