@@ -33,4 +33,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/rubik/stat/taker-volume', $params);
     }
+
+    /**
+     * Get margin lending ratio.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function loadRatio($params)
+    {
+        return $this->httpGet('/api/v5/rubik/stat/margin/loan-ratio', $params);
+    }
 }
