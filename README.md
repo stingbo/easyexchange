@@ -913,6 +913,48 @@ $app->algo->orderHistory($params);
 ```
 </details>
 
+<details>
+<summary>7. Trading data</summary>
+
+```php
+// Get support coin - Retrieve the currencies supported by the trading data endpoints.
+$response = $app->trading->supportCoin();
+$params = [
+    'ccy' => 'BTC',
+    'instType' => 'SPOT',
+];
+// Get taker volume - Retrieve the taker volume for both buyers and sellers.
+$response = $app->trading->takerVolume($params);
+// Get margin lending ratio - Retrieve the ratio of cumulative amount between currency margin quote currency and base currency.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->loadRatio($params);
+// Get long/short ratio - Retrieve the ratio of users with net long vs net short positions for futures and perpetual swaps.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->contractLongShortAccountRatio($params);
+// Get contracts open interest and volume - Retrieve the open interest and trading volume for futures and perpetual swaps.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->contractOpenInterestVolume($params);
+// Get options open interest and volume - Retrieve the open interest and trading volume for options.
+$response = $app->trading->optionOpenInterestVolume($params);
+// Get put/call ratio - Retrieve the open interest ration and trading volume ratio of calls vs puts.
+$ccy = 'BTC';
+$response = $app->trading->optionOpenInterestVolumeRatio($ccy);
+// Get open interest and volume (expiry) - Retrieve the open interest and trading volume of calls and puts for each upcoming expiration.
+$response = $app->trading->optionOpenInterestVolumeExpiry($ccy);
+// Get open interest and volume (strike) - Retrieve the taker volume for both buyers and sellers of calls and puts.
+$exptime = '20230628';
+$response = $app->trading->optionOpenInterestVolumeStrike($ccy, $exptime);
+// Get taker flow - This shows the relative buy/sell volume for calls and puts. It shows whether traders are bullish or bearish on price and volatility.
+$response = $app->trading->optionTakerBlockVolume($ccy);
+```
+</details>
+
 ### Gate Version V4
 
 ```php
