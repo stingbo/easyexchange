@@ -38,6 +38,7 @@ $ composer require "stingbo/easyexchange" -vvv
 ### Binance
 <details>
 <summary> :rocket: Quick Start</summary>
+
 ```php
 <?php
 
@@ -74,6 +75,7 @@ $config = [
 ];
 
 $app = Factory::binance($config['binance']);
+$app->basic->ping();
 ```
 </details>
 
@@ -399,6 +401,9 @@ $app->pool->userList($params);
 </details>
 
 ### Huobi
+<details>
+<summary> :rocket: Quick Start</summary>
+
 ```php
 <?php
 
@@ -443,7 +448,9 @@ $config = [
 ];
 
 $app = Factory::houbi($config['houbi']);
+$app->basic->systemStatus();
 ```
+</details>
 
 <details>
 <summary>1. Basic Information</summary>
@@ -681,6 +688,9 @@ $app->c2c->balance($accountId, $currency = '');
 </details>
 
 ### OKEx Version V5
+<details>
+<summary> :rocket: Quick Start</summary>
+
 ```php
 <?php
 
@@ -727,6 +737,7 @@ $config = [
 
 $app = Factory::okex($config['okex']);
 ```
+</details>
 
 <details>
 <summary>1. Basic Information</summary>
@@ -959,6 +970,8 @@ $response = $app->trading->optionTakerBlockVolume($ccy);
 </details>
 
 ### Gate Version V4
+<details>
+<summary> :rocket: Quick Start</summary>
 
 ```php
 <?php
@@ -995,6 +1008,7 @@ $config = [
 
 $app = Factory::gate($config['gate']);
 ```
+</details>
 
 <details>
 <summary>1. Wallet</summary>
@@ -1273,6 +1287,8 @@ $app->delivery->cancelPriceOrder($settle, $order_id);
 </details>
 
 ### Coinbase
+<details>
+<summary> :rocket: Quick Start</summary>
 
 ```php
 <?php
@@ -1310,6 +1326,7 @@ $config = [
 
 $app = Factory::coinbase($config['coinbase']);
 ```
+</details>
 
 <details>
 <summary>1. Account Information</summary>
