@@ -1,5 +1,5 @@
 ## PHP Easy Exchange Api
-- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `Coinbase` etc
+- Easy use digital currency exchange SDK, include `Binance`, `OKX`, `Huobi`, `Gate`, `Coinbase` etc
 - If you don’t have what you want, please let me know, and I will fulfill your wish :smile:
 - Pull requests are welcome.
 - [中文文档](README_CN.md)
@@ -29,7 +29,7 @@ $ composer require "stingbo/easyexchange" -vvv
 | :---: | :---: |
 | [Binance](docs/binance_websocket.md) | :heavy_check_mark: |
 | [Huobi](docs/huobi_websocket.md) | :heavy_check_mark: |
-| [OKEx](docs/okex_websocket.md) | :heavy_check_mark: |
+| [OKX](docs/okex_websocket.md) | :heavy_check_mark: |
 | [Gate](docs/gate_websocket.md) | :heavy_check_mark: |
 | [Coinbase](docs/coinbase_websocket.md) | :heavy_check_mark: |
 
@@ -687,7 +687,7 @@ $app->c2c->balance($accountId, $currency = '');
 ```
 </details>
 
-### OKEx Version V5
+### OKX Version V5
 <details>
 <summary> :rocket: Quick Start</summary>
 
@@ -933,11 +933,11 @@ $app->algo->orderHistory($params);
 ```php
 // Get support coin - Retrieve the currencies supported by the trading data endpoints.
 $response = $app->trading->supportCoin();
+// Get taker volume - Retrieve the taker volume for both buyers and sellers.
 $params = [
     'ccy' => 'BTC',
     'instType' => 'SPOT',
 ];
-// Get taker volume - Retrieve the taker volume for both buyers and sellers.
 $response = $app->trading->takerVolume($params);
 // Get margin lending ratio - Retrieve the ratio of cumulative amount between currency margin quote currency and base currency.
 $params = [
@@ -962,7 +962,7 @@ $response = $app->trading->optionOpenInterestVolumeRatio($ccy);
 // Get open interest and volume (expiry) - Retrieve the open interest and trading volume of calls and puts for each upcoming expiration.
 $response = $app->trading->optionOpenInterestVolumeExpiry($ccy);
 // Get open interest and volume (strike) - Retrieve the taker volume for both buyers and sellers of calls and puts.
-$exptime = '20230628';
+$exptime = '20220122';
 $response = $app->trading->optionOpenInterestVolumeStrike($ccy, $exptime);
 // Get taker flow - This shows the relative buy/sell volume for calls and puts. It shows whether traders are bullish or bearish on price and volatility.
 $response = $app->trading->optionTakerBlockVolume($ccy);
