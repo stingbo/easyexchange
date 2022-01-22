@@ -63,4 +63,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/rubik/stat/contracts/long-short-account-ratio', $params);
     }
+
+    /**
+     * Get contracts open interest and volume.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function contractOpenInterestVolume($params)
+    {
+        return $this->httpGet('/api/v5/rubik/stat/contracts/open-interest-volume', $params);
+    }
 }
