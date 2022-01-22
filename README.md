@@ -36,6 +36,8 @@ $ composer require "stingbo/easyexchange" -vvv
 ## Usage
 
 ### Binance
+<details>
+<summary> :rocket: Quick Start</summary>
 ```php
 <?php
 
@@ -73,9 +75,10 @@ $config = [
 
 $app = Factory::binance($config['binance']);
 ```
+</details>
 
 <details>
-    <summary> 1. Basic Information </summary>
+<summary> 1. Basic Information </summary>
 
 ```php
 // Test Connectivity
