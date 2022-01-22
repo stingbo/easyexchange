@@ -1,5 +1,5 @@
 ## PHP Easy Exchange Api
-- Easy use digital currency exchange SDK, include `Binance`, `OKEx`, `Huobi`, `Gate`, `Coinbase` etc
+- Easy use digital currency exchange SDK, include `Binance`, `OKX`, `Huobi`, `Gate`, `Coinbase` etc
 - If you don’t have what you want, please let me know, and I will fulfill your wish :smile:
 - Pull requests are welcome.
 - [中文文档](README_CN.md)
@@ -29,13 +29,16 @@ $ composer require "stingbo/easyexchange" -vvv
 | :---: | :---: |
 | [Binance](docs/binance_websocket.md) | :heavy_check_mark: |
 | [Huobi](docs/huobi_websocket.md) | :heavy_check_mark: |
-| [OKEx](docs/okex_websocket.md) | :heavy_check_mark: |
+| [OKX](docs/okex_websocket.md) | :heavy_check_mark: |
 | [Gate](docs/gate_websocket.md) | :heavy_check_mark: |
 | [Coinbase](docs/coinbase_websocket.md) | :heavy_check_mark: |
 
 ## Usage
 
 ### Binance
+<details>
+<summary> :rocket: Quick Start</summary>
+
 ```php
 <?php
 
@@ -72,10 +75,12 @@ $config = [
 ];
 
 $app = Factory::binance($config['binance']);
+$app->basic->ping();
 ```
+</details>
 
 <details>
-    <summary> 1. Basic Information </summary>
+<summary> 1. Basic Information </summary>
 
 ```php
 // Test Connectivity
@@ -396,6 +401,9 @@ $app->pool->userList($params);
 </details>
 
 ### Huobi
+<details>
+<summary> :rocket: Quick Start</summary>
+
 ```php
 <?php
 
@@ -440,7 +448,9 @@ $config = [
 ];
 
 $app = Factory::houbi($config['houbi']);
+$app->basic->systemStatus();
 ```
+</details>
 
 <details>
 <summary>1. Basic Information</summary>
@@ -677,7 +687,10 @@ $app->c2c->balance($accountId, $currency = '');
 ```
 </details>
 
-### OKEx Version V5
+### OKX Version V5
+<details>
+<summary> :rocket: Quick Start</summary>
+
 ```php
 <?php
 
@@ -724,6 +737,7 @@ $config = [
 
 $app = Factory::okex($config['okex']);
 ```
+</details>
 
 <details>
 <summary>1. Basic Information</summary>
@@ -913,7 +927,51 @@ $app->algo->orderHistory($params);
 ```
 </details>
 
+<details>
+<summary>7. Trading data</summary>
+
+```php
+// Get support coin - Retrieve the currencies supported by the trading data endpoints.
+$response = $app->trading->supportCoin();
+// Get taker volume - Retrieve the taker volume for both buyers and sellers.
+$params = [
+    'ccy' => 'BTC',
+    'instType' => 'SPOT',
+];
+$response = $app->trading->takerVolume($params);
+// Get margin lending ratio - Retrieve the ratio of cumulative amount between currency margin quote currency and base currency.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->loadRatio($params);
+// Get long/short ratio - Retrieve the ratio of users with net long vs net short positions for futures and perpetual swaps.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->contractLongShortAccountRatio($params);
+// Get contracts open interest and volume - Retrieve the open interest and trading volume for futures and perpetual swaps.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->contractOpenInterestVolume($params);
+// Get options open interest and volume - Retrieve the open interest and trading volume for options.
+$response = $app->trading->optionOpenInterestVolume($params);
+// Get put/call ratio - Retrieve the open interest ration and trading volume ratio of calls vs puts.
+$ccy = 'BTC';
+$response = $app->trading->optionOpenInterestVolumeRatio($ccy);
+// Get open interest and volume (expiry) - Retrieve the open interest and trading volume of calls and puts for each upcoming expiration.
+$response = $app->trading->optionOpenInterestVolumeExpiry($ccy);
+// Get open interest and volume (strike) - Retrieve the taker volume for both buyers and sellers of calls and puts.
+$exptime = '20220122';
+$response = $app->trading->optionOpenInterestVolumeStrike($ccy, $exptime);
+// Get taker flow - This shows the relative buy/sell volume for calls and puts. It shows whether traders are bullish or bearish on price and volatility.
+$response = $app->trading->optionTakerBlockVolume($ccy);
+```
+</details>
+
 ### Gate Version V4
+<details>
+<summary> :rocket: Quick Start</summary>
 
 ```php
 <?php
@@ -950,6 +1008,7 @@ $config = [
 
 $app = Factory::gate($config['gate']);
 ```
+</details>
 
 <details>
 <summary>1. Wallet</summary>
@@ -1228,6 +1287,8 @@ $app->delivery->cancelPriceOrder($settle, $order_id);
 </details>
 
 ### Coinbase
+<details>
+<summary> :rocket: Quick Start</summary>
 
 ```php
 <?php
@@ -1265,6 +1326,7 @@ $config = [
 
 $app = Factory::coinbase($config['coinbase']);
 ```
+</details>
 
 <details>
 <summary>1. Account Information</summary>

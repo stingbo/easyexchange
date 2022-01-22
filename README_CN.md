@@ -1,5 +1,5 @@
 ## EasyExchange
-- 方便使用的数据货币交易所 SDK，包含币安(Binance)，欧易(OKEx)，火币(Huobi)，芝麻开门(Gate)，Coinbase
+- 方便使用的数据货币交易所 SDK，包含币安(Binance)，欧易(OKX)，火币(Huobi)，芝麻开门(Gate)，Coinbase
 - 如果没有你想要的交易所 SDK，你可以提 issue 告诉我，或者你开发好了提 pull request 给我都行，与君共勉 :laughing:
 - [English Doc](README.md)
 
@@ -16,7 +16,7 @@ $ composer require "stingbo/easyexchange" -vvv
 
 ## 约定
 
-1. 你已非常熟悉了项目里接入平台的API文档
+1. 你已非常熟悉项目里接入平台的API文档
 2. 大于或等于三个参数以上的，使用数组传入，否则使用同名参数传入
 3. 接口名称不一定和对应平台的一致，多个平台类似的接口，我做了统一，但参数需要传入平台对应的名称
 4. 币安的 timestamp 参数已内置，不需要额外传入
@@ -35,6 +35,9 @@ $ composer require "stingbo/easyexchange" -vvv
 ## 使用说明
 
 ### 币安
+<details>
+<summary> :rocket: 快速开始</summary>
+
 ```php
 <?php
 
@@ -71,7 +74,9 @@ $config = [
 ];
 
 $app = Factory::binance($config['binance']);
+$app->basic->ping();
 ```
+</details>
 
 <details>
 <summary>1. 基础信息</summary>
@@ -395,6 +400,9 @@ $app->pool->userList($params);
 </details>
 
 ### 火币
+<details>
+<summary> :rocket: 快速开始</summary>
+
 ```php
 <?php
 
@@ -439,7 +447,9 @@ $config = [
 ];
 
 $app = Factory::houbi($config['houbi']);
+$app->basic->systemStatus();
 ```
+</details>
 
 <details>
 <summary>1. 基础信息</summary>
@@ -677,6 +687,9 @@ $app->c2c->balance($accountId, $currency = '');
 </details>
 
 ### 欧易 V5 版本
+<details>
+<summary> :rocket: 快速开始</summary>
+
 ```php
 <?php
 
@@ -724,6 +737,7 @@ $config = [
 
 $app = Factory::okex($config['okex']);
 ```
+</details>
 
 <details>
 <summary>1. 基础信息</summary>
@@ -913,7 +927,51 @@ $app->algo->orderHistory($params);
 ```
 </details>
 
+<details>
+<summary>7. 交易大数据</summary>
+
+```php
+// 获取交易大数据支持币种.
+$response = $app->trading->supportCoin();
+$params = [
+    'ccy' => 'BTC',
+    'instType' => 'SPOT',
+];
+// 获取taker主动买入和卖出的交易量.
+$response = $app->trading->takerVolume($params);
+$params = [
+    'ccy' => 'BTC',
+];
+// 获取杠杆多空比 - 获取借入计价货币与借入交易货币的累计数额比值.
+$response = $app->trading->loadRatio($params);
+// 获取合约多空持仓人数比 - 获取交割永续净多头持仓用户数与净空头持仓用户数的比值.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->contractLongShortAccountRatio($params);
+// 获取合约持仓量及交易量 - 获取交割永续的持仓量和交易量.
+$params = [
+    'ccy' => 'BTC',
+];
+$response = $app->trading->contractOpenInterestVolume($params);
+// 获取期权持仓量及交易量.
+$response = $app->trading->optionOpenInterestVolume($params);
+// 获取看涨期权和看跌期权的持仓量比值，以及交易量比值.
+$ccy = 'BTC';
+$response = $app->trading->optionOpenInterestVolumeRatio($ccy);
+// 看涨看跌持仓总量及交易总量（按到期日分）- 获取每个到期日上看涨期权和看跌期权的持仓量和交易量.
+$response = $app->trading->optionOpenInterestVolumeExpiry($ccy);
+// 看涨看跌持仓总量及交易总量（按执行价格分）- 获取看涨期权和看跌期权的taker主动买入和卖出的交易量.
+$exptime = '20220122';
+$response = $app->trading->optionOpenInterestVolumeStrike($ccy, $exptime);
+// 看跌/看涨期权合约 主动买入/卖出量 - 该指标展示某一时刻，单位时间内看跌/看涨期权的主动（taker）买入/卖出量所占总体的比例，即资金流入量和流出量的比例.
+$response = $app->trading->optionTakerBlockVolume($ccy);
+```
+</details>
+
 ### 芝麻开门 V4 版本
+<details>
+<summary> :rocket: 快速开始</summary>
 
 ```php
 <?php
@@ -950,6 +1008,7 @@ $config = [
 
 $app = Factory::gate($config['gate']);
 ```
+</details>
 
 <details>
 <summary>1. 钱包相关</summary>
@@ -1228,6 +1287,8 @@ $app->delivery->cancelPriceOrder($settle, $order_id);
 </details>
 
 ### Coinbase
+<details>
+<summary> :rocket: 快速开始</summary>
 
 ```php
 <?php
@@ -1265,6 +1326,7 @@ $config = [
 
 $app = Factory::coinbase($config['coinbase']);
 ```
+</details>
 
 <details>
 <summary>1. 账户信息</summary>
