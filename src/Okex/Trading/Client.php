@@ -48,4 +48,19 @@ class Client extends BaseClient
     {
         return $this->httpGet('/api/v5/rubik/stat/margin/loan-ratio', $params);
     }
+
+    /**
+     * Get contracts long/short ratio.
+     *
+     * @param $params
+     *
+     * @return array|\EasyExchange\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
+     *
+     * @throws \EasyExchange\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function contractLongShortAccountRatio($params)
+    {
+        return $this->httpGet('/api/v5/rubik/stat/contracts/long-short-account-ratio', $params);
+    }
 }
