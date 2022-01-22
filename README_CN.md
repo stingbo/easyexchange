@@ -36,7 +36,7 @@ $ composer require "stingbo/easyexchange" -vvv
 
 ### 币安
 <details>
-<summary> :rocket: 快速开始</summary>
+<summary><b> :rocket: 快速开始 </b></summary>
 
 ```php
 <?php
@@ -401,7 +401,7 @@ $app->pool->userList($params);
 
 ### 火币
 <details>
-<summary> :rocket: 快速开始</summary>
+<summary><b> :rocket: 快速开始 </b></summary>
 
 ```php
 <?php
@@ -688,7 +688,7 @@ $app->c2c->balance($accountId, $currency = '');
 
 ### 欧易 V5 版本
 <details>
-<summary> :rocket: 快速开始</summary>
+<summary><b> :rocket: 快速开始 </b></summary>
 
 ```php
 <?php
@@ -971,7 +971,7 @@ $response = $app->trading->optionTakerBlockVolume($ccy);
 
 ### 芝麻开门 V4 版本
 <details>
-<summary> :rocket: 快速开始</summary>
+<summary><b> :rocket: 快速开始 </b></summary>
 
 ```php
 <?php
@@ -1288,7 +1288,7 @@ $app->delivery->cancelPriceOrder($settle, $order_id);
 
 ### Coinbase
 <details>
-<summary> :rocket: 快速开始</summary>
+<summary><b> :rocket: 快速开始 </b></summary>
 
 ```php
 <?php
