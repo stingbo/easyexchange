@@ -37,7 +37,7 @@ $ composer require "stingbo/easyexchange" -vvv
 
 ### Binance
 <details>
-<summary> :rocket: Quick Start</summary>
+<summary><b> :rocket: Quick Start </b></summary>
 
 ```php
 <?php
@@ -402,7 +402,7 @@ $app->pool->userList($params);
 
 ### Huobi
 <details>
-<summary> :rocket: Quick Start</summary>
+<summary><b> :rocket: Quick Start </b></summary>
 
 ```php
 <?php
@@ -689,7 +689,7 @@ $app->c2c->balance($accountId, $currency = '');
 
 ### OKX Version V5
 <details>
-<summary> :rocket: Quick Start</summary>
+<summary><b> :rocket: Quick Start </b></summary>
 
 ```php
 <?php
@@ -971,7 +971,7 @@ $response = $app->trading->optionTakerBlockVolume($ccy);
 
 ### Gate Version V4
 <details>
-<summary> :rocket: Quick Start</summary>
+<summary><b> :rocket: Quick Start </b></summary>
 
 ```php
 <?php
@@ -1288,7 +1288,7 @@ $app->delivery->cancelPriceOrder($settle, $order_id);
 
 ### Coinbase
 <details>
-<summary> :rocket: Quick Start</summary>
+<summary><b> :rocket: Quick Start </b></summary>
 
 ```php
 <?php
