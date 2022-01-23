@@ -51,15 +51,15 @@ class Client extends BaseClient
                     $port = 4208;
                 }
                 $worker = new Worker('websocket://127.0.0.1:'.$port);
-                $worker->onWorkerStart = function () use ($params, $link, $handle) {
+                $worker->onWorkerStart = function () use ($params, $link, $handle, $worker) {
                     $this->client = new GlobalClient(($this->config['websocket']['ip'] ?? '127.0.0.1').':'.($this->config['websocket']['port'] ?? 2207));
                     $ws_connection = $handle->getConnection($this->config, $link);
                     $ws_connection->onConnect = function ($connection) use ($params, $handle) {
                         $handle->onConnect($connection, $this->client, $params);
                     };
-                    $ws_connection->onMessage = function ($connection, $data) use ($params, $handle) {
+                    $ws_connection->onMessage = function ($connection, $data) use ($params, $handle, $worker) {
                         $handle->onMessage($connection, $this->client, $params, $data);
-                        $this->sendMessage($data);
+                        $this->sendMessage($worker, $data); // 同步到客户端
                     };
                     $ws_connection->onError = function ($connection, $code, $msg) use ($handle) {
                         $handle->onError($connection, $this->client, $code, $msg);
@@ -84,14 +84,20 @@ class Client extends BaseClient
                         $this->connectPrivate($ws_connection);
                     }
                 };
-                $worker->con = '';
-                $worker->onMessage = function (TcpConnection $connection, $data) use ($worker) {
-                    global $worker;
-                    if (is_null($worker)) {
-                        $worker = (object) [];
+
+                $worker->onConnect = function (TcpConnection $connection) {
+                    $connection->send('连接id：'.$connection->id);
+                };
+
+                $worker->onMessage = function (TcpConnection $connection, $data) {
+                    if ('ping' == $data) {
+                        $connection->send('pong');
+                    } else {
+                        $connection->send($data);
                     }
-                    $worker->con = $connection;
-                    $this->sendMessage($data);
+                };
+                $worker->onClose = function (TcpConnection $connection) {
+                    echo "connection closed\n";
                 };
             }
         }
@@ -99,16 +105,13 @@ class Client extends BaseClient
         Worker::runAll();
     }
 
-    public function sendMessage($message)
+    public function sendMessage(Worker $worker, $message)
     {
-        global $worker;
-        if (isset($worker->con)) {
-            $worker->con->send($message);
-
-            return true;
+        foreach ($worker->connections as $connection) {
+            $connection->send($message);
         }
 
-        return false;
+        return true;
     }
 
     /**
