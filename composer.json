@@ -17,8 +17,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.2",
-        "guzzlehttp/guzzle": "^6.2 || ^7.0",
-        "monolog/monolog": "^1.22 || ^2.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "monolog/monolog": "^2.0",
         "pimple/pimple": "^3.0",
         "workerman/workerman": "^4.0",
         "workerman/globaldata": "*"
