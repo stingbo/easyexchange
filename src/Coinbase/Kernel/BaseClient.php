@@ -37,11 +37,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     protected function registerHttpMiddlewares()
     {
         $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
-        if ('SIGN' == $this->sign_type) {
-            $this->pushMiddleware($this->addHeaderMiddleware('CB-ACCESS-KEY', $this->app->config->get('app_key')), 'add_header_appkey');
-            $this->pushMiddleware($this->addHeaderMiddleware('CB-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header_passphrase');
-            $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-        }
+        $this->pushMiddleware($this->signatureMiddleware(), 'signature');
 
         // proxy
         $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
@@ -59,6 +55,12 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                if ($this->sign_type !== 'SIGN') {
+                    return $handler($request, $options);
+                }
+
+                $request = $request->withHeader('CB-ACCESS-KEY', $this->app->config->get('app_key'));
+                $request = $request->withHeader('CB-ACCESS-PASSPHRASE', $this->app->config->get('passphrase'));
                 $this->timestamp = $this->getRequestDateTime();
                 $method = $request->getMethod();
                 $uri_path = $request->getUri()->getPath();

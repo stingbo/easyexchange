@@ -30,10 +30,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     protected function registerHttpMiddlewares()
     {
-        if ('SIGN' == $this->sign_type) {
-            // signature
-            $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-        }
+        $this->pushMiddleware($this->signatureMiddleware(), 'signature');
 
         // proxy
         $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
@@ -51,6 +48,10 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                if ($this->sign_type !== 'SIGN') {
+                    return $handler($request, $options);
+                }
+
                 $method = $request->getMethod();
                 $uri_host = $request->getUri()->getHost();
                 $uri_path = $request->getUri()->getPath();

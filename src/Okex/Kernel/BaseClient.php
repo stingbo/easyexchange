@@ -43,11 +43,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
         $this->pushMiddleware($this->addHeaderMiddleware('x-simulated-trading', $this->app->config->get('x-simulated-trading')), 'add_header_test');
-        if ('SIGN' == $this->sign_type) {
-            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-KEY', $this->app->config->get('app_key')), 'add_header_appkey');
-            $this->pushMiddleware($this->addHeaderMiddleware('OK-ACCESS-PASSPHRASE', $this->app->config->get('passphrase')), 'add_header_passphrase');
-            $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-        }
+        $this->pushMiddleware($this->signatureMiddleware(), 'signature');
 
         // proxy
         $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
@@ -65,6 +61,12 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                if ($this->sign_type !== 'SIGN') {
+                    return $handler($request, $options);
+                }
+
+                $request = $request->withHeader('OK-ACCESS-KEY', $this->app->config->get('app_key'));
+                $request = $request->withHeader('OK-ACCESS-PASSPHRASE', $this->app->config->get('passphrase'));
                 $this->timestamp = $this->getRequestDateTime();
                 $signature = $this->signRequest(
                     $this->timestamp,
