@@ -12,6 +12,8 @@ use Serializable;
 
 /**
  * Class Collection.
+ *
+ * @phpstan-consistent-constructor
  */
 class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable, Serializable, Arrayable
 {

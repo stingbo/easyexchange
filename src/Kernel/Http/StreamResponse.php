@@ -9,7 +9,7 @@ use EasyExchange\Kernel\Support\File;
 class StreamResponse extends Response
 {
     /**
-     * @return bool|int
+     * @return string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyExchange\Kernel\Exceptions\RuntimeException
@@ -52,7 +52,7 @@ class StreamResponse extends Response
     }
 
     /**
-     * @return bool|int
+     * @return string
      *
      * @throws \EasyExchange\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyExchange\Kernel\Exceptions\RuntimeException

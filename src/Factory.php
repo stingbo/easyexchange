@@ -35,8 +35,6 @@ class Factory
 
     /**
      * Dynamically pass methods to the application.
-     *
-     * @return mixed
      */
     public static function __callStatic(string $name, array $arguments): ServiceContainer
     {

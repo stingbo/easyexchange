@@ -7,6 +7,9 @@ use EasyExchange\Kernel\Support\XML;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class Response extends GuzzleResponse
 {
     /**

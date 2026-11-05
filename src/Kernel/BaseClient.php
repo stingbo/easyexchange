@@ -25,7 +25,7 @@ class BaseClient
     protected $baseUri;
 
     /**
-     * @var null
+     * @var string
      */
     protected $sign_type = 'NONE';
 
