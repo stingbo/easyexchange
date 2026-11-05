@@ -87,8 +87,6 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     public function getRequestDateTime()
     {
-        date_default_timezone_set('UTC');
-
-        return date('Y-m-d\TH:i:s'.substr((string) microtime(), 1, 4)).'Z';
+        return (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d\TH:i:s.v\Z');
     }
 }

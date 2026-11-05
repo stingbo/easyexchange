@@ -389,8 +389,7 @@ class Client extends BaseClient
      */
     public function auth($connection)
     {
-        date_default_timezone_set('UTC');
-        $timestamp = date('Y-m-d\TH:i:s');
+        $timestamp = gmdate('Y-m-d\TH:i:s');
         $params = [
             'accessKey' => $this->config['app_key'],
             'signatureMethod' => 'HmacSHA256',
