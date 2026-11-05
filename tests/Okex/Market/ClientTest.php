@@ -22,6 +22,16 @@ class ClientTest extends TestCase
         $this->assertSame('mock-result', $client->tickers($instType, $uly));
     }
 
+    public function testSpotTickersOmitUnderlying()
+    {
+        $client = $this->mockApiClient(Client::class);
+        $client->expects()->httpGet('/api/v5/market/tickers', ['instType' => 'SPOT'])
+            ->twice()->andReturn('mock-result');
+
+        $this->assertSame('mock-result', $client->tickers('SPOT'));
+        $this->assertSame('mock-result', $client->tickers('SPOT', 'BTC-USD'));
+    }
+
     public function testTicker()
     {
         $client = $this->mockApiClient(Client::class);

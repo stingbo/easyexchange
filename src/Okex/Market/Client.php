@@ -19,7 +19,12 @@ class Client extends BaseClient
      */
     public function tickers($instType, $uly = '')
     {
-        return $this->httpGet('/api/v5/market/tickers', compact('instType', 'uly'));
+        $query = ['instType' => $instType];
+        if ($instType !== 'SPOT') {
+            $query['uly'] = $uly;
+        }
+
+        return $this->httpGet('/api/v5/market/tickers', $query);
     }
 
     /**
