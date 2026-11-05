@@ -51,7 +51,7 @@ class ClientTest extends TestCase
             'price' => 2000,
         ];
 
-        $client->expects()->httpPost('/api/v3/order/test', $params)->andReturn('mock-result');
+        $client->expects()->httpPost('/api/v3/order/test', $params, 'SIGN')->andReturn('mock-result');
 
         $this->assertSame('mock-result', $client->orderTest($params));
     }

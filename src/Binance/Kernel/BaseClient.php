@@ -29,18 +29,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
      */
     protected function registerHttpMiddlewares()
     {
-        switch ($this->sign_type) {
-            case 'SIGN':
-                // signature
-                $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-                // add app key header
-                $this->pushMiddleware($this->addHeaderMiddleware('X-MBX-APIKEY', $this->app->config->get('app_key')), 'add_header');
-                break;
-            case 'APIKEY':
-                // add app key header
-                $this->pushMiddleware($this->addHeaderMiddleware('X-MBX-APIKEY', $this->app->config->get('app_key')), 'add_header');
-                break;
-        }
+        $this->pushMiddleware($this->signatureMiddleware(), 'signature');
 
         // proxy
         $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
@@ -50,7 +39,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     }
 
     /**
-     * Attache signature to request query.
+     * Add the API key and signature according to the request's authentication mode.
      *
      * @return \Closure
      */
@@ -58,6 +47,14 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                if ($this->sign_type === 'SIGN' || $this->sign_type === 'APIKEY') {
+                    $request = $request->withHeader('X-MBX-APIKEY', $this->app->config->get('app_key'));
+                }
+
+                if ($this->sign_type !== 'SIGN') {
+                    return $handler($request, $options);
+                }
+
                 parse_str($request->getBody()->getContents(), $params);
                 parse_str($request->getUri()->getQuery(), $query);
 

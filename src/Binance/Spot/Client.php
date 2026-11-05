@@ -18,7 +18,7 @@ class Client extends BaseClient
      */
     public function orderTest($params)
     {
-        return $this->httpPost('/api/v3/order/test', $params);
+        return $this->httpPost('/api/v3/order/test', $params, 'SIGN');
     }
 
     /**
