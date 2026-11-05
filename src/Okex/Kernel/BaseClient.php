@@ -25,6 +25,11 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
         }
         $body = $params ? json_encode($params, JSON_UNESCAPED_SLASHES) : '';
 
+        return $this->signRequest($timestamp, $method, $uri_path, $body);
+    }
+
+    private function signRequest($timestamp, $method, $uri_path, $body): string
+    {
         $this->message = (string) $timestamp.$method.$uri_path.(string) $body;
         $secret = $this->app->config->get('secret');
 
@@ -61,16 +66,12 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
                 $this->timestamp = $this->getRequestDateTime();
-                $method = $request->getMethod();
-                $uri_path = $request->getUri()->getPath();
-                if ('POST' == $method) { // POST
-                    $body = $request->getBody();
-                    $params = json_decode($body, true);
-                    $signature = $this->getSignature($this->timestamp, $method, $uri_path, $params);
-                } else { // GET
-                    parse_str($request->getUri()->getQuery(), $query);
-                    $signature = $this->getSignature($this->timestamp, $method, $uri_path, $query);
-                }
+                $signature = $this->signRequest(
+                    $this->timestamp,
+                    $request->getMethod(),
+                    $request->getRequestTarget(),
+                    (string) $request->getBody()
+                );
                 $request = $request->withHeader('OK-ACCESS-TIMESTAMP', $this->timestamp);
                 $request = $request->withHeader('OK-ACCESS-SIGN', $signature);
 
