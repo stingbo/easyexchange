@@ -30,10 +30,7 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     protected function registerHttpMiddlewares()
     {
         $this->pushMiddleware($this->addHeaderMiddleware('Content-Type', 'application/json'), 'add_header_content_type');
-        if ('SIGN' == $this->sign_type) {
-            // signature
-            $this->pushMiddleware($this->signatureMiddleware(), 'signature');
-        }
+        $this->pushMiddleware($this->signatureMiddleware(), 'signature');
 
         // proxy
         $this->pushMiddleware($this->proxyMiddleware(), 'proxy');
@@ -51,6 +48,10 @@ class BaseClient extends \EasyExchange\Kernel\BaseClient
     {
         return function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
+                if ($this->sign_type !== 'SIGN') {
+                    return $handler($request, $options);
+                }
+
                 $key = $this->app->config->get('app_key');
                 $this->timestamp = time();
                 $method = $request->getMethod();
