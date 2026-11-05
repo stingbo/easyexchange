@@ -1,4 +1,9 @@
 ## PHP Easy Exchange Api
+
+[![CI status](https://github.com/stingbo/easyexchange/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/stingbo/easyexchange/actions/workflows/ci.yml)
+[![Latest Packagist version](https://img.shields.io/packagist/v/stingbo/easyexchange)](https://packagist.org/packages/stingbo/easyexchange)
+[![PHP 8.4+](https://img.shields.io/badge/PHP-%3E%3D%208.4-777BB4)](https://www.php.net/releases/8.4/en.php)
+
 - Easy use digital currency exchange SDK, include `Binance`, `OKX`, `Huobi`, `Gate`, `Coinbase` etc
 - If you don’t have what you want, please let me know, and I will fulfill your wish :smile:
 - Pull requests are welcome.

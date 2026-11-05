@@ -1,4 +1,9 @@
 ## EasyExchange
+
+[![CI 状态](https://github.com/stingbo/easyexchange/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/stingbo/easyexchange/actions/workflows/ci.yml)
+[![Packagist 最新版本](https://img.shields.io/packagist/v/stingbo/easyexchange)](https://packagist.org/packages/stingbo/easyexchange)
+[![PHP 8.4+](https://img.shields.io/badge/PHP-%3E%3D%208.4-777BB4)](https://www.php.net/releases/8.4/en.php)
+
 - 方便使用的数据货币交易所 SDK，包含币安(Binance)，欧易(OKX)，火币(Huobi)，芝麻开门(Gate)，Coinbase
 - 如果没有你想要的交易所 SDK，你可以提 issue 告诉我，或者你开发好了提 pull request 给我都行，与君共勉 :laughing:
 - [English Doc](README.md)
