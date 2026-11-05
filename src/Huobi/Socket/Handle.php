@@ -28,14 +28,9 @@ class Handle implements \EasyExchange\Kernel\Socket\Handle
 
     public function onMessage($connection, $client, $params, $data)
     {
-        if (false !== json_encode($data)) { // is json format
-            echo $data.PHP_EOL;
-            $result = json_decode($data, true);
-        } else {
-            $json_data = gzdecode($data);
-            echo $json_data.PHP_EOL;
-            $result = json_decode($json_data, true);
-        }
+        $json_data = str_starts_with($data, "\x1f\x8b") ? gzdecode($data) : $data;
+        echo $json_data.PHP_EOL;
+        $result = json_decode($json_data, true);
         // Heartbeat
         if (isset($result['ping'])) {
             $connection->send(json_encode(['pong' => $result['ping']]));

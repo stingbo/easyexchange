@@ -12,7 +12,7 @@ use Workerman\Worker;
 
 class Client extends BaseClient
 {
-    public $client_type = 'houbi';
+    public $client_type = 'huobi';
 
     public function getClientType(): string
     {
