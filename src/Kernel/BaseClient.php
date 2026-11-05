@@ -40,6 +40,13 @@ class BaseClient
     }
 
     /**
+     * Register exchange-specific middleware. The base client has none.
+     */
+    protected function registerHttpMiddlewares()
+    {
+    }
+
+    /**
      * @param bool $returnRaw
      *
      * @return \Psr\Http\Message\ResponseInterface|\EasyExchange\Kernel\Support\Collection|array|object|string

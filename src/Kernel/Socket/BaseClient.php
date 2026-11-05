@@ -64,6 +64,20 @@ class BaseClient
     }
 
     /**
+     * Schedule exchange-specific heartbeats, if needed.
+     */
+    protected function ping($connection)
+    {
+    }
+
+    /**
+     * Schedule exchange-specific actions after the transport starts.
+     */
+    protected function connect($connection)
+    {
+    }
+
+    /**
      * 更新或创建.
      *
      * @param $key
