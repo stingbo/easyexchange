@@ -5,7 +5,7 @@
 
 ## 依赖
 
-1. PHP >= 7.2
+1. PHP >= 8.4，并启用 cURL 扩展
 2. **[Composer](https://getcomposer.org/)**
 
 ## 安装

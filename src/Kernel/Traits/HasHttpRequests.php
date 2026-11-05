@@ -89,7 +89,7 @@ trait HasHttpRequests
      *
      * @return $this
      */
-    public function pushMiddleware(callable $middleware, string $name = null)
+    public function pushMiddleware(callable $middleware, ?string $name = null)
     {
         if (!is_null($name)) {
             $this->middlewares[$name] = $middleware;

@@ -37,7 +37,7 @@ class ServiceContainer extends Container
     /**
      * Constructor.
      */
-    public function __construct(array $config = [], array $prepends = [], string $id = null)
+    public function __construct(array $config = [], array $prepends = [], ?string $id = null)
     {
         $this->userConfig = $config;
 

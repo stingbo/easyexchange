@@ -6,7 +6,7 @@
 
 ## Requirement
 
-1. PHP >= 7.2
+1. PHP >= 8.4 with the cURL extension
 2. **[Composer](https://getcomposer.org/)**
 
 ## Installation
